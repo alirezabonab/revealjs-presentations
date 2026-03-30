@@ -1,0 +1,17 @@
+{
+  "title": "AI Agents for Product Management",
+  "entry": "deck.md",
+  "theme": "simple",
+  "styles": [
+    "assets/theme.css"
+  ],
+  "reveal": {
+    "transition": "fade",
+    "backgroundTransition": "none",
+    "controlsLayout": "edges",
+    "center": true,
+    "width": 1400,
+    "height": 900,
+    "margin": 0.08
+  }
+}

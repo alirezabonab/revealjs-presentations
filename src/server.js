@@ -102,40 +102,16 @@ function renderIndexPage(presentations) {
   const items = presentations
     .map((presentation) => {
       const defaultRoute = `/presentation/${presentation.name}`;
-      const customEntryRoute =
-        presentation.entry && presentation.entry !== "deck.md"
-          ? `${defaultRoute}/${presentation.entry}`
-          : null;
 
       return `
-        <article class="site-panel site-card">
-          <div class="site-card__meta">
-            <span class="site-pill">${escapeHtml(presentation.name)}</span>
-            <span>${customEntryRoute ? "Custom entry" : "Default deck"}</span>
+        <article class="site-index-item">
+          <div class="site-index-item__main">
+            <h2><a href="${defaultRoute}">${escapeHtml(presentation.title)}</a></h2>
+            <p>${escapeHtml(presentation.name)}</p>
           </div>
-          <div>
-            <h3>${escapeHtml(presentation.title)}</h3>
-            <p>Launch the live deck straight from the hub and keep one clean route ready for reviews, demos, and exec sessions.</p>
-          </div>
-          <div class="site-card__route">
-            <strong>Primary route</strong>
-            <code>${escapeHtml(defaultRoute)}</code>
-          </div>
-          ${
-            customEntryRoute
-              ? `<div class="site-card__route">
-            <strong>Entry route</strong>
-            <code>${escapeHtml(customEntryRoute)}</code>
-          </div>`
-              : ""
-          }
-          <div class="site-card__actions">
-            <a class="site-button site-button--primary" href="${defaultRoute}">Open deck</a>
-            ${
-              customEntryRoute
-                ? `<a class="site-button site-button--secondary" href="${customEntryRoute}">Open entry</a>`
-                : ""
-            }
+          <code class="site-index-item__route">${escapeHtml(defaultRoute)}</code>
+          <div class="site-index-item__actions">
+            <a class="site-button site-button--secondary" href="${defaultRoute}">Open</a>
           </div>
         </article>`;
     })
@@ -155,50 +131,14 @@ function renderIndexPage(presentations) {
   <body class="site-shell">
     ${renderThemeToggle()}
     <main class="site-shell__content">
-      <section class="site-hero">
-        <article class="site-panel site-hero__primary">
-          <div class="site-hero__eyebrow">
-            <span class="site-badge">Presentation Atlas</span>
-            <span class="site-badge">${presentations.length} live deck${presentations.length === 1 ? "" : "s"}</span>
-          </div>
-          <h1>${escapeHtml(indexTitle)}<span>calm, fast, ready</span></h1>
-          <p>
-            A single place to launch decks for planning, reviews, demos, and leadership updates.
-            Routes stay visible, the interface stays quiet, and the content gets the focus.
-          </p>
-          <div class="site-actions">
-            <a class="site-button site-button--primary" href="#presentations">Browse decks</a>
-            ${
-              presentations[0]
-                ? `<a class="site-button site-button--secondary" href="/presentation/${presentations[0].name}">Launch first deck</a>`
-                : ""
-            }
-          </div>
-        </article>
-        <aside class="site-panel site-hero__secondary site-kv">
-          <div class="site-kv__item">
-            <h2>Design direction</h2>
-            <p>Calmer, more consistent interface. Strong hierarchy, lower noise, cooler surfaces, and a clearer product-system feel.</p>
-          </div>
-          <div class="site-kv__item">
-            <h2>Routing</h2>
-            <p>Open <code>/presentation/&lt;slug&gt;</code> for the main deck, or add an entry path when a presentation uses a custom markdown file.</p>
-          </div>
-          <div class="site-kv__item">
-            <h2>Use</h2>
-            <p>Keep this hub open during live sessions so presenters can switch decks quickly without breaking flow.</p>
-          </div>
-        </aside>
-      </section>
-
-      <section class="site-summary" id="presentations">
+      <header class="site-index-header">
         <div>
-          <h2>All presentations</h2>
-          <p>Each card keeps the deck title, slug, and launch route visible so it doubles as a presenter-friendly index.</p>
+          <h1>${escapeHtml(indexTitle)}</h1>
+          <p>${presentations.length} presentation${presentations.length === 1 ? "" : "s"}</p>
         </div>
-      </section>
+      </header>
 
-      <section class="presentation-grid">
+      <section class="site-index-list" id="presentations">
         ${items}
       </section>
     </main>
