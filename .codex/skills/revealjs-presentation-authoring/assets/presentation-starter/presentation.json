@@ -1,0 +1,13 @@
+{
+  "title": "New Presentation",
+  "entry": "deck.md",
+  "theme": "simple",
+  "styles": [
+    "assets/theme.css"
+  ],
+  "reveal": {
+    "transition": "slide",
+    "width": 1400,
+    "height": 900
+  }
+}

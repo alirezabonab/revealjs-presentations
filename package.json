@@ -1,0 +1,21 @@
+{
+  "name": "revealjs-presentations",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Multi-presentation Reveal.js engine for markdown-based slide decks.",
+  "scripts": {
+    "dev": "node --watch --watch-path=src --watch-path=presentations --watch-path=public src/server.js",
+    "start": "node --watch --watch-path=src --watch-path=presentations --watch-path=public src/server.js",
+    "start:once": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "reveal.js": "^5.1.0"
+  },
+  "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
+}

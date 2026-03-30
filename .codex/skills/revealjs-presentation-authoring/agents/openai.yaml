@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reveal.js Presentation Authoring"
+  short_description: "Create and update Reveal.js decks"
+  default_prompt: "Use $revealjs-presentation-authoring to create or update a Reveal.js presentation in this repo."

@@ -1,0 +1,16 @@
+:root {
+  --deck-accent: #b24c2b;
+  --deck-surface: rgba(248, 245, 239, 0.88);
+  --deck-border: rgba(28, 27, 25, 0.12);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: var(--deck-accent);
+}
+
+.reveal pre,
+.reveal img {
+  border-color: var(--deck-border);
+}
