@@ -278,6 +278,66 @@
         Feedback         <--------->     Validation / iteration
           
 ```
+
+--
+
+```text
+                       STRONG INTELLIGENCE
+                                │
+                                ▼
+                      ┌───────────────────┐
+                      │  NO REAL CONTEXT  │
+                      └─────────┬─────────┘
+                                │
+        ┌───────────────┬───────┴───────┬───────────────┐
+        │               │               │               │
+        ▼               ▼               ▼               ▼
+        
+   Vague Work      Wrong Task      Bad Format    Weak Alignment
+
+        │               │               │               │
+        └───────────────┴───────┬───────┴───────────────┘
+                                │
+                                ▼
+                        Unreliable Output
+```
+
+--
+
+```text
+
+                  GOOD ONBOARDING FOR AGENTS                   
+
+
+
+  
+  
+    ┌───────────────┐   ┌───────────────┐   ┌───────────────┐
+    │  [1] CONTEXT  │   │  [2] INTENT   │   │ [3] STANDARDS │
+    ├───────────────┤   ├───────────────┤   ├───────────────┤
+    │  Jira         │   │  goal         │   │  templates    │
+    │  architecture │   │  scope        │   │  format       │
+    │  history      │   │  outcome      │   │  rules        │
+    └───────┬───────┘   └───────┬───────┘   └───────┬───────┘
+            │                   │                   │
+            └───────────────────┼───────────────────┘
+                                │
+                                ▼
+                  ╔═══════════════════════════╗
+          ┌──────►║        AI   AGENT         ║
+          │       ╚═════════════╤═════════════╝
+          │                     │
+          │                     ▼
+          │       ┌─────────────────────────┐
+          │       │      BETTER OUTPUT      │
+          │       └─────────────┬───────────┘
+          │                     │
+          │       ┌─────────────┴───────────┐
+          │       │     [4] FEEDBACK        │
+          └───────┤  review ∙ refine ∙ fix  │
+                  └─────────────────────────┘
+```
+
 ---
 
 ```text
@@ -310,172 +370,47 @@
 ```
 
 ---
-# *** 
-
----
-
-<!-- ## Slide (Section: shift) -->
-# The Shift
-
-Old world:
-- PM collects requirements
-- PM writes tickets by hand
-- PM syncs between teams
-- PM follows up execution
-
-New world:
-- PM defines intent and constraints
-- Agents draft specs, tickets, and code
-- PM validates and steers outcomes
 
 ```text
-PM as coordinator  ----------------->  PM as orchestrator
-manual movement of work             system design for work
-```
+    ┌───────────────────────────────────────────────────────────────┐
+    │                   AGENT COMPONENTS                            │
+    └───────────────────────────────────────────────────────────────┘
 
----
 
-<!-- ## Slide (Section: hire-analogy) -->
-# AI Agent = Senior Hire Without Context
+                        👤 PM / Developer
+                            │
+                            │  intent
+                            ▼
+    ┌───────────────────────────────────────────────────────────┐
+    │                                                           │
+    │   SKILLS tell the agent         WHAT to do & HOW          │
+    │   ─────────────────────────────────────────────────       │
+    │   "Follow our ticket format, use acceptance criteria,     │
+    │    name branches like this..."                            │
+    │                                                           │
+    │       ┌───────────────────────────────────────────┐       │    Skills  =  HOW we work
+    │       │                                           │       │    MCP     =  WHERE to connect
+    │       │   MCP connects to          WHERE          │       │    Tools   =  WHAT to execute
+    │       │   ─────────────────────────────────       │       │    Plugins =  All of the above for reuse
+    │       │   Jira · GitHub · Slack · DB · Docs       │       │
+    │       │                                           │       │
+    │       │       ┌───────────────────────────┐       │       │
+    │       │       │                           │       │       │
+    │       │       │   TOOLS execute   ACTION  │       │       │
+    │       │       │   ─────────────────────   │       │       │
+    │       │       │   read · write · create   │       │       │
+    │       │       │   search · update · call  │       │       │
+    │       │       │                           │       │       │
+    │       │       └───────────────────────────┘       │       │
+    │       │                                           │       │
+    │       └───────────────────────────────────────────┘       │
+    │                                                           │
+    └──────────────────────────┬────────────────────────────────┘
+                               │
+                               ▼
+                            OUTPUT
+                     tickets · code · docs
 
-```text
-+--------------------------------------------------+
-|               AI AGENT = NEW HIRE                |
-+--------------------------------------------------+
-
-   Very capable                    But missing:
-   - fast                          - business context
-   - skilled                       - priorities
-   - can execute                   - team conventions
-   - broad knowledge               - internal standards
-
-                [ Senior Capability ]
-                         +
-                [ No Company Context ]
-
-                         =
-               [ High Potential, Risky Start ]
-```
-
----
-
-<!-- ## Slide (Section: failure-pattern) -->
-# What Happens Without Guidance
-
-```text
-            NO ONBOARDING / NO GUIDANCE
-                        |
-                        v
-              +---------------------+
-              |    AI AGENT STARTS  |
-              +---------------------+
-                        |
-          +-------------+-------------+
-          |             |             |
-          v             v             v
-   Wrong assumptions  Wrong scope  Wrong format
-          |             |             |
-          +-------------+-------------+
-                        |
-                        v
-                 Rework / Friction
-                        |
-                        v
-                 PM becomes bottleneck
-```
-
----
-
-<!-- ## Slide (Section: human-vs-agent) -->
-# Human vs Agent Mapping
-
-```text
- Human hire                         AI agent
------------                       -----------
- Onboarding       <--------->     Context / MCP
- Clear task       <--------->     Prompt / intent
- Team standards   <--------->     Skill / template
- Feedback         <--------->     Validation / iteration
-```
-
----
-
-<!-- ## Slide (Section: core-problem) -->
-# Core Problem
-
-```text
-          STRONG INTELLIGENCE
-                  |
-                  v
-         +-------------------+
-         |   NO REAL CONTEXT |
-         +-------------------+
-                  |
-      +-----------+-----------+-----------+
-      |           |           |           |
-      v           v           v           v
-  vague work   wrong task  bad format  weak alignment
-       \          |           |          /
-        +----------+-----------+---------+
-                  |
-                  v
-             Unreliable output
-```
-
----
-
-<!-- ## Slide (Section: onboarding-parts) -->
-# Good Onboarding For Agents
-
-```text
-+------------------------------------------------------+
-|             GOOD ONBOARDING FOR AGENTS               |
-+------------------------------------------------------+
-
-   [1] CONTEXT       -> Jira, architecture, history
-   [2] INTENT        -> goal, scope, expected outcome
-   [3] STANDARDS     -> templates, format, rules
-   [4] FEEDBACK      -> review, refine, improve
-
-                    +------------------+
-                    |    AI AGENT      |
-                    +------------------+
-                      ^      ^      ^
-                      |      |      |
-                 Context   Intent  Standards
-                      \      |      /
-                       \     |     /
-                        +----+----+
-                             |
-                             v
-                        Better output
-                             |
-                             v
-                         Feedback loop
-```
-
----
-
-<!-- ## Slide (Section: mcp) -->
-# MCP (Model Context Protocol)
-
-```text
-                  +------------------+
-                  |    AI AGENT      |
-                  +------------------+
-                           |
-                           v
-                  +------------------+
-                  |   MCP LAYER       |
-                  | (Context Bridge)  |
-                  +------------------+
-                    /       |       \
-                   /        |        \
-                  v         v         v
-            +--------+ +---------+ +-----------+
-            | Jira   | | System  | | Decisions |
-            | issues | | design  | | / history |
-            +--------+ +---------+ +-----------+
 ```
 
 ---

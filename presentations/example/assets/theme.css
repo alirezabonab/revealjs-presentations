@@ -6,3 +6,9 @@
     radial-gradient(circle at top right, var(--accent-soft), transparent 40%);
   box-shadow: none;
 }
+
+.reveal pre.ascii-morph-stage code {
+  text-align: center;
+  font-size: 0.95em;
+  font-weight: 600;
+}

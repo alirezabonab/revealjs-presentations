@@ -519,7 +519,8 @@ body.presentation-shell::after {
   text-align: left;
 }
 
-.presentation-shell .reveal .slides > section {
+.presentation-shell .reveal .slides > section:not(.stack),
+.presentation-shell .reveal .slides > section.stack > section {
   width: min(100%, 1120px);
   min-height: clamp(560px, 74vh, 720px) !important;
   margin: 0;
@@ -535,11 +536,12 @@ body.presentation-shell::after {
   box-shadow: none;
 }
 
-.presentation-shell .reveal .slides > section.has-diagram-stage {
-  justify-content: center;
-  align-items: center;
-  gap: 75px;
-  padding: 75px;
+.presentation-shell .reveal .slides > section.has-diagram-stage,
+.presentation-shell .reveal .slides > section.stack > section.has-diagram-stage {
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 75px !important;
+  padding: 75px !important;
 }
 
 .reveal .slides section {
@@ -553,7 +555,8 @@ body.presentation-shell::after {
   margin-right: 0;
 }
 
-.presentation-shell .reveal .slides > section.has-diagram-stage > * {
+.presentation-shell .reveal .slides > section.has-diagram-stage > *,
+.presentation-shell .reveal .slides > section.stack > section.has-diagram-stage > * {
   width: auto;
 }
 
@@ -584,7 +587,9 @@ body.presentation-shell::after {
 }
 
 .presentation-shell .reveal .slides > section.has-diagram-stage h1:first-child,
-.presentation-shell .reveal .slides > section.has-diagram-stage h2:first-child {
+.presentation-shell .reveal .slides > section.has-diagram-stage h2:first-child,
+.presentation-shell .reveal .slides > section.stack > section.has-diagram-stage h1:first-child,
+.presentation-shell .reveal .slides > section.stack > section.has-diagram-stage h2:first-child {
   width: auto;
   max-width: 16ch;
   margin: 0;
@@ -766,7 +771,8 @@ html[data-color-mode="dark"] .reveal a {
   overflow: visible;
 }
 
-.presentation-shell .reveal .slides > section.has-diagram-stage pre.diagram-plain {
+.presentation-shell .reveal .slides > section.has-diagram-stage pre.diagram-plain,
+.presentation-shell .reveal .slides > section.stack > section.has-diagram-stage pre.diagram-plain {
   width: auto;
   max-width: min(100%, 860px);
   flex: 0 0 auto;
@@ -788,7 +794,8 @@ html[data-color-mode="dark"] .reveal a {
   line-height: 1.38;
 }
 
-.presentation-shell .reveal .slides > section.has-diagram-stage pre.diagram-plain code {
+.presentation-shell .reveal .slides > section.has-diagram-stage pre.diagram-plain code,
+.presentation-shell .reveal .slides > section.stack > section.has-diagram-stage pre.diagram-plain code {
   display: block;
   text-align: left;
   font-size: 18px;
@@ -935,7 +942,8 @@ html[data-color-mode="dark"] .reveal img {
     grid-template-columns: 1fr;
   }
 
-  .presentation-shell .reveal .slides > section {
+  .presentation-shell .reveal .slides > section:not(.stack),
+  .presentation-shell .reveal .slides > section.stack > section {
     min-height: min(74vh, 640px) !important;
     padding: 30px 28px 30px;
   }
@@ -962,7 +970,8 @@ html[data-color-mode="dark"] .reveal img {
     display: none;
   }
 
-  .presentation-shell .reveal .slides > section {
+  .presentation-shell .reveal .slides > section:not(.stack),
+  .presentation-shell .reveal .slides > section.stack > section {
     min-height: min(72vh, 560px) !important;
     padding: 24px 22px 24px;
   }

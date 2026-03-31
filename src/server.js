@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import fs from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,6 +17,7 @@ const presentationsRoot = path.resolve(
 );
 // Resolve Reveal.js through Node so Yarn PnP works without a node_modules folder.
 const revealRoot = path.dirname(require.resolve("reveal.js/package.json"));
+const asciiMorphEntry = require.resolve("ascii-morph");
 
 const app = express();
 const port = Number(process.env.PORT ?? 4100);
@@ -27,6 +29,15 @@ app.use("/static", express.static(staticDir));
 app.use("/content", express.static(presentationsRoot));
 app.use("/reveal/dist", express.static(path.join(revealRoot, "dist")));
 app.use("/reveal/plugin", express.static(path.join(revealRoot, "plugin")));
+
+app.get("/vendor/ascii-morph.js", async (request, response, next) => {
+  try {
+    const source = await fs.readFile(asciiMorphEntry, "utf8");
+    response.type("js").send(source);
+  } catch (error) {
+    next(error);
+  }
+});
 
 function escapeHtml(value) {
   return String(value)
@@ -200,8 +211,21 @@ ${escapeMarkdownTemplate(presentation.markdown)}
         }
 
         const slidesWidth = Number.parseFloat(getComputedStyle(slidesElement).width);
+        const topLevelSections = Array.from(document.querySelectorAll(".reveal .slides > section"));
+        const leafSections = Array.from(document.querySelectorAll(".reveal .slides section")).filter(
+          (section) => !section.querySelector(":scope > section")
+        );
 
-        document.querySelectorAll(".reveal .slides > section").forEach((section) => {
+        topLevelSections.forEach((section) => {
+          const sectionWidth = Number.parseFloat(getComputedStyle(section).width);
+
+          if (Number.isFinite(slidesWidth) && Number.isFinite(sectionWidth)) {
+            const centeredLeft = Math.max(0, (slidesWidth - sectionWidth) / 2);
+            section.style.left = centeredLeft + "px";
+          }
+        });
+
+        leafSections.forEach((section) => {
           const sectionWidth = Number.parseFloat(getComputedStyle(section).width);
 
           if (Number.isFinite(slidesWidth) && Number.isFinite(sectionWidth)) {

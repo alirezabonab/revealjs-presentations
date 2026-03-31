@@ -22,6 +22,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ascii-morph@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "ascii-morph@npm:0.2.3"
+  checksum: 10c0/42ce146e6730f31531a2e653eeef404d18d16b717a67d2cb16691b5c2cf1dcf369c2f0849e68085a9310e2c4d215cdb64220b106d438ce602793573decb0ebfa
+  languageName: node
+  linkType: hard
+
 "async-function@npm:^1.0.0":
   version: 1.0.0
   resolution: "async-function@npm:1.0.0"
@@ -530,6 +537,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "revealjs-presentations@workspace:."
   dependencies:
+    ascii-morph: "npm:^0.2.3"
     dotenv: "npm:^16.4.7"
     express: "npm:^4.21.2"
     reveal.js: "npm:^5.1.0"

@@ -5,6 +5,9 @@
   "styles": [
     "assets/theme.css"
   ],
+  "scripts": [
+    "assets/ascii-morph-demo.js"
+  ],
   "reveal": {
     "transition": "fade",
     "backgroundTransition": "none",

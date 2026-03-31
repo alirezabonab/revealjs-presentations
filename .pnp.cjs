@@ -28,6 +28,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["ascii-morph", "npm:0.2.3"],\
           ["dotenv", "npm:16.6.1"],\
           ["express", "npm:4.22.1"],\
           ["reveal.js", "npm:5.2.1"],\
@@ -52,6 +53,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../.yarn/berry/cache/array-flatten-npm-1.1.1-9d94ad5f1d-10c0.zip/node_modules/array-flatten/",\
         "packageDependencies": [\
           ["array-flatten", "npm:1.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["ascii-morph", [\
+      ["npm:0.2.3", {\
+        "packageLocation": "../../.yarn/berry/cache/ascii-morph-npm-0.2.3-d6582598cd-10c0.zip/node_modules/ascii-morph/",\
+        "packageDependencies": [\
+          ["ascii-morph", "npm:0.2.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -666,6 +676,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:.", {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["ascii-morph", "npm:0.2.3"],\
           ["dotenv", "npm:16.6.1"],\
           ["express", "npm:4.22.1"],\
           ["reveal.js", "npm:5.2.1"],\

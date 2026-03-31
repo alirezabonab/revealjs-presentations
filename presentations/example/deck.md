@@ -33,6 +33,15 @@ The markdown plugin keeps the `text` block spacing intact.
 
 ---
 
+<!-- ## Slide (Section: animation) -->
+# Animated ASCII
+
+<pre class="ascii-morph-stage" data-ascii-morph="moving-block"><code>Loading AsciiMorph…</code></pre>
+
+One short caption: this slide uses AsciiMorph to morph one ASCII diagram into the next.
+
+---
+
 <!-- ## Slide (Section: image) -->
 # Folder Assets
 
