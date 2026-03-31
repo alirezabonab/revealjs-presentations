@@ -29,6 +29,53 @@
 ---
 
 ```text
+┌───────────────────────────────────────────────────────────────────┐
+│                    WHAT ARE LLMs & AGENTS?                        │
+└───────────────────────────────────────────────────────────────────┘
+
+
+     Large Language Model                      AGENT
+   ════════════════════════           ════════════════════════
+
+        It THINKS.                            It ACTS.
+
+
+   ┌─────────────────────┐          ┌─────────────────────────┐
+   │                     │          │                         │
+   │   "Give me a        │          │   ┌───┐  ┌───┐  ┌───┐   │
+   │    question,        │          │   │ S │  │ W │  │ B │   │
+   │    I give you       │          │   └───┘  └───┘  └───┘   │
+   │    an answer"       │          │  search write  build    │
+   │                     │          │      └─────┼─────┘      │
+   │                     │          │            │            │
+   │      ┌─────┐        │          │            │            │
+   │      │BRAIN│        │          │    ┌───────┴───────┐    │
+   │      └─────┘        │          │    │  LLM = BRAIN  │    │
+   │    (text in,        │          │    │    + HANDS    │    │
+   │     text out)       │          │    └───────────────┘    │
+   │                     │          │                         │
+   └─────────────────────┘          └─────────────────────────┘
+            ▲                                    ▲
+            │                                    │
+
+       "What should                      "Go DO the thing,
+        we do?"                           step by step"
+```
+
+---
+
+```text
+
+        
+   SIMPLE ANALOGY:
+
+        LLM   =   Chef who writes recipes
+        AGENT =   Chef who writes recipes AND cooks the meal
+
+```
+---
+
+```text
     ┌───────────────────────────────────────────────────────────────┐
     │                      THE CORE PROBLEM                         │
     └───────────────────────────────────────────────────────────────┘
@@ -46,54 +93,7 @@
 
 
 
-
                                Why? ──────────────────────────►
-```
-
----
-
-```text
-┌───────────────────────────────────────────────────────────────────┐
-│           WHAT ARE LLMs & AGENTS?                                 │
-└───────────────────────────────────────────────────────────────────┘
-
-
-     Large Language Model                      AGENT
-   ════════════════════════           ════════════════════════
-
-        It THINKS.                            It ACTS.
-
-
-   ┌─────────────────────┐          ┌─────────────────────────┐
-   │                     │          │                         │
-   │   "Give me a        │          │   ┌───┐  ┌───┐  ┌───┐   │
-   │    question,        │          │   │ S │  │ W │  │ B │   │
-   │    I give you       │          │   └───┘  └───┘  └───┘   │
-   │    an answer"       │          │  search write  build    │
-   │                     │          │      └─────┼─────┘      │
-   │      ┌─────┐        │          │            │            │
-   │      │BRAIN│        │          │    ┌───────┴───────┐    │
-   │      └─────┘        │          │    │  LLM = BRAIN  │    │
-   │    (text in,        │          │    │    + HANDS    │    │
-   │     text out)       │          │    └───────────────┘    │
-   │                     │          │                         │
-   └─────────────────────┘          └─────────────────────────┘
-            ▲                                    ▲
-            │                                    │
-       "What should                      "Go DO the thing,
-        we do?"                           step by step"
-```
-
----
-
-```text
-
-        
-   SIMPLE ANALOGY:
-
-        LLM   =   Chef who writes recipes
-        AGENT =   Chef who writes recipes AND cooks the meal
-
 ```
 
 ---
@@ -138,12 +138,14 @@
                                       way..."
         ?               ~               ✗               ✗✗
 
-    ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
-    │ lost  │─────►│ guess │─────►│ wrong │─────►│ redo  │
-    │       │      │       │      │ work  │      │ every │
-    │       │      │       │      │       │      │ thing │
-    │  😕   │      │  🤷   │      │  😬   │      │  😩   │
-    └───────┘      └───────┘      └───────┘      └───────┘
+        😕              🤷              😬              😩   
+    ┌───────┐       ┌───────┐        ┌───────┐       ┌───────┐
+    │ lost  │──────►│ guess │───────►│ wrong │──────►│ redo  │
+    │       │       │       │        │ work  │       │ every │
+    │       │       │       │        │       │       │ thing │
+    └───────┘       └───────┘        └───────┘       └───────┘
+
+
 
     ╔═════════════════════════════════════════════════════════════╗
     ║  ✗ Wasted 4 weeks            ✗ New hire demoralized         ║
@@ -205,20 +207,22 @@
 
         ✓               ✓✓              ✓✓             ✓✓✓
 
-    ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
-    │orient │─────►│deliver│─────►│refine │─────►│ own   │
-    │       │      │       │      │       │      │ it    │
-    │  🙂   │      │  😊   │      │  💪   │      │  🚀   │
-    └───────┘      └───────┘      └───┬───┘      └───────┘
-                                      ▲
-                                      │
-                               ┌──────┴──────┐
-                               │ 4. FEEDBACK │
-                               │    LOOP     │
-                               │  "Here's    │
-                               │   what to   │
-                               │   adjust"   │
-                               └─────────────┘
+
+         🙂             😊            💪              🚀    
+     ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
+     │orient │─────►│deliver│─────►│refine │─────►│ own   │
+     │       │      │       │      │       │      │ it    │
+     │       │      │       │      │       │      │       │
+     └───────┘      └───────┘      └───┬───┘      └───────┘
+                                       ▲
+                                       │
+                                ┌──────┴──────┐
+                                │ 4. FEEDBACK │
+                                │    LOOP     │
+                                │  "Here's    │
+                                │   what to   │
+                                │   adjust"   │
+                                └─────────────┘
 
     ╔═════════════════════════════════════════════════════════════╗
     ║  ✓ Productive by week 2      ✓ New hire confident           ║
@@ -283,6 +287,7 @@
 
 ```text
                        STRONG INTELLIGENCE
+                                
                                 │
                                 ▼
                       ┌───────────────────┐
@@ -355,7 +360,7 @@
 
 
 
-              ✓  START thinking of them as NEW COLLEAGUES
+              ✓  START thinking of them as your COLLEAGUES
 
                          👤 ──► 📋 ──► 🚀
 
@@ -372,12 +377,11 @@
 ---
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │                   AGENT COMPONENTS                            │
-    └───────────────────────────────────────────────────────────────┘
+
+                                             AGENT COMPONENTS
 
 
-                        👤 PM / Developer
+                     👤 PM / Developer
                             │
                             │  intent
                             ▼
@@ -385,25 +389,39 @@
     │                                                           │
     │   SKILLS tell the agent         WHAT to do & HOW          │
     │   ─────────────────────────────────────────────────       │
+    │                                                           │
+    │                                                           │
     │   "Follow our ticket format, use acceptance criteria,     │
     │    name branches like this..."                            │
-    │                                                           │
-    │       ┌───────────────────────────────────────────┐       │    Skills  =  HOW we work
-    │       │                                           │       │    MCP     =  WHERE to connect
-    │       │   MCP connects to          WHERE          │       │    Tools   =  WHAT to execute
-    │       │   ─────────────────────────────────       │       │    Plugins =  All of the above for reuse
-    │       │   Jira · GitHub · Slack · DB · Docs       │       │
+    │                                                           │      
+    │                                                           │      
+    │                                                           │      
+    │                                                           │      
+    │       ┌───────────────────────────────────────────┐       │    
+    │       │                                           │       │    
+    │       │   MCP connects to          WHERE          │       │    
+    │       │   ─────────────────────────────────       │       │    
+    │       │   Jira · GitHub · Slack · DB · Docs       │       │              Skills  =  HOW we work
+    │       │                                           │       │              MCP     =  WHERE to connect
+    │       │                                           │       │              Tools   =  WHAT to execute
+    │       │                                           │       │              Plugins =  All of the above for reuse
     │       │                                           │       │
     │       │       ┌───────────────────────────┐       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
     │       │       │                           │       │       │
     │       │       │   TOOLS execute   ACTION  │       │       │
     │       │       │   ─────────────────────   │       │       │
     │       │       │   read · write · create   │       │       │
     │       │       │   search · update · call  │       │       │
     │       │       │                           │       │       │
+    │       │       │                           │       │       │
     │       │       └───────────────────────────┘       │       │
     │       │                                           │       │
     │       └───────────────────────────────────────────┘       │
+    │                                                           │
+    │                                                           │
     │                                                           │
     └──────────────────────────┬────────────────────────────────┘
                                │
@@ -415,89 +433,136 @@
 
 ---
 
-<!-- ## Slide (Section: ticket-skill) -->
-# Standardized Ticket Skill
-
 ```text
-+---------------------------+
-| STANDARD TICKET SKILL     |
-+---------------------------+
-| 1. Title                  |
-| 2. Context                |
-| 3. Scope                  |
-| 4. Acceptance Criteria    |
-| 5. Dependencies / Risks   |
-| 6. Definition of Done     |
-+---------------------------+
-            |
-            v
-   Consistent output every time
+                         ┌──────────────────────────────────────── Agentic Workflow ──────────────────────────────────────┐
+                         │                                                                                                │
+                         │ ┌── Context ───────────────────────────────────────────────────────────────────────────────┐   │
+                         │ │                                                                                          │   │
+                         │ │      Plans                                                                               │   │
+                         │ │      Discussions                                                                         │   │
+  Customer requests,     │ │      Specs                     ┌── Rules ────────────────────────────────────────────┐   │   │
+  Feedbacks,             │ │      Technical designs         │                                                     │   │   │
+  Bugs,               ◄────────►  Decisions               ◄───►  Automations    ┌── Agents ───────────────────┐   │   │   │
+  Requrements,           │ │      Summaries                 │    Skills         │                             │   │   │   │
+  User stories           │ │      Code                      │    Permissions   ◄──►       [█████████]         ◄──────────────► Product
+                         │ │                                │                   │                             │   │   │   │
+                         │ │                                │                   └─────────────────────────────┘   │   │   │
+                         │ │                                └─────────────────────────────────────────────────────┘   │   │
+                         │ │                                                                                          │   │
+                         │ └──────────────────────────────────────────────────────────────────────────────────────────┘   │
+                         │                                                                                                │
+                         └────────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+<!-- ## Slide (Section: ticket-skill) -->
+```text
++---------------------------------------------------------------+
+|                   STANDARDIZED TICKET SKILL                   |
++---------------------------------------------------------------+
+|                                                               |
+|  +---------------------------+                                |
+|  | STANDARD TICKET SKILL     |                                |
+|  +---------------------------+                                |
+|  | 1. Title                  |                                |
+|  | 2. Context                |                                |
+|  | 3. Scope                  |                                |
+|  | 4. Acceptance Criteria    |                                |
+|  | 5. Dependencies / Risks   |                                |
+|  | 6. Definition of Done     |                                |
+|  +---------------------------+                                |
+|              |                                                |
+|              v                                                |
+|     Consistent output every time                              |
+|                                                               |
++---------------------------------------------------------------+
 ```
 
 ---
 
 <!-- ## Slide (Section: feedback-loop) -->
-# Feedback Loop
-
 ```text
-      +-------------+
-      |  AI OUTPUT  |
-      +-------------+
-             |
-             v
-      +-------------+
-      | PM REVIEWS  |
-      +-------------+
-         |       |
-   good  |       | refine
-         v       v
-   +---------+  +----------------+
-   |  USE IT |  | adjust prompt / |
-   +---------+  | skill / context |
-                +----------------+
-                         |
-                         v
-                   better next run
++---------------------------------------------------------------+
+|                         FEEDBACK LOOP                         |
++---------------------------------------------------------------+
+|                                                               |
+|        +-------------+                                        |
+|        |  AI OUTPUT  |                                        |
+|        +-------------+                                        |
+|               |                                               |
+|               v                                               |
+|        +-------------+                                        |
+|        | PM REVIEWS  |                                        |
+|        +-------------+                                        |
+|           |       |                                           |
+|     good  |       | refine                                    |
+|           v       v                                           |
+|     +---------+  +----------------+                           |
+|     |  USE IT |  | adjust prompt / |                          |
+|     +---------+  | skill / context |                          |
+|                  +----------------+                           |
+|                           |                                   |
+|                           v                                   |
+|                     better next run                           |
+|                                                               |
++---------------------------------------------------------------+
 ```
 
 ---
 
 <!-- ## Slide (Section: before-after) -->
-# Before vs After
-
 ```text
-+-----------------------+     +------------------------+
-| BEFORE                |     | AFTER                  |
-+-----------------------+     +------------------------+
-| manual context        |     | MCP context fetch      |
-| manual formatting     |     | standard skill         |
-| variable quality      |     | predictable quality    |
-| PM bottleneck         |     | PM validation role     |
-+-----------------------+     +------------------------+
++---------------------------------------------------------------+
+|                       BEFORE VS AFTER                         |
++---------------------------------------------------------------+
+|                                                               |
+|  +-----------------------+   +------------------------+       |
+|  | BEFORE                |   | AFTER                  |       |
+|  +-----------------------+   +------------------------+       |
+|  | manual context        |   | MCP context fetch      |       |
+|  | manual formatting     |   | standard skill         |       |
+|  | variable quality      |   | predictable quality    |       |
+|  | PM bottleneck         |   | PM validation role     |       |
+|  +-----------------------+   +------------------------+       |
+|                                                               |
++---------------------------------------------------------------+
 ```
 
 ---
 
 <!-- ## Slide (Section: pm-role) -->
-# PM's New Role
-
 ```text
-Old:
-PM -> writes work
-
-New:
-PM -> designs system -> agent produces work
-                         |
-                         v
-                    team executes
++---------------------------------------------------------------+
+|                         PM'S NEW ROLE                         |
++---------------------------------------------------------------+
+|                                                               |
+|  Old:                                                         |
+|  PM -> writes work                                            |
+|                                                               |
+|  New:                                                         |
+|  PM -> designs system -> agent produces work                  |
+|                           |                                   |
+|                           v                                   |
+|                      team executes                            |
+|                                                               |
++---------------------------------------------------------------+
 ```
 
 ---
 
 <!-- ## Slide (Section: takeaway) -->
-# Key Takeaway
-
-AI agents are not plug-and-play.
-
-Weak onboarding -> weak output  
-Strong onboarding -> scalable execution
+```text
++---------------------------------------------------------------+
+|                         KEY TAKEAWAY                          |
++---------------------------------------------------------------+
+|                                                               |
+|  AI agents are not plug-and-play.                             |
+|                                                               |
+|  Weak onboarding   -> weak output                             |
+|  Strong onboarding -> scalable execution                      |
+|                                                               |
+|  Treat the agent like a new colleague, not a new install.     |
+|                                                               |
++---------------------------------------------------------------+
+```

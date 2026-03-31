@@ -4,6 +4,12 @@ This project is a small presentation engine built on top of Reveal.js.
 
 It is designed for many markdown-driven decks, where each presentation lives in its own folder and keeps its images, CSS, and other assets nearby.
 
+The engine now uses one strict visible slide contract:
+
+- one ASCII stage per slide
+- or one image per slide
+- speaker notes stay outside the visible stage
+
 Project-level agent instructions live in `AGENTS.md`.
 The repo-local presentation authoring skill lives in `.codex/skills/revealjs-presentation-authoring/`.
 
@@ -15,6 +21,7 @@ The repo-local presentation authoring skill lives in `.codex/skills/revealjs-pre
 - Relative asset paths in markdown rewritten to `/content/<presentation-name>/...`
 - Optional per-presentation config in `presentation.json`
 - A simple index page at `/`
+- Strict validation for mixed or unsupported slide content
 
 ## Project layout
 
@@ -22,11 +29,21 @@ The repo-local presentation authoring skill lives in `.codex/skills/revealjs-pre
 revealjs-presentations/
 ├── package.json
 ├── public/
-│   └── app.css
+│   ├── scripts/
+│   │   └── presentation-runtime.js
+│   └── styles/
+│       ├── base.css
+│       ├── index.css
+│       └── presentation.css
 ├── src/
 │   ├── markdown-utils.js
 │   ├── presentation-loader.js
-│   └── server.js
+│   ├── server.js
+│   ├── slide-contract.js
+│   ├── template-renderer.js
+│   └── templates/
+│       ├── index.html
+│       └── presentation.html
 └── presentations/
     └── example/
         ├── assets/
@@ -68,37 +85,45 @@ presentations/<presentation-name>/
 
 Use this structure:
 
-```md
+````md
 <!-- ## Slide (Section: name) -->
 <!-- .slide: data-background="#f7f1e7" data-transition="fade" -->
-# Title
-
-Short paragraph.
-
-- Bullet
-- Bullet
+```text
++---------------------------+
+| ASCII TITLE               |
++---------------------------+
+| One complete ASCII stage. |
++---------------------------+
+```
 
 Notes:
 Speaker notes go here.
 
 ---
 
-# Diagram Slide
+![Image-only slide](./assets/example.png)
+
+---
+
+<pre data-ascii-morph="demo"><code>Loading animation…</code></pre>
+
+---
 
 ```text
 +--------+
 | ASCII  |
 +--------+
 ```
-```
+````
 
 Rules used by this engine:
 
 - `---` splits horizontal slides
 - `--` splits vertical slides
 - `Note:` or `Notes:` starts speaker notes
-- `# Title` should be the first visible line in each slide
-- Keep big diagrams inside fenced `text` blocks
+- visible content must be exactly one ASCII stage or one image
+- keep big diagrams inside fenced `text` blocks or one raw `<pre>` stage
+- do not mix headings, bullets, captions, images, and ASCII on the same slide
 
 ## Run the project
 

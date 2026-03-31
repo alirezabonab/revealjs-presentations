@@ -1,8 +1,1 @@
-.reveal blockquote {
-  max-width: 28ch;
-  border-left: 4px solid var(--accent);
-  background:
-    linear-gradient(180deg, var(--surface-soft), rgba(255, 255, 255, 0.02)),
-    radial-gradient(circle at top right, var(--accent-soft), transparent 40%);
-  box-shadow: none;
-}
+/* Presentation-specific overrides are intentionally minimal. */

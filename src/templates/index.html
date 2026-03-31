@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#132126" />
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    {{THEME_BOOT_SCRIPT}}
+    <link rel="stylesheet" href="/static/styles/base.css" />
+    <link rel="stylesheet" href="/static/styles/index.css" />
+  </head>
+  <body class="app-shell app-shell--index">
+    {{THEME_TOGGLE}}
+    <main class="index-page">
+      <header class="index-hero">
+        <p class="index-hero__eyebrow">ASCII Reveal Engine</p>
+        <h1>{{INDEX_TITLE}}</h1>
+        <p class="index-hero__summary">
+          One route per deck. One strict slide contract. ASCII stages and image stages only.
+        </p>
+        <div class="index-hero__meta">
+          <span>{{PRESENTATION_COUNT}}</span>
+          <span>{{PRESENTATION_LABEL}}</span>
+        </div>
+      </header>
+
+      <section class="index-list" id="presentations">
+        {{PRESENTATION_ITEMS}}
+      </section>
+    </main>
+  </body>
+</html>

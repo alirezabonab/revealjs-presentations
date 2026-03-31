@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { normalizePresentationAssetPath, rewriteMarkdownAssetUrls } from "./markdown-utils.js";
+import { validatePresentationMarkdown } from "./slide-contract.js";
 
 const DEFAULT_CONFIG = {
   title: "Reveal Presentation",
@@ -122,6 +123,10 @@ export async function loadPresentation(presentationsRoot, presentationName, requ
   }
 
   const rawMarkdown = await fs.readFile(entryPath, "utf8");
+  validatePresentationMarkdown(rawMarkdown, {
+    presentationName,
+    entry
+  });
   const markdownRelativePath = path.posix.normalize(entry.split(path.sep).join(path.posix.sep));
   const markdown = rewriteMarkdownAssetUrls(rawMarkdown, presentationName, markdownRelativePath);
 

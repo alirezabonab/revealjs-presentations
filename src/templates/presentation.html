@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" class="presentation-page">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#020202" />
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    {{THEME_BOOT_SCRIPT}}
+    <link rel="stylesheet" href="/reveal/dist/reset.css" />
+    <link rel="stylesheet" href="/reveal/dist/reveal.css" />
+    <link rel="stylesheet" href="/reveal/dist/theme/{{REVEAL_THEME}}.css" />
+    <link rel="stylesheet" href="/static/styles/base.css" />
+    <link rel="stylesheet" href="/static/styles/presentation.css" />
+    {{EXTRA_STYLES}}
+  </head>
+  <body class="presentation-shell">
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-markdown
+          data-separator="^---$"
+          data-separator-vertical="^--$"
+          data-separator-notes="^Notes?:"
+        >
+          <textarea data-template>
+{{MARKDOWN_SOURCE}}
+          </textarea>
+        </section>
+      </div>
+    </div>
+
+    <script src="/reveal/dist/reveal.js"></script>
+    <script src="/reveal/plugin/markdown/markdown.js"></script>
+    <script src="/reveal/plugin/notes/notes.js"></script>
+    <script src="/static/scripts/presentation-runtime.js"></script>
+    {{EXTRA_SCRIPTS}}
+    <script>
+      const revealConfig = {{REVEAL_CONFIG}};
+
+      Reveal.initialize({
+        ...revealConfig,
+        plugins: [RevealMarkdown, RevealNotes]
+      });
+
+      window.initializeAsciiPresentation?.(Reveal);
+    </script>
+  </body>
+</html>

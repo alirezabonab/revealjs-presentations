@@ -1,0 +1,248 @@
+:root {
+  --slide-pad-inline: clamp(20px, 2.6vw, 38px);
+  --slide-pad-block: clamp(52px, 7vh, 84px);
+  --ascii-font-size-min: 6px;
+  --ascii-font-size-max: 16px;
+  --ascii-line-height: 1.08;
+}
+
+html.presentation-page {
+  width: 100%;
+  height: 100%;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  overflow: clip !important;
+  overscroll-behavior: none;
+}
+
+html.presentation-page body.presentation-shell {
+  width: 100%;
+  height: 100%;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+body.presentation-shell {
+  position: fixed;
+  inset: 0;
+  max-width: 100vw;
+  max-height: 100dvh;
+  overflow: hidden !important;
+  overflow: clip !important;
+  overscroll-behavior: none;
+  background: #020202 !important;
+}
+
+.presentation-shell .reveal-viewport {
+  background: transparent !important;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+.presentation-shell .reveal {
+  width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+  background: transparent !important;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+.presentation-shell .reveal .backgrounds,
+.presentation-shell .reveal .slides {
+  background: transparent !important;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+.presentation-shell .reveal,
+.presentation-shell .reveal h1,
+.presentation-shell .reveal h2,
+.presentation-shell .reveal h3,
+.presentation-shell .reveal p {
+  font-family: var(--font-sans);
+  color: var(--text-strong);
+}
+
+.presentation-shell .reveal .slides {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+.presentation-shell .reveal .slides section {
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+.presentation-shell .reveal .slides > section:not(.stack),
+.presentation-shell .reveal .slides > section.stack > section {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: var(--slide-pad-block) var(--slide-pad-inline);
+  display: grid !important;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden !important;
+  overflow: clip !important;
+}
+
+.presentation-shell .reveal .slides > section:not(.stack) > :not(aside),
+.presentation-shell .reveal .slides > section.stack > section > :not(aside) {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.presentation-shell .reveal pre {
+  margin: 0;
+}
+
+.presentation-shell .reveal pre,
+.presentation-shell .reveal pre code {
+  max-height: none;
+}
+
+.presentation-shell .reveal p {
+  margin: 0;
+}
+
+.presentation-shell .reveal aside.notes {
+  display: none;
+}
+
+.presentation-shell .slide-mode-ascii .slide-ascii-stage {
+  width: max-content;
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.presentation-shell .slide-mode-ascii .slide-ascii-stage code {
+  display: block;
+  width: max-content;
+  padding: 0;
+  background: transparent;
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+  font-size: var(--ascii-font-size-max);
+  font-weight: 400;
+  line-height: var(--ascii-line-height);
+  text-align: left;
+  white-space: pre;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.presentation-shell .slide-mode-image .slide-image-wrapper {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.presentation-shell .slide-mode-image .slide-image-stage {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.presentation-shell .reveal .controls {
+  color: var(--accent);
+}
+
+.presentation-shell .reveal .progress {
+  height: 4px;
+  color: transparent;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.presentation-shell .reveal .progress span {
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+}
+
+.presentation-shell .reveal .slide-number {
+  right: 22px;
+  bottom: 20px;
+  padding: 8px 12px;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  color: var(--text-muted);
+  box-shadow: var(--panel-shadow);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.presentation-fatal-error {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: rgba(244, 240, 230, 0.94);
+  backdrop-filter: blur(8px);
+}
+
+.presentation-fatal-error pre {
+  margin: 0;
+  padding: 22px 24px;
+  border: 1px solid rgba(19, 33, 38, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--panel-shadow);
+  color: #7f1d1d;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --slide-pad-inline: 18px;
+    --slide-pad-block: 44px;
+    --ascii-font-size-max: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --slide-pad-inline: 14px;
+    --slide-pad-block: 32px;
+    --ascii-font-size-min: 5px;
+    --ascii-font-size-max: 15px;
+  }
+}

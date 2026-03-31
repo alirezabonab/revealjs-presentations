@@ -1,0 +1,142 @@
+.app-shell--index {
+  padding: 28px;
+}
+
+.index-page {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1080px);
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+.index-hero {
+  display: grid;
+  gap: 14px;
+  padding-top: 72px;
+}
+
+.index-hero__eyebrow {
+  margin: 0;
+  color: var(--accent-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.index-hero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.index-hero__summary {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.index-hero__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 10px 14px;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  box-shadow: var(--panel-shadow);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.76rem;
+  backdrop-filter: blur(16px);
+}
+
+.index-list {
+  display: grid;
+  gap: 14px;
+}
+
+.index-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  background: var(--panel-bg);
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: blur(16px);
+}
+
+.index-card__copy {
+  min-width: 0;
+}
+
+.index-card__copy h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  letter-spacing: -0.03em;
+}
+
+.index-card__copy h2 a {
+  text-decoration: none;
+}
+
+.index-card__copy p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.index-card__route {
+  padding: 10px 12px;
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  background: var(--panel-bg-soft);
+  color: var(--accent-strong);
+  font-size: 0.88rem;
+}
+
+.index-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #09211e;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .index-card {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell--index {
+    padding: 18px;
+  }
+
+  .index-hero {
+    padding-top: 64px;
+  }
+
+  .theme-toggle {
+    top: 16px;
+    right: 16px;
+  }
+}

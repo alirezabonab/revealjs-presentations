@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+:root {
+  color-scheme: dark;
+  --font-sans: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --page-bg: #040506;
+  --page-bg-strong: #090a0d;
+  --panel-bg: rgba(15, 22, 28, 0.82);
+  --panel-bg-soft: rgba(255, 255, 255, 0.04);
+  --panel-border: rgba(182, 201, 207, 0.18);
+  --panel-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+  --text-strong: #edf3f5;
+  --text-muted: #9eacb3;
+  --accent: #5cb7ad;
+  --accent-strong: #8fdfd4;
+  --image-surface: rgba(17, 25, 32, 0.88);
+  --image-border: rgba(182, 201, 207, 0.16);
+}
+
+html[data-color-mode="light"] {
+  color-scheme: light;
+  --page-bg: #f6f1e8;
+  --page-bg-strong: #ece5d8;
+  --panel-bg: rgba(255, 255, 255, 0.8);
+  --panel-bg-soft: rgba(19, 33, 38, 0.03);
+  --panel-border: rgba(19, 33, 38, 0.12);
+  --panel-shadow: 0 24px 58px rgba(19, 33, 38, 0.12);
+  --text-strong: #132126;
+  --text-muted: #5d6b72;
+  --accent: #1e8f84;
+  --accent-strong: #0f766e;
+  --image-surface: rgba(255, 255, 255, 0.82);
+  --image-border: rgba(19, 33, 38, 0.16);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.04), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.02), transparent 32%),
+    linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-strong) 100%);
+}
+
+a {
+  color: inherit;
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  box-shadow: var(--panel-shadow);
+  color: var(--text-strong);
+  font: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+}
+
+.theme-toggle__label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.theme-toggle strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+}

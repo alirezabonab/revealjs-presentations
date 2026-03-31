@@ -1,59 +1,83 @@
 <!-- ## Slide (Section: opening) -->
-# System Story
-
-This sample deck shows the markdown structure used by the presentation engine.
-
-- Start each slide with a clear title
-- Keep assets next to the markdown file
-- Speaker notes use `Note:` or `Notes:`
+```text
++------------------------------------------------------------------+
+|                         SYSTEM STORY                             |
++------------------------------------------------------------------+
+|                                                                  |
+|  This deck shows the strict engine contract:                     |
+|                                                                  |
+|  [1] one ASCII stage per slide                                   |
+|  [2] one image stage per slide                                   |
+|  [3] notes stay outside the visible stage                        |
+|                                                                  |
+|  Route: /presentation/example                                    |
+|                                                                  |
++------------------------------------------------------------------+
+```
 
 Notes:
-Open the presentation with `/presentation/example`.
+Open the example route and use it to check the engine contract.
 
 ---
 
 <!-- ## Slide (Section: diagram) -->
 <!-- .slide: data-transition="fade" -->
-# Request Flow
-
 ```text
-+--------+      +-------------+      +-----------------+
-| Author | ---> | deck.md     | ---> | Express server  |
-+--------+      +-------------+      +-----------------+
-                                         |
-                                         v
-                                  +---------------+
-                                  | Reveal.js     |
-                                  | markdown deck |
-                                  +---------------+
++------------------------------------------------------------------+
+|                         REQUEST FLOW                             |
++------------------------------------------------------------------+
+|                                                                  |
+|  +--------+      +-------------+      +-----------------+        |
+|  | Author | ---> | deck.md     | ---> | Express server  |        |
+|  +--------+      +-------------+      +-----------------+        |
+|                                                   |              |
+|                                                   v              |
+|                                            +---------------+     |
+|                                            | Reveal.js     |     |
+|                                            | markdown deck |     |
+|                                            +---------------+     |
+|                                                                  |
++------------------------------------------------------------------+
 ```
 
 Notes:
-The markdown plugin keeps the `text` block spacing intact.
+The markdown plugin keeps the ASCII spacing stable.
 
 ---
 
 <!-- ## Slide (Section: animation) -->
-# Animated ASCII
+<pre class="ascii-morph-stage" data-ascii-morph="moving-block"><code>+------------------------------+
+|        ANIMATED ASCII        |
++------------------------------+
+| ####                         |
+| ####                         |
+|                              |
++------------------------------+</code></pre>
 
-<pre class="ascii-morph-stage" data-ascii-morph="moving-block"><code>Loading AsciiMorph…</code></pre>
-
-One short caption: this slide uses AsciiMorph to morph one ASCII diagram into the next.
+Notes:
+The runtime should still fit this stage after the animation script starts.
 
 ---
 
 <!-- ## Slide (Section: image) -->
-# Folder Assets
+![Example presentation asset](./assets/board.svg)
 
-![Presentation asset example](./assets/board.svg)
-
-One short caption: image paths stay relative to the markdown file.
+Notes:
+Image slides are image-only. They should center and fit inside the same outer frame.
 
 ---
 
 <!-- ## Slide (Section: links) -->
-# Useful Links
-
-- [Reveal.js docs](https://revealjs.com/)
-- [Example theme override](./assets/theme.css)
-- [Presentation index](/)
+```text
++------------------------------------------------------------------+
+|                          USEFUL LINKS                            |
++------------------------------------------------------------------+
+|                                                                  |
+|  Reveal.js docs:   https://revealjs.com/                         |
+|  Theme file:       /content/example/assets/theme.css             |
+|  Deck index:       /                                             |
+|                                                                  |
+|  This slide is still one ASCII stage, so it stays valid.         |
+|                                                                  |
++------------------------------------------------------------------+
+```
