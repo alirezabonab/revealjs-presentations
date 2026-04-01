@@ -31,7 +31,10 @@ body.presentation-shell {
   overflow: hidden !important;
   overflow: clip !important;
   overscroll-behavior: none;
-  background: #020202 !important;
+  background:
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.04), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.02), transparent 32%),
+    linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-strong) 100%) !important;
 }
 
 .presentation-shell .reveal-viewport {
@@ -83,8 +86,8 @@ body.presentation-shell {
   overflow: clip !important;
 }
 
-.presentation-shell .reveal .slides > section:not(.stack),
-.presentation-shell .reveal .slides > section.stack > section {
+.presentation-shell .reveal:not(.overview):not(.overview-deactivating) .slides > section:not(.stack),
+.presentation-shell .reveal:not(.overview):not(.overview-deactivating) .slides > section.stack > section {
   width: 100%;
   height: 100%;
   min-height: 100%;
@@ -99,13 +102,28 @@ body.presentation-shell {
   overflow: clip !important;
 }
 
-.presentation-shell .reveal .slides > section:not(.stack) > :not(aside),
-.presentation-shell .reveal .slides > section.stack > section > :not(aside) {
+.presentation-shell .reveal:not(.overview):not(.overview-deactivating) .slides > section:not(.stack) > :not(aside),
+.presentation-shell .reveal:not(.overview):not(.overview-deactivating) .slides > section.stack > section > :not(aside) {
   margin: 0;
   max-width: 100%;
   max-height: 100%;
   min-width: 0;
   min-height: 0;
+}
+
+.presentation-shell .reveal.overview .backgrounds,
+.presentation-shell .reveal.overview .slides,
+.presentation-shell .reveal.overview-deactivating .backgrounds,
+.presentation-shell .reveal.overview-deactivating .slides {
+  overflow: visible !important;
+}
+
+.presentation-shell .reveal.overview .slides > section:not(.stack),
+.presentation-shell .reveal.overview .slides > section.stack > section,
+.presentation-shell .reveal.overview-deactivating .slides > section:not(.stack),
+.presentation-shell .reveal.overview-deactivating .slides > section.stack > section {
+  padding: 0;
+  display: block !important;
 }
 
 .presentation-shell .reveal pre {

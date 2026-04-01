@@ -132,6 +132,7 @@ export async function renderPresentationPage(presentation) {
     EXTRA_SCRIPTS: extraScripts,
     MARKDOWN_SOURCE: escapeMarkdownTemplate(presentation.markdown),
     REVEAL_CONFIG: JSON.stringify(presentation.reveal, null, 2),
-    THEME_BOOT_SCRIPT: renderThemeBootScript()
+    THEME_BOOT_SCRIPT: renderThemeBootScript(),
+    THEME_TOGGLE: renderThemeToggle()
   });
 }

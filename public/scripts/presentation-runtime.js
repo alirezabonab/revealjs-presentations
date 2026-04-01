@@ -270,6 +270,8 @@
 
       Reveal.on("ready", scheduleRefresh);
       Reveal.on("slidechanged", scheduleRefresh);
+      Reveal.on("overviewshown", scheduleRefresh);
+      Reveal.on("overviewhidden", scheduleRefresh);
       window.addEventListener("resize", scheduleRefresh);
       document.fonts?.ready?.then(scheduleRefresh).catch(() => {});
     }
