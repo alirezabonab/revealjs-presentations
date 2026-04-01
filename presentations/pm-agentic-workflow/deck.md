@@ -531,7 +531,11 @@
     STANDARDIZED TICKET SKILL
     ─────────────────────────────────────────────────────────────
 
+
+
     👤 PM Intent  ──►  [ Ticket Skill ]  ──►  🤖 Structured Context
+
+
 
     ┌──────────────────────────────┐
     │  1. Title                    │
@@ -546,90 +550,132 @@
       Consistent output every time
 ```
 
----
+--
 
-<!-- ## Slide (Section: feedback-loop) -->
 ```text
-+---------------------------------------------------------------+
-|                         FEEDBACK LOOP                         |
-+---------------------------------------------------------------+
-|                                                               |
-|        +-------------+                                        |
-|        |  AI OUTPUT  |                                        |
-|        +-------------+                                        |
-|               |                                               |
-|               v                                               |
-|        +-------------+                                        |
-|        | PM REVIEWS  |                                        |
-|        +-------------+                                        |
-|           |       |                                           |
-|     good  |       | refine                                    |
-|           v       v                                           |
-|     +---------+  +----------------+                           |
-|     |  USE IT |  | adjust prompt / |                          |
-|     +---------+  | skill / context |                          |
-|                  +----------------+                           |
-|                           |                                   |
-|                           v                                   |
-|                     better next run                           |
-|                                                               |
-+---------------------------------------------------------------+
-```
+    EXAMPLE: TICKET SKILL (.md)
+    ─────────────────────────────────────────────────────────────
 
----
+    # Role
+    You are an expert Technical Product Manager.
 
-<!-- ## Slide (Section: before-after) -->
-```text
-+---------------------------------------------------------------+
-|                       BEFORE VS AFTER                         |
-+---------------------------------------------------------------+
-|                                                               |
-|  +-----------------------+   +------------------------+       |
-|  | BEFORE                |   | AFTER                  |       |
-|  +-----------------------+   +------------------------+       |
-|  | manual context        |   | MCP context fetch      |       |
-|  | manual formatting     |   | standard skill         |       |
-|  | variable quality      |   | predictable quality    |       |
-|  | PM bottleneck         |   | PM validation role     |       |
-|  +-----------------------+   +------------------------+       |
-|                                                               |
-+---------------------------------------------------------------+
+    # Task
+    When asked to create a ticket, always output in this exact format:
+
+    **Title:** [Action] [Component] - [Brief Description]
+    **Context:** Why are we doing this? Who is it for?
+    **Scope:** What is strictly in and out of scope?
+    **Acceptance Criteria:**
+    - [ ] Criterion 1 (testable)
+    - [ ] Criterion 2 (testable)
+
+    # Rules
+    - Never guess technical dependencies. Ask the user if missing.
+    - Keep titles under 60 characters.
 ```
 
 ---
 
 <!-- ## Slide (Section: pm-role) -->
 ```text
-+---------------------------------------------------------------+
-|                         PM'S NEW ROLE                         |
-+---------------------------------------------------------------+
-|                                                               |
-|  Old:                                                         |
-|  PM -> writes work                                            |
-|                                                               |
-|  New:                                                         |
-|  PM -> designs system -> agent produces work                  |
-|                           |                                   |
-|                           v                                   |
-|                      team executes                            |
-|                                                               |
-+---------------------------------------------------------------+
+    ┌───────────────────────────────────────────────────────────────────────────┐
+    │                         THE PM's OLD WORKFLOW                             │
+    └───────────────────────────────────────────────────────────────────────────┘
+
+
+
+
+    PM does the work. Team executes the work.
+
+
+
+
+
+    ┌──────┐       ┌──────────────┐       ┌──────────────┐       ┌──────────┐
+    │      │       │              │       │              │       │          │
+    │  PM  │──────>│  Writes      │──────>│  Team        │──────>│  Ship    │
+    │      │       │  tickets     │       │  executes    │       │          │
+    └──────┘       │  specs       │       └──────────────┘       └──────────┘
+                   │  plans       │
+                   │  stories     │
+                   │  AC          │
+                   │              │
+                   └──────────────┘
+                    all manual
+                    all PM
+                    all the time
 ```
 
----
+--
 
-<!-- ## Slide (Section: takeaway) -->
+
 ```text
-+---------------------------------------------------------------+
-|                         KEY TAKEAWAY                          |
-+---------------------------------------------------------------+
-|                                                               |
-|  AI agents are not plug-and-play.                             |
-|                                                               |
-|  Weak onboarding   -> weak output                             |
-|  Strong onboarding -> scalable execution                      |
-|                                                               |
-|  Treat the agent like a new colleague, not a new install.     |
-|                                                               |
-+---------------------------------------------------------------+
+    ┌──────────────────────────────────────────────────────────────────────────────────────┐
+    │                                  THE PM's NEW ROLE                                   │
+    └──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+
+     PM sets direction. Agent does the writing. PM owns the quality.
+ 
+ 
+ 
+                         ┌──────────────────────────────────────────────┐
+                         │              AGENT / LLM SCOPE               │
+     ┌────────────────┐  │ ┌──────────────────┐    ┌──────────────────┐ │
+     │ 1. PM INTENT   │  │ │ 2. CONTEXT (MCP) │    │ 3. AGENT WRITES  │◄──────────────────┐
+     │                │  │ │                  │    │                  │ │                 │
+     │ • Goals        │─►│ │ • Jira / Conf    │───►│ • Drafts         │ │                 │
+     │ • Scope        │  │ │ • GitHub         │    │ • Epics          │ │                 │
+     │ • Criteria     │  │ │ • Slack / Docs   │    │ • Tickets        │ │                 │
+     └────────────────┘  │ └──────────────────┘    └──────────────────┘ │                 │
+                         └───────────────────────────────────┬──────────┘                 │
+                                                             │                            │
+                                                             ▼                            │
+                                                    ┌──────────────────┐                  │
+                                                    │ 4. PM REVIEW     │                  │
+                                                    │                  │                  │
+                                                    │ Good enough      │                  │
+                                                    │ to publish?      │                  │
+                                                    └───────┬─────┬────┘                  │
+                                                            │     │                       │
+                                                         Yes│     │No                     │
+                                                            │     │                       │
+                                                ┌───────────┘     └──────────────┐        │
+                                                ▼                                ▼        │
+                                       ┌──────────────┐                ┌────────────────┐ │
+                                       │ 5. JIRA      │                │ FEEDBACK LOOP  │ │
+                                       │              │                │                │ │
+                                       │ • Epics      │                │ • Refine       │ │
+                                       │ • Tickets    │                │ • Re-prompt    ├─┘
+                                       └──────────────┘                └────────────────┘
+```
+
+--
+
+```text
+    ┌─────────────────────────────────────────────────────────────────────────────────────┐
+    │                                     THE SHIFT                                       │
+    └─────────────────────────────────────────────────────────────────────────────────────┘
+
+
+      OLD                                 NEW
+      ───                                 ───
+  
+      PM writes the work                  PM defines the intent
+      PM manages the details              Agent drafts the work
+      PM is the bottleneck                PM validates the output
+      Team waits on PM                    Team gets structured input
+  
+  
+      PM ──> work ──> team                context ──> PM intent ──> agent ──> output
+                                                                      ^         │
+                                                                      │         v
+                                                                      └──── validate
+  
+  
+      ═══════════════════════════════════════════════════════════════════════════════════
+  
+      PM is no longer the writer.
+      PM is the system designer.
 ```
