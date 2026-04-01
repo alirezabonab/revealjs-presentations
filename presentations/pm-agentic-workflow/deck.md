@@ -126,9 +126,9 @@
 ---
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │         WHAT ACTUALLY HAPPENS (without onboarding)            │
-    └───────────────────────────────────────────────────────────────┘
+
+            WHAT ACTUALLY HAPPENS (without onboarding)         
+   ───────────────────────────────────────────────────────────────
 
        Week 1          Week 2          Week 3          Week 4
 
@@ -195,39 +195,39 @@
 ---
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │         WHAT ACTUALLY HAPPENS (with onboarding)               │
-    └───────────────────────────────────────────────────────────────┘
 
-       Week 1          Week 2          Week 3          Week 4
+               WHAT ACTUALLY HAPPENS (with onboarding)               
+    ───────────────────────────────────────────────────────────────
 
-    "I know the     "First task     "Got feedback,  "Running
-     system and      done, matches   improved my     independ-
-     the goals"      our standards"  approach"       ently!"
-
-        ✓               ✓✓              ✓✓             ✓✓✓
-
-
-         🙂             😊            💪              🚀    
-     ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
-     │orient │─────►│deliver│─────►│refine │─────►│ own   │
-     │       │      │       │      │       │      │ it    │
-     │       │      │       │      │       │      │       │
-     └───────┘      └───────┘      └───┬───┘      └───────┘
-                                       ▲
-                                       │
-                                ┌──────┴──────┐
-                                │ 4. FEEDBACK │
-                                │    LOOP     │
-                                │  "Here's    │
-                                │   what to   │
-                                │   adjust"   │
-                                └─────────────┘
-
-    ╔═════════════════════════════════════════════════════════════╗
-    ║  ✓ Productive by week 2      ✓ New hire confident           ║
-    ║  ✓ Team trusts the output    ✓ Manager leads, not fixes     ║
-    ╚═════════════════════════════════════════════════════════════╝
+          Week 1          Week 2          Week 3          Week 4
+   
+       "I know the     "First task     "Got feedback,  "Running
+        system and      done, matches   improved my     independ-
+        the goals"      our standards"  approach"       ently!"
+   
+           ✓               ✓✓              ✓✓             ✓✓✓
+   
+   
+            🙂             😊            💪              🚀    
+        ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
+        │orient │─────►│deliver│─────►│refine │─────►│ own   │
+        │       │      │       │      │       │      │ it    │
+        │       │      │       │      │       │      │       │
+        └───────┘      └───────┘      └───┬───┘      └───────┘
+                                          ▲
+                                          │
+                                   ┌──────┴──────┐
+                                   │ 4. FEEDBACK │
+                                   │    LOOP     │
+                                   │  "Here's    │
+                                   │   what to   │
+                                   │   adjust"   │
+                                   └─────────────┘
+   
+   ╔══════════════════════════════════════════════════════════════╗
+   ║  ✓ Productive by week 2      ✓ New hire confident            ║
+   ║  ✓ Team trusts the output    ✓ Manager leads, not fixes      ║
+   ╚══════════════════════════════════════════════════════════════╝
 
        
 ```
@@ -381,16 +381,14 @@
                                              AGENT COMPONENTS
 
 
-                     👤 PM / Developer
-                            │
-                            │  intent
-                            ▼
+                        👤 PM / Developer
+                               │
+                               │  intent
+                               ▼
     ┌───────────────────────────────────────────────────────────┐
     │                                                           │
     │   SKILLS tell the agent         WHAT to do & HOW          │
     │   ─────────────────────────────────────────────────       │
-    │                                                           │
-    │                                                           │
     │   "Follow our ticket format, use acceptance criteria,     │
     │    name branches like this..."                            │
     │                                                           │      
@@ -409,12 +407,12 @@
     │       │       ┌───────────────────────────┐       │       │
     │       │       │                           │       │       │
     │       │       │                           │       │       │
-    │       │       │                           │       │       │
-    │       │       │                           │       │       │
     │       │       │   TOOLS execute   ACTION  │       │       │
     │       │       │   ─────────────────────   │       │       │
     │       │       │   read · write · create   │       │       │
     │       │       │   search · update · call  │       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
     │       │       │                           │       │       │
     │       │       │                           │       │       │
     │       │       └───────────────────────────┘       │       │
@@ -433,8 +431,7 @@
 
 ---
 
-```text
-                         ┌──────────────────────────────────────── Agentic Workflow ──────────────────────────────────────┐
+<pre class="ascii-morph-stage" data-ascii-morph="workflow-slider"><code>                         ┌──────────────────────────────────────── Agentic Workflow ──────────────────────────────────────┐
                          │                                                                                                │
                          │ ┌── Context ───────────────────────────────────────────────────────────────────────────────┐   │
                          │ │                                                                                          │   │
@@ -443,7 +440,7 @@
   Customer requests,     │ │      Specs                     ┌── Rules ────────────────────────────────────────────┐   │   │
   Feedbacks,             │ │      Technical designs         │                                                     │   │   │
   Bugs,               ◄────────►  Decisions               ◄───►  Automations    ┌── Agents ───────────────────┐   │   │   │
-  Requrements,           │ │      Summaries                 │    Skills         │                             │   │   │   │
+  Requirements,          │ │      Summaries                 │    Skills         │                             │   │   │   │
   User stories           │ │      Code                      │    Permissions   ◄──►       [█████████]         ◄──────────────► Product
                          │ │                                │                   │                             │   │   │   │
                          │ │                                │                   └─────────────────────────────┘   │   │   │
@@ -451,32 +448,102 @@
                          │ │                                                                                          │   │
                          │ └──────────────────────────────────────────────────────────────────────────────────────────┘   │
                          │                                                                                                │
-                         └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                         └────────────────────────────────────────────────────────────────────────────────────────────────┘</code></pre>
+
+--
+
+```text
+    VIBE CODING
+    ─────────────────────────────────────────────────────────────
+
+    👤 "make me a login page"  ──►  🤖  ──►  ???
+
+    No context. No standards. No review.
+    Fast but fragile. Fine for prototypes. Dangerous at scale.
+
+
+
+
+    FULL AUTONOMOUS
+    ─────────────────────────────────────────────────────────────
+
+    🤖 decides  ──►  🤖 builds  ──►  🤖 ships  ──►  💥
+
+    No human in the loop. No guardrails. No accountability.
+    Impressive demos. Terrifying in production.
+
+
+
+
+    AGENTIC WORKFLOW
+    ─────────────────────────────────────────────────────────────
+
+    👤 intent  ──►  context + rules  ──►  🤖 executes  ──►  👤 validates
+                                            ▲                 │
+                                            └─── feedback ────┘
+
+    Human sets direction. Agent does the work. Human owns the output.
+    Structured. Predictable. Scalable.
+```
+--
+
+```text
+
+
+                       Vibe          Full              Agentic
+                       Coding        Autonomous        Workflow
+                       ──────        ──────────        ────────
+
+    Compliance            ✗              ✗                 ✓
+
+    Audit trail           ✗              ✗                 ✓
+    
+    Consistency           ✗              ~                 ✓
+
+    Accountability        ✗              ✗                 ✓
+
+    Speed                 ✓              ✓                 ✓
+
+    Scalability           ✓              ~                 ✓
+
+    Team trust            ✗              ✗                 ✓
+
+
+    ═══════════════════════════════════════════════════════════
+
+    Vibe coding     =  fun, no control
+    Full autonomous =  fast, no trust
+    Agentic         =  fast AND controlled
+
+```
+
+--
+
+```text
+    Enterprises don't need faster chaos.
+    They need structured speed.
 ```
 
 ---
 
 <!-- ## Slide (Section: ticket-skill) -->
 ```text
-+---------------------------------------------------------------+
-|                   STANDARDIZED TICKET SKILL                   |
-+---------------------------------------------------------------+
-|                                                               |
-|  +---------------------------+                                |
-|  | STANDARD TICKET SKILL     |                                |
-|  +---------------------------+                                |
-|  | 1. Title                  |                                |
-|  | 2. Context                |                                |
-|  | 3. Scope                  |                                |
-|  | 4. Acceptance Criteria    |                                |
-|  | 5. Dependencies / Risks   |                                |
-|  | 6. Definition of Done     |                                |
-|  +---------------------------+                                |
-|              |                                                |
-|              v                                                |
-|     Consistent output every time                              |
-|                                                               |
-+---------------------------------------------------------------+
+    STANDARDIZED TICKET SKILL
+    ─────────────────────────────────────────────────────────────
+
+    👤 PM Intent  ──►  [ Ticket Skill ]  ──►  🤖 Structured Context
+
+    ┌──────────────────────────────┐
+    │  1. Title                    │
+    │  2. Context                  │
+    │  3. Scope                    │
+    │  4. Acceptance Criteria      │
+    │  5. Dependencies / Risks     │
+    │  6. Definition of Done       │
+    └──────────────┬───────────────┘
+                   │
+                   ▼
+      Consistent output every time
 ```
 
 ---
