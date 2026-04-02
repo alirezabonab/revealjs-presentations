@@ -36,6 +36,10 @@ function renderThemeBootScript() {
     (() => {
       const storageKey = "presentation-color-mode";
       const defaultMode = "dark";
+      const toggleIcons = {
+        light: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.25"></circle><path d="M12 2.75v2.5M12 18.75v2.5M4.75 12h2.5M16.75 12h2.5M5.85 5.85l1.8 1.8M16.35 16.35l1.8 1.8M18.15 5.85l-1.8 1.8M7.65 16.35l-1.8 1.8"></path></svg>',
+        dark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.8 8.8 0 0 1 9.8 3.8a9 9 0 1 0 10.4 10.4Z"></path></svg>'
+      };
 
       const readMode = () => {
         const savedMode = window.localStorage.getItem(storageKey);
@@ -49,10 +53,17 @@ function renderThemeBootScript() {
 
       const applyMode = (mode) => {
         document.documentElement.dataset.colorMode = mode;
-        const label = mode === "dark" ? "Dark" : "Light";
+        const nextMode = mode === "dark" ? "light" : "dark";
+        const toggleLabel = nextMode === "light" ? "Switch to light mode" : "Switch to dark mode";
+        const toggleIcon = toggleIcons[nextMode];
 
-        document.querySelectorAll("[data-theme-label]").forEach((node) => {
-          node.textContent = label;
+        document.querySelectorAll("[data-theme-toggle]").forEach((node) => {
+          node.setAttribute("aria-label", toggleLabel);
+          node.setAttribute("title", toggleLabel);
+        });
+
+        document.querySelectorAll("[data-theme-icon]").forEach((node) => {
+          node.innerHTML = toggleIcon;
         });
 
         const metaTheme = document.querySelector('meta[name="theme-color"]');
@@ -78,9 +89,8 @@ function renderThemeBootScript() {
 }
 
 function renderThemeToggle() {
-  return `<button class="theme-toggle" type="button" onclick="toggleColorMode()" aria-label="Toggle color theme">
-    <span class="theme-toggle__label">Theme</span>
-    <strong data-theme-label>Dark</strong>
+  return `<button class="theme-toggle" data-theme-toggle type="button" onclick="toggleColorMode()" aria-label="Switch to light mode" title="Switch to light mode">
+    <span class="theme-toggle__icon" data-theme-icon aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.25"></circle><path d="M12 2.75v2.5M12 18.75v2.5M4.75 12h2.5M16.75 12h2.5M5.85 5.85l1.8 1.8M16.35 16.35l1.8 1.8M18.15 5.85l-1.8 1.8M7.65 16.35l-1.8 1.8"></path></svg></span>
   </button>`;
 }
 

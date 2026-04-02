@@ -222,7 +222,20 @@
     document.body.append(overlay);
   }
 
+  function isOverviewActive() {
+    const revealRoot = document.querySelector(".presentation-shell .reveal");
+    return (
+      revealRoot?.classList.contains("overview") ||
+      revealRoot?.classList.contains("overview-deactivating")
+    );
+  }
+
   function refreshPresentationLayout() {
+    if (isOverviewActive()) {
+      dispatchRefreshEvents();
+      return;
+    }
+
     const slides = getLeafSlides();
 
     slides.forEach((section, index) => {
@@ -262,6 +275,20 @@
     });
   }
 
+  function scheduleSettledRefresh() {
+    scheduleRefresh();
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        scheduleRefresh();
+      });
+    });
+
+    window.setTimeout(() => {
+      scheduleRefresh();
+    }, 120);
+  }
+
   window.refreshAsciiPresentation = scheduleRefresh;
 
   window.initializeAsciiPresentation = (Reveal) => {
@@ -270,8 +297,9 @@
 
       Reveal.on("ready", scheduleRefresh);
       Reveal.on("slidechanged", scheduleRefresh);
+      Reveal.on("slidetransitionend", scheduleSettledRefresh);
       Reveal.on("overviewshown", scheduleRefresh);
-      Reveal.on("overviewhidden", scheduleRefresh);
+      Reveal.on("overviewhidden", scheduleSettledRefresh);
       window.addEventListener("resize", scheduleRefresh);
       document.fonts?.ready?.then(scheduleRefresh).catch(() => {});
     }

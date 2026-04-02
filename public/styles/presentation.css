@@ -118,12 +118,30 @@ body.presentation-shell {
   overflow: visible !important;
 }
 
+.presentation-shell .reveal.overview .slides section,
+.presentation-shell .reveal.overview-deactivating .slides section {
+  overflow: visible !important;
+}
+
 .presentation-shell .reveal.overview .slides > section:not(.stack),
 .presentation-shell .reveal.overview .slides > section.stack > section,
 .presentation-shell .reveal.overview-deactivating .slides > section:not(.stack),
 .presentation-shell .reveal.overview-deactivating .slides > section.stack > section {
+  display: grid !important;
+  place-items: center;
   padding: 0;
-  display: block !important;
+  box-sizing: border-box;
+}
+
+.presentation-shell .reveal.overview .slides > section:not(.stack) > :not(aside),
+.presentation-shell .reveal.overview .slides > section.stack > section > :not(aside),
+.presentation-shell .reveal.overview-deactivating .slides > section:not(.stack) > :not(aside),
+.presentation-shell .reveal.overview-deactivating .slides > section.stack > section > :not(aside) {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
 }
 
 .presentation-shell .reveal pre {

@@ -34,6 +34,7 @@
     <script src="/reveal/dist/reveal.js"></script>
     <script src="/reveal/plugin/markdown/markdown.js"></script>
     <script src="/reveal/plugin/notes/notes.js"></script>
+    <script src="/reveal/plugin/zoom/zoom.js"></script>
     <script src="/static/scripts/presentation-runtime.js"></script>
     {{EXTRA_SCRIPTS}}
     <script>
@@ -41,7 +42,7 @@
 
       Reveal.initialize({
         ...revealConfig,
-        plugins: [RevealMarkdown, RevealNotes]
+        plugins: [RevealMarkdown, RevealNotes, RevealZoom]
       });
 
       window.initializeAsciiPresentation?.(Reveal);
