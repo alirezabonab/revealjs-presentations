@@ -11,6 +11,7 @@ The engine now uses one strict visible slide contract:
 - speaker notes stay outside the visible stage
 
 Project-level agent instructions live in `AGENTS.md`.
+`CLAUDE.md` mirrors it for Claude Code.
 The repo-local presentation authoring skill lives in `.codex/skills/revealjs-presentation-authoring/`.
 
 ## What this setup gives you
@@ -123,6 +124,7 @@ Rules used by this engine:
 - `Note:` or `Notes:` starts speaker notes
 - visible content must be exactly one ASCII stage or one image
 - keep big diagrams inside fenced `text` blocks or one raw `<pre>` stage
+- do not put emoji inside ASCII diagram boxes; emoji width can break vertical alignment
 - do not mix headings, bullets, captions, images, and ASCII on the same slide
 
 ## Run the project
