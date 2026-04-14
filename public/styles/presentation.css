@@ -176,6 +176,8 @@ body.presentation-shell {
   display: block;
   width: max-content;
   padding: 0;
+  max-height: none;
+  overflow: hidden !important;
   background: transparent;
   color: var(--text-strong);
   font-family: var(--font-mono);
