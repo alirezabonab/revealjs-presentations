@@ -1052,6 +1052,26 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 
 ```
+--
+
+```text
+                               ┌───────────────┐
+                               │ FEATURE REQ.  │
+                               └───────┬───────┘
+                                       │
+                                       ▼
+                                      ╱ ╲
+                                     ╱   ╲
+                                    ╱     ╲
+                      TICKETS ────►╱   %   ╲◄──── CODEBASE
+                                  ╱  DELTA  ╲
+                                 ╱───────────╲
+                                       │
+                                       ▼
+                 ┌────────────┐  ┌────────────┐  ┌────────────┐
+                 │  GENERATE  │─►│   REVIEW   │─►│    SHIP    │
+                 └────────────┘  └────────────┘  └────────────┘
+```
 
 ---
 
@@ -1088,31 +1108,31 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 --
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │          DEFINE THE WORK  ─  EPIC / REQUIREMENT / TICKET      │
-    └───────────────────────────────────────────────────────────────┘
+    ┌──────────────────────────────────────────────────────────────────┐
+    │          DEFINE THE WORK  ─  EPIC / REQUIREMENT / TICKET         │
+    └──────────────────────────────────────────────────────────────────┘
 
-    BEFORE   PM writes epic. Dev breaks down tickets.
-             Weeks of ping-pong.
+       BEFORE   PM writes epic. Dev breaks down tickets.
+                Weeks of ping-pong.
 
-    AFTER    PM defines intent. Agent drafts all three.
-             PM reviews and approves.
+       AFTER    PM defines intent. Agent drafts all three.
+                PM reviews and approves.
 
-    ─────────────────────────────────────────────────────────────────
+       ───────────────────────────────────────────────────────────
 
-         ┌────────────┐       ┌────────────┐       ┌────────────┐
-         │            │       │            │       │            │
-         │    EPIC    │──────►│    REQ     │──────►│  TICKETS   │
-         │            │       │            │       │            │
-         │  the why   │       │  the how   │       │  the work  │
-         │            │       │            │       │            │
-         └─────┬──────┘       └─────┬──────┘       └─────┬──────┘
-               │                    │                    │
-            👤 approve           👤 approve           👤 approve
+            ┌────────────┐       ┌────────────┐       ┌────────────┐
+            │            │       │            │       │            │
+            │    EPIC    │──────►│    REQ     │──────►│  TICKETS   │
+            │            │       │            │       │            │
+            │  the why   │       │  the how   │       │  the work  │
+            │            │       │            │       │            │
+            └─────┬──────┘       └─────┬──────┘       └─────┬──────┘
+                  │                    │                    │
+               👤 approve           👤 approve           👤 approve
 
-    ╔═════════════════════════════════════════════════════════════╗
-    ║  The agent writes.  The human owns the decisions.           ║
-    ╚═════════════════════════════════════════════════════════════╝
+    ╔═════════════════════════════════════════════════════════════════╗
+    ║  The agent writes.  The human owns the decisions.               ║
+    ╚═════════════════════════════════════════════════════════════════╝
 ```
 
 --
@@ -1122,65 +1142,65 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
     │               WRITE THE CODE  ─  CONTEXT FIRST                │
     └───────────────────────────────────────────────────────────────┘
 
-    BEFORE   Dev gets ticket. Asks 10 questions.
-             Reads 5 docs. Then starts coding.
-
-    AFTER    Agent gets ticket + parent + requirement.
-             Context is built in. Codes right away.
-
-    ─────────────────────────────────────────────────────────────────
-
-              ┌─────────────────────────────────────┐
-              │                                     │
-              │   Task ticket      what to build    │
-              │   Parent ticket    why it exists     │
-              │   Requirement      how it should fit │
-              │                                     │
-              └──────────────────┬──────────────────┘
-                                 │
-                                 ▼
-                      ┌─────────────────────┐
-                      │                     │
-                      │   agent writes code │
-                      │   that fits the     │
-                      │   system            │
-                      │                     │
-                      └─────────────────────┘
+        BEFORE   Dev gets ticket. Asks 10 questions.
+                 Reads 5 docs. Then starts coding.
+    
+        AFTER    Agent gets ticket + parent + requirement.
+                 Context is built in. Codes right away.
+    
+        ─────────────────────────────────────────────────────────
+    
+                  ┌───────────────────────────────────────┐
+                  │                                       │
+                  │   Task ticket      what to build      │
+                  │   Parent ticket    why it exists      │
+                  │   Requirement      how it should fit  │
+                  │                                       │
+                  └──────────────────┬────────────────────┘
+                                     │
+                                     ▼
+                          ┌─────────────────────┐
+                          │                     │
+                          │   agent writes code │
+                          │   that fits the     │
+                          │   system            │
+                          │                     │
+                          └─────────────────────┘
 
     ╔═════════════════════════════════════════════════════════════╗
-    ║  No context, no code.  Context is the input.               ║
+    ║  No context, no code.  Context is the input.                ║
     ╚═════════════════════════════════════════════════════════════╝
 ```
 
 --
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │             CATCH PROBLEMS EARLY  ─  REVIEW + QA              │
-    └───────────────────────────────────────────────────────────────┘
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │             CATCH PROBLEMS EARLY  ─  REVIEW + QA                    │
+    └─────────────────────────────────────────────────────────────────────┘
 
-    BEFORE   PR review discovers bugs. QA is manual and late.
+          BEFORE   PR review discovers bugs. QA is manual and late.
+      
+          AFTER    Agent reviews locally. Agent QAs in browser.
+                   Problems caught at the source, not the finish line.
+      
+       ─────────────────────────────────────────────────────────────────
+   
+        ┌────────────────────────────┐   ┌────────────────────────────┐
+        │       LOCAL REVIEW         │   │            QA              │
+        ├────────────────────────────┤   ├────────────────────────────┤
+        │                            │   │                            │
+        │  Did this branch solve     │   │  Does the app actually     │
+        │  the right problem?        │   │  work for the user?        │
+        │                            │   │                            │
+        │  logic    scope            │   │  happy path   edge cases   │
+        │  tests    drift            │   │  real clicks  real waits   │
+        │                            │   │                            │
+        └────────────────────────────┘   └────────────────────────────┘
 
-    AFTER    Agent reviews locally. Agent QAs in browser.
-             Problems caught at the source, not the finish line.
-
-    ─────────────────────────────────────────────────────────────────
-
-     ┌────────────────────────────┐   ┌────────────────────────────┐
-     │       LOCAL REVIEW         │   │            QA              │
-     ├────────────────────────────┤   ├────────────────────────────┤
-     │                            │   │                            │
-     │  Did this branch solve     │   │  Does the app actually     │
-     │  the right problem?        │   │  work for the user?        │
-     │                            │   │                            │
-     │  logic    scope            │   │  happy path   edge cases   │
-     │  tests    drift            │   │  real clicks  real waits   │
-     │                            │   │                            │
-     └────────────────────────────┘   └────────────────────────────┘
-
-    ╔═════════════════════════════════════════════════════════════╗
-    ║  PR review should confirm quality, not discover basics.     ║
-    ╚═════════════════════════════════════════════════════════════╝
+        ╔═════════════════════════════════════════════════════════════╗
+        ║  PR review should confirm quality, not discover basics.     ║
+        ╚═════════════════════════════════════════════════════════════╝
 ```
 
 --
@@ -1217,78 +1237,64 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 --
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │             PROTECT DECISIONS  ─  ADR + PR REVIEW             │
-    └───────────────────────────────────────────────────────────────┘
+    ┌──────────────────────────────────────────────────────────────────┐
+    │             PROTECT DECISIONS  ─  ADR + PR REVIEW                │
+    └──────────────────────────────────────────────────────────────────┘
 
-    BEFORE   Decisions live in Slack threads and heads.
-             PR review is the only gate.
+            BEFORE   Decisions live in Slack threads and heads.
+                     PR review is the only gate.
+        
+            AFTER    ADR is written before merge. PR review
+                     is the final audit, not the first check.
+  
+       ───────────────────────────────────────────────────────────────
+  
+       ┌────────────────────────────┐   ┌────────────────────────────┐
+       │           ADR              │   │        PR REVIEW           │
+       ├────────────────────────────┤   ├────────────────────────────┤
+       │                            │   │                            │
+       │  Code shows WHAT changed.  │   │  By PR time the branch     │
+       │                            │   │  already has:              │
+       │  ADR explains WHY this     │   │                            │
+       │  change exists and WHY     │   │  code + local review       │
+       │  this design won.          │   │  + QA + ADR                │
+       │                            │   │                            │
+       │  Written before merge.     │   │  PR checks for gaps        │
+       │  After local review.       │   │  and scope drift.          │
+       │                            │   │                            │
+       └────────────────────────────┘   └────────────────────────────┘
 
-    AFTER    ADR is written before merge. PR review
-             is the final audit, not the first check.
-
-    ─────────────────────────────────────────────────────────────────
-
-     ┌────────────────────────────┐   ┌────────────────────────────┐
-     │           ADR              │   │        PR REVIEW           │
-     ├────────────────────────────┤   ├────────────────────────────┤
-     │                            │   │                            │
-     │  Code shows WHAT changed.  │   │  By PR time the branch     │
-     │                            │   │  already has:              │
-     │  ADR explains WHY this     │   │                            │
-     │  change exists and WHY     │   │  code + local review       │
-     │  this design won.          │   │  + QA + ADR                │
-     │                            │   │                            │
-     │  Written before merge.     │   │  PR checks for gaps        │
-     │  After local review.       │   │  and scope drift.          │
-     │                            │   │                            │
-     └────────────────────────────┘   └────────────────────────────┘
-
-    ╔═════════════════════════════════════════════════════════════╗
-    ║  If the decision mattered, write it down.                   ║
-    ╚═════════════════════════════════════════════════════════════╝
+       ╔═════════════════════════════════════════════════════════════╗
+       ║  If the decision mattered, write it down.                   ║
+       ╚═════════════════════════════════════════════════════════════╝
 ```
+
 
 ---
 
 ```text
-    ┌──────────────────────────────────────────────────────────────────────────────────────┐
-    │                                  THE PM's NEW ROLE                                   │
-    └──────────────────────────────────────────────────────────────────────────────────────┘
-
-
-
-     PM sets direction. Agent does the writing. PM owns the quality.
- 
- 
- 
-                         ┌──────────────────────────────────────────────┐
-                         │              AGENT / LLM SCOPE               │
-     ┌────────────────┐  │ ┌──────────────────┐    ┌──────────────────┐ │
-     │ 1. PM INTENT   │  │ │ 2. CONTEXT (MCP) │    │ 3. AGENT WRITES  │◄──────────────────┐
-     │                │  │ │                  │    │                  │ │                 │
-     │ • Goals        │─►│ │ • Jira / Conf    │───►│ • Drafts         │ │                 │
-     │ • Scope        │  │ │ • GitHub         │    │ • Epics          │ │                 │
-     │ • Criteria     │  │ │ • Slack / Docs   │    │ • Tickets        │ │                 │
-     └────────────────┘  │ └──────────────────┘    └──────────────────┘ │                 │
-                         └───────────────────────────────────┬──────────┘                 │
-                                                             │                            │
-                                                             ▼                            │
-                                                    ┌──────────────────┐                  │
-                                                    │ 4. PM REVIEW     │                  │
-                                                    │                  │                  │
-                                                    │ Good enough      │                  │
-                                                    │ to publish?      │                  │
-                                                    └───────┬─────┬────┘                  │
-                                                            │     │                       │
-                                                         Yes│     │No                     │
-                                                            │     │                       │
-                                                ┌───────────┘     └──────────────┐        │
-                                                ▼                                ▼        │
-                                       ┌──────────────┐                ┌────────────────┐ │
-                                       │ 5. JIRA      │                │ FEEDBACK LOOP  │ │
-                                       │              │                │                │ │
-                                       │ • Epics      │                │ • Refine       │ │
-                                       │ • Tickets    │                │ • Re-prompt    ├─┘
-                                       └──────────────┘                └────────────────┘
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ║       You don't install a colleague.                          ║
+    ║       You onboard them.                                       ║
+    ║                                                               ║
+    ║       You don't prompt an agent.                              ║
+    ║       You give it context, standards, and a feedback loop.    ║
+    ║                                                               ║
+    ║                                                               ║
+    ║       ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─           ║
+    ║                                                               ║
+    ║       AI handles execution at speed.                          ║
+    ║       Humans provide judgment, direction, and coherence.      ║
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ║                                                               ║
+    ╚═══════════════════════════════════════════════════════════════╝
 ```
