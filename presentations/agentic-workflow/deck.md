@@ -363,9 +363,9 @@
 ```text
     ╔═══════════════════════════════════════════════════════════════╗
     ║                                                               ║
+    ║                                                               ║
     ║       SECTION TWO - THE PERSONALITY OF YOUR AI AGENT          ║
     ║                                                               ║
-    ║       benchmarks measure skill.  developers measure vibe.     ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
 ```
@@ -634,35 +634,6 @@
                same code, different experience
 ```
 
---
-
-<!-- ## Slide (Section: honeymoon) -->
-
-```text
-┌───────────────────────────────────────────────────────────────────┐
-│              THE THREE PHASES OF AGENT WORK                       │
-└───────────────────────────────────────────────────────────────────┘
-
-
-     PHASE 1   THE HONEYMOON        confidence  ██████████  100%
-     ───────────────────────────────────────────────────────────
-     agent builds prototype fast.  everything feels magical.
-
-
-     PHASE 2   THE MESSY MIDDLE     confidence  ████░░░░░░   40%
-     ───────────────────────────────────────────────────────────
-     agent contradicts itself.  context fills up.  "dart-throwing."
-
-
-     PHASE 3   THE MANAGEMENT ERA   confidence  ███████░░░   70%
-     ───────────────────────────────────────────────────────────
-     dev learns to manage the agent like a real colleague.
-
-
-
-               this is where the PM mindset becomes critical
-```
-
 ---
 
 ```text
@@ -710,61 +681,33 @@ Sources:
 
 ```text
 ┌───────────────────────────────────────────────────────────────────┐
-│                  THE HIDDEN SUBSIDY  ($20 PLAN)                   │
+│                    THE HIDDEN SUBSIDY                              │
 └───────────────────────────────────────────────────────────────────┘
 
 
-     what $20/mo actually buys you in raw API value:
-
-
-                          CODEX (Plus)   CLAUDE (Pro)
+                          CODEX              CLAUDE
      ─────────────────────────────────────────────────────
 
-     daily API value              ~$12            ~$6
+     $20/mo  API value       ~$360/mo          ~$180/mo
+     $100/mo API value     ~$1,800/mo          ~$900/mo
+     $200/mo API value     ~$7,200/mo        ~$3,600/mo
 
-     monthly API value           ~$360          ~$180
-
-     effective ROI                18:1            9:1
-
+     ROI at $200/mo              36:1             18:1
 
 
      why the gap?
-     Claude burns 3-4x more tokens per task
-     (12K system prompt vs 2K, re-reads full history each turn)
-```
-
-Note:
-Based on 2026 usage data. A 10-hour Codex session costs ~$90 in raw API fees but the subscription covers it. Claude's higher token burn comes from its 12K system prompt and full context re-read pattern. Codex is 4x more token-efficient, meaning the $20 tier lasts longer for heavy daily work.
-
---
-
-<!-- ## Slide (Section: cost-high-tier) -->
-
-```text
-┌───────────────────────────────────────────────────────────────────┐
-│            THE $100 AND $200 PLANS  -  WHERE IT GETS WILD         │
-└───────────────────────────────────────────────────────────────────┘
-
-
-                         CODEX (Pro)      CLAUDE (Max)
-     ─────────────────────────────────────────────────────
-
-     $100/mo API value        ~$1,800           ~$900
-
-     $200/mo API value        ~$7,200         ~$3,600
-
-     ROI at $200/mo              36:1            18:1
-
+     Claude burns 3-4x more tokens per task.
+     Codex is leaner per request, Claude is deeper per thought.
 
 
      real example:
-     one dev used 10 billion tokens on $200 Claude
-     over 8 months.  raw API cost: ~$15,000.
+     one dev used 10 billion tokens on $200 Claude Max
+     over 8 months.  raw API cost would be ~$15,000.
      subscription saved 93%.
 ```
 
 Note:
-OpenAI launched the $100 tier on April 9, 2026 to compete with Anthropic's Max 5x. For a limited time through May 31, 2026, the $100 plan offers 10x usage (effectively the $200 capacity for half price). The $200 Claude Max tier allows ~800 prompts per 5-hour window. Codex $200 provides up to 3,000 local messages per 5 hours.
+Based on 2026 usage data. Claude's higher token burn comes from its 12K system prompt and full context re-read pattern. Codex is 4x more token-efficient per task. OpenAI launched the $100 tier on April 9, 2026 to compete with Anthropic's Max 5x. The $200 Claude Max tier allows ~800 prompts per 5-hour window. Codex $200 provides up to 3,000 local messages per 5 hours.
 
 --
 
@@ -788,7 +731,7 @@ OpenAI launched the $100 tier on April 9, 2026 to compete with Anthropic's Max 5
      ┌──────────────────────────────────────────────────┐
      │                                                  │
      │  Codex  $200   heavy implementation, PR review   │
-     │  Claude $100   architecture, design, frontend    │
+     │  Claude $100   coding, design, frontend          │
      │                                                  │
      │  total: $300/dev/mo  for both strengths          │
      │                                                  │
