@@ -746,6 +746,101 @@ Note:
 As of April 4, 2026, Anthropic ended the quiet subsidy for third-party frameworks. The $300/dev/mo hybrid is the emerging best practice. Codex handles volume (4x token-efficient) while Claude handles complexity (superior reasoning). Peak-hour throttling may occur 5 AM - 11 AM PT on subscription tiers.
 
 
+---
+
+```text
+    ┌───────────────────────────────────────────────────────────────┐
+    │               THE FILES THAT MAKE IT WORK                     │
+    └───────────────────────────────────────────────────────────────┘
+
+    Your standards, conventions, and decisions
+    need to live in the repo, not in people's heads.
+
+
+    your-project/
+    │
+    ├── CLAUDE.md                project instructions for Claude
+    ├── AGENTS.md                project instructions for Codex
+    │
+    ├── .claude/
+    │   ├── settings.json        permissions, allowed tools
+    │   └── commands/            custom slash commands
+    │
+    ├── .codex/
+    │   └── skills/              reusable prompt templates
+    │
+    └── .github/
+        └── copilot-instructions.md   instructions for Copilot
+```
+
+--
+
+```text
+    ┌───────────────────────────────────────────────────────────────┐
+    │               CLAUDE.md  /  AGENTS.md                         │
+    └───────────────────────────────────────────────────────────────┘
+
+    The first file the agent reads. Every session. Every task.
+    This is your onboarding document.
+
+    ─────────────────────────────────────────────────────────────────
+
+    WHAT GOES IN                         WHY IT MATTERS
+
+    Project purpose and context          agent knows the "why"
+    Architecture and conventions         agent follows your patterns
+    Do's and don'ts                      agent stays in bounds
+    Tool and workflow rules              agent uses the right process
+    Testing and review expectations      agent meets your bar
+
+    ─────────────────────────────────────────────────────────────────
+
+    CLAUDE.md  =  for Claude Code
+    AGENTS.md  =  for Codex
+
+    Same idea. Same purpose. Different agent.
+
+    ╔═════════════════════════════════════════════════════════════╗
+    ║  No instruction file = no onboarding = unreliable output.   ║
+    ╚═════════════════════════════════════════════════════════════╝
+```
+
+--
+
+```text
+    ┌───────────────────────────────────────────────────────────────┐
+    │               .claude/  AND  .codex/  FOLDERS                 │
+    └───────────────────────────────────────────────────────────────┘
+
+    Instruction files say what to do.
+    These folders say how to do it.
+
+
+     .claude/                             .codex/
+     ────────                             ────────
+
+     settings.json                        skills/
+       permissions the agent has            reusable prompt templates
+       which tools are allowed              one skill per workflow step
+       safety boundaries                    /epic, /ticket, /review ...
+
+     commands/
+       custom slash commands
+       shortcuts for common tasks
+
+
+    ─────────────────────────────────────────────────────────────────
+
+     Think of it this way:
+
+     CLAUDE.md / AGENTS.md    =    onboarding handbook
+     .claude/  / .codex/      =    desk setup + toolkit
+
+    ╔═════════════════════════════════════════════════════════════╗
+    ║  Commit these folders.  Every dev on the team gets the      ║
+    ║  same agent behavior from day one.                          ║
+    ╚═════════════════════════════════════════════════════════════╝
+```
 
 ---
 
