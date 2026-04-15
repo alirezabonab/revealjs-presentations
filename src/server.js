@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadAsciiMorphBrowserSource } from "./ascii-morph-vendor.js";
 import { listPresentations, loadPresentation } from "./presentation-loader.js";
 import { renderIndexPage, renderPresentationPage } from "./template-renderer.js";
 
@@ -32,7 +33,7 @@ app.use("/reveal/plugin", express.static(path.join(revealRoot, "plugin")));
 
 app.get("/vendor/ascii-morph.js", async (request, response, next) => {
   try {
-    const source = await fs.readFile(asciiMorphEntry, "utf8");
+    const source = await loadAsciiMorphBrowserSource(asciiMorphEntry);
     response.type("js").send(source);
   } catch (error) {
     next(error);

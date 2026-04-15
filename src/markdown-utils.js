@@ -21,7 +21,7 @@ function normalizeContentPath(targetPath) {
   return normalized.replace(/^\.\//, "");
 }
 
-function toContentUrl(presentationName, markdownDir, rawTarget) {
+function toContentUrl(presentationName, markdownDir, rawTarget, contentBasePath) {
   if (!isRelativeAssetUrl(rawTarget)) {
     return rawTarget;
   }
@@ -30,10 +30,15 @@ function toContentUrl(presentationName, markdownDir, rawTarget) {
   const combinedPath = path.posix.join(markdownDir, pathname);
   const normalizedPath = normalizeContentPath(combinedPath);
 
-  return `/content/${presentationName}/${normalizedPath}${suffix}`;
+  return `${contentBasePath}/${presentationName}/${normalizedPath}${suffix}`;
 }
 
-export function rewriteMarkdownAssetUrls(markdown, presentationName, markdownRelativePath) {
+export function rewriteMarkdownAssetUrls(
+  markdown,
+  presentationName,
+  markdownRelativePath,
+  contentBasePath = "/content"
+) {
   const markdownDir = path.posix.dirname(markdownRelativePath);
   const baseDir = markdownDir === "." ? "" : markdownDir;
 
@@ -41,14 +46,24 @@ export function rewriteMarkdownAssetUrls(markdown, presentationName, markdownRel
     /(!?\[[^\]]*]\()([^)]+)(\))/g,
     (fullMatch, prefix, target, suffix) => {
       const cleanTarget = target.trim();
-      return `${prefix}${toContentUrl(presentationName, baseDir, cleanTarget)}${suffix}`;
+      return `${prefix}${toContentUrl(
+        presentationName,
+        baseDir,
+        cleanTarget,
+        contentBasePath
+      )}${suffix}`;
     }
   );
 
   rewritten = rewritten.replace(
     /((?:src|href)=["'])([^"']+)(["'])/g,
     (fullMatch, prefix, target, suffix) => {
-      return `${prefix}${toContentUrl(presentationName, baseDir, target)}${suffix}`;
+      return `${prefix}${toContentUrl(
+        presentationName,
+        baseDir,
+        target,
+        contentBasePath
+      )}${suffix}`;
     }
   );
 

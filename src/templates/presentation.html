@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#020202" />
     <title>{{PAGE_TITLE}}</title>
-    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="{{FAVICON_HREF}}" type="image/svg+xml" />
     {{THEME_BOOT_SCRIPT}}
-    <link rel="stylesheet" href="/reveal/dist/reset.css" />
-    <link rel="stylesheet" href="/reveal/dist/reveal.css" />
-    <link rel="stylesheet" href="/reveal/dist/theme/{{REVEAL_THEME}}.css" />
-    <link rel="stylesheet" href="/static/styles/base.css" />
-    <link rel="stylesheet" href="/static/styles/presentation.css" />
+    <link rel="stylesheet" href="{{REVEAL_RESET_HREF}}" />
+    <link rel="stylesheet" href="{{REVEAL_CSS_HREF}}" />
+    <link rel="stylesheet" href="{{REVEAL_THEME_HREF}}" />
+    <link rel="stylesheet" href="{{BASE_CSS_HREF}}" />
+    <link rel="stylesheet" href="{{PRESENTATION_CSS_HREF}}" />
     {{EXTRA_STYLES}}
   </head>
   <body class="presentation-shell">
@@ -31,11 +31,12 @@
       </div>
     </div>
 
-    <script src="/reveal/dist/reveal.js"></script>
-    <script src="/reveal/plugin/markdown/markdown.js"></script>
-    <script src="/reveal/plugin/notes/notes.js"></script>
-    <script src="/reveal/plugin/zoom/zoom.js"></script>
-    <script src="/static/scripts/presentation-runtime.js"></script>
+    <script src="{{REVEAL_SCRIPT_SRC}}"></script>
+    <script src="{{REVEAL_MARKDOWN_SCRIPT_SRC}}"></script>
+    <script src="{{REVEAL_NOTES_SCRIPT_SRC}}"></script>
+    <script src="{{REVEAL_ZOOM_SCRIPT_SRC}}"></script>
+    <script src="{{PRESENTATION_RUNTIME_SRC}}"></script>
+    <script src="{{ASCII_MORPH_VENDOR_SRC}}"></script>
     {{EXTRA_SCRIPTS}}
     <script>
       const revealConfig = {{REVEAL_CONFIG}};

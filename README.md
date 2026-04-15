@@ -162,6 +162,26 @@ This repo uses `yarn` for package manager commands.
    - `http://localhost:4100/`
    - `http://localhost:4100/presentation/example`
 
+## Build static export
+
+Generate a static bundle for Pages-style hosting:
+
+```bash
+yarn build:static
+```
+
+This writes the site to `dist/`.
+
+- homepage: `dist/index.html`
+- deck routes: `dist/presentation/<presentation-name>/index.html`
+- assets: `dist/static/`, `dist/content/`, `dist/reveal/`, `dist/vendor/`
+
+If you also want extra markdown entry routes, set:
+
+```bash
+STATIC_EXPORT_ALL_MARKDOWN=true yarn build:static
+```
+
 ## Environment variables
 
 The project reads `.env` automatically.

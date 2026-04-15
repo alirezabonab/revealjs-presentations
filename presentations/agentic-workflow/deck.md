@@ -680,27 +680,44 @@
 
 ---
 
-
 ```text
-┌───────────────────────────────────────────────────────────────────┐
-│                  WHAT DOES IT ACTUALLY COST?                       │
-└───────────────────────────────────────────────────────────────────┘
-
-
-                         CODEX                CLAUDE
-                       (ChatGPT)               CODE
-     ─────────────────────────────────────────────────────
-
-     $20/mo             150 msgs / 5h       ~45 prompts
-
-     $100/mo            10x standard         5x standard
-
-     $200/mo            20x standard        20x standard
+ 
+                
+    ┌───────────────────────────────────────────────────────────────────┐
+    │              SUBSCRIPTION COSTS  (official plans)                 │
+    └───────────────────────────────────────────────────────────────────┘
 
 
 
-     both include chat, code, and agent features
+
+
+                  OPENAI              ANTHROPIC            CURSOR
+                  ChatGPT + Codex     Claude Code          IDE + agents
+   ───────────────────────────────────────────────────────────────────
+
+   $20 / mo       Plus                Pro                  Pro
+                  expanded Codex      includes Claude      $20 included
+                  usage               Code                 usage + bonus
+
+   $60 / mo       -                   -                    Pro+
+                                                           3x usage
+
+   $100 / mo      Pro                 Max 5x               -
+                  5x limits           5x usage
+
+   $200 / mo      Pro                 Max 20x              Ultra
+                  20x limits          20x usage            20x usage
+
 ```
+
+Note:
+Sources:
+- OpenAI Help: https://help.openai.com/en/articles/9793128-about-chatgpt-pro-plans
+- OpenAI Help: https://help.openai.com/en/articles/11369540-codex-in-chatgpt-faq
+- Anthropic pricing: https://claude.com/pricing
+- Anthropic help: https://support.anthropic.com/en/articles/11014257-about-claude-s-max-plan-usage
+- Cursor pricing: https://cursor.com/pricing
+- Cursor docs: https://cursor.com/docs/account/rate-limits
 
 --
 
@@ -708,24 +725,97 @@
 
 ```text
 ┌───────────────────────────────────────────────────────────────────┐
-│                    API RATES  (PAY-AS-YOU-GO)                     │
+│                  THE HIDDEN SUBSIDY  ($20 PLAN)                   │
 └───────────────────────────────────────────────────────────────────┘
 
 
-     MODEL                   INPUT              OUTPUT
+     what $20/mo actually buys you in raw API value:
+
+
+                          CODEX (Plus)   CLAUDE (Pro)
      ─────────────────────────────────────────────────────
 
-     Codex mini             $1.50 / M           $6.00 / M
-     GPT-5                  $1.25 / M          $10.00 / M
+     daily API value              ~$12            ~$6
 
-     Sonnet 4.6             $3.00 / M          $15.00 / M
-     Opus 4.6               $5.00 / M          $25.00 / M
+     monthly API value           ~$360          ~$180
+
+     effective ROI                18:1            9:1
 
 
 
-     under 50M tokens/mo    -->   API is cheaper
-     over  50M tokens/mo    -->   $200 plan saves thousands
+     why the gap?
+     Claude burns 3-4x more tokens per task
+     (12K system prompt vs 2K, re-reads full history each turn)
 ```
+
+Note:
+Based on 2026 usage data. A 10-hour Codex session costs ~$90 in raw API fees but the subscription covers it. Claude's higher token burn comes from its 12K system prompt and full context re-read pattern. Codex is 4x more token-efficient, meaning the $20 tier lasts longer for heavy daily work.
+
+--
+
+<!-- ## Slide (Section: cost-high-tier) -->
+
+```text
+┌───────────────────────────────────────────────────────────────────┐
+│            THE $100 AND $200 PLANS  -  WHERE IT GETS WILD         │
+└───────────────────────────────────────────────────────────────────┘
+
+
+                         CODEX (Pro)      CLAUDE (Max)
+     ─────────────────────────────────────────────────────
+
+     $100/mo API value        ~$1,800           ~$900
+
+     $200/mo API value        ~$7,200         ~$3,600
+
+     ROI at $200/mo              36:1            18:1
+
+
+
+     real example:
+     one dev used 10 billion tokens on $200 Claude
+     over 8 months.  raw API cost: ~$15,000.
+     subscription saved 93%.
+```
+
+Note:
+OpenAI launched the $100 tier on April 9, 2026 to compete with Anthropic's Max 5x. For a limited time through May 31, 2026, the $100 plan offers 10x usage (effectively the $200 capacity for half price). The $200 Claude Max tier allows ~800 prompts per 5-hour window. Codex $200 provides up to 3,000 local messages per 5 hours.
+
+--
+
+<!-- ## Slide (Section: cost-subsidy-cliff) -->
+
+```text
+┌───────────────────────────────────────────────────────────────────┐
+│                    THE SUBSIDY CLIFF  (APRIL 2026)                │
+└───────────────────────────────────────────────────────────────────┘
+
+
+     subscriptions only cover first-party tools now.
+
+     third-party agents (OpenClaw, aider) need an API key
+     cost: $1,000 - $5,000 / month for autonomous agents
+
+
+
+     the smartest budget split for teams:
+
+     ┌──────────────────────────────────────────────────┐
+     │                                                  │
+     │  Codex  $200   heavy implementation, PR review   │
+     │  Claude $100   architecture, design, frontend    │
+     │                                                  │
+     │  total: $300/dev/mo  for both strengths          │
+     │                                                  │
+     └──────────────────────────────────────────────────┘
+
+
+     Codex = more code per dollar  (4x token efficiency)
+     Claude = better thinking per dollar  (reasoning-first)
+```
+
+Note:
+As of April 4, 2026, Anthropic ended the quiet subsidy for third-party frameworks. The $300/dev/mo hybrid is the emerging best practice. Codex handles volume (4x token-efficient) while Claude handles complexity (superior reasoning). Peak-hour throttling may occur 5 AM - 11 AM PT on subscription tiers.
 
 
 
@@ -741,82 +831,6 @@
 ---
 
 
-
-<pre class="ascii-morph-stage" data-ascii-morph="workflow-slider"><code>                         ┌──────────────────────────────────────── Agentic Workflow ──────────────────────────────────────┐
-                         │                                                                                                │
-                         │ ┌── Context ───────────────────────────────────────────────────────────────────────────────┐   │
-                         │ │                                                                                          │   │
-                         │ │      Specs                                                                               │   │
-                         │ │      Code                                                                                │   │
-  Requests,              │ │      Docs                      ┌── Rules ────────────────────────────────────────────┐   │   │
-  Feedback,              │ │      Decisions                 │                                                     │   │   │
-  Bugs,               ◄────────►  Tickets                 ◄───►  Automations    ┌── Agents ───────────────────┐   │   │   │
-  Requirements,          │ │      Patterns                  │    Skills         │                             │   │   │   │
-  User stories           │ │                                │    Permissions   ◄──►       [█████████]         ◄──────────────► Output
-                         │ │                                │                   │                             │   │   │   │
-                         │ │                                │                   └─────────────────────────────┘   │   │   │
-                         │ │                                └─────────────────────────────────────────────────────┘   │   │
-                         │ │                                                                                          │   │
-                         │ └──────────────────────────────────────────────────────────────────────────────────────────┘   │
-                         │                                                                                                │
-                         └────────────────────────────────────────────────────────────────────────────────────────────────┘</code></pre>
-
---
-
-```text
-
-                                             AGENT COMPONENTS
-
-
-                        👤 PM / Developer
-                               │
-                               │  intent
-                               ▼
-    ┌───────────────────────────────────────────────────────────┐
-    │                                                           │
-    │   SKILLS tell the agent                                   │
-    │   ─────────────────────────────────────────────────       │
-    │   "Follow our ticket format, use acceptance criteria,     │
-    │    name branches like this..."                            │
-    │                                                           │      
-    │                                                           │      
-    │                                                           │      
-    │                                                           │      
-    │       ┌───────────────────────────────────────────┐       │    
-    │       │                                           │       │    
-    │       │   MCP connects to                         │       │    
-    │       │   ─────────────────────────────────       │       │    
-    │       │   Jira · GitHub · Slack · DB · Docs       │       │              Skills  =  HOW we work
-    │       │                                           │       │              MCP     =  WHERE to connect
-    │       │                                           │       │              Tools   =  WHAT to execute
-    │       │                                           │       │              Plugins =  All of the above for reuse
-    │       │                                           │       │
-    │       │       ┌───────────────────────────┐       │       │
-    │       │       │                           │       │       │
-    │       │       │                           │       │       │
-    │       │       │   TOOLS                   │       │       │
-    │       │       │   ─────────────────────   │       │       │
-    │       │       │   read · write · create   │       │       │
-    │       │       │   search · update · call  │       │       │
-    │       │       │                           │       │       │
-    │       │       │                           │       │       │
-    │       │       │                           │       │       │
-    │       │       │                           │       │       │
-    │       │       └───────────────────────────┘       │       │
-    │       │                                           │       │
-    │       └───────────────────────────────────────────┘       │
-    │                                                           │
-    │                                                           │
-    │                                                           │
-    └──────────────────────────┬────────────────────────────────┘
-                               │
-                               ▼
-                            OUTPUT
-                     tickets · code · docs
-
-```
-
---
 
 ```text
     VIBE CODING
@@ -886,11 +900,87 @@
 --
 
 ```text
-    Enterprises don't need faster chaos.
-    They need structured speed.
+    Enterprise doesn't need faster chaos.
+    It needs structured speed.
 ```
 
 ---
+
+```text
+
+
+                            intent
+                               │
+                               │  
+                               ▼
+    ┌───────────────────────────────────────────────────────────┐
+    │                                                           │
+    │   SKILLS tell the agent                                   │
+    │   ─────────────────────────────────────────────────       │
+    │   "Follow our ticket format, use acceptance criteria,     │
+    │    name branches like this..."                            │
+    │                                                           │      
+    │                                                           │      
+    │                                                           │      
+    │                                                           │      
+    │       ┌───────────────────────────────────────────┐       │    
+    │       │                                           │       │    
+    │       │   MCP connects to                         │       │    
+    │       │   ─────────────────────────────────       │       │    
+    │       │   Jira · GitHub · Slack · DB · Docs       │       │              Skills  =  HOW we work
+    │       │                                           │       │              MCP     =  WHERE to connect
+    │       │                                           │       │              Tools   =  WHAT to execute
+    │       │                                           │       │              Plugins =  All of the above for reuse
+    │       │                                           │       │
+    │       │       ┌───────────────────────────┐       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
+    │       │       │   TOOLS                   │       │       │
+    │       │       │   ─────────────────────   │       │       │
+    │       │       │   read · write · create   │       │       │
+    │       │       │   search · update · call  │       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
+    │       │       │                           │       │       │
+    │       │       └───────────────────────────┘       │       │
+    │       │                                           │       │
+    │       └───────────────────────────────────────────┘       │
+    │                                                           │
+    │                                                           │
+    │                                                           │
+    └──────────────────────────┬────────────────────────────────┘
+                               │
+                               ▼
+                            OUTPUT
+                     tickets · code · docs
+
+```
+
+--
+
+
+<pre class="ascii-morph-stage" data-ascii-morph="workflow-slider"><code>                         ┌──────────────────────────────────────── Agentic Workflow ──────────────────────────────────────┐
+                         │                                                                                                │
+                         │ ┌── Context ───────────────────────────────────────────────────────────────────────────────┐   │
+                         │ │                                                                                          │   │
+                         │ │      Specs                                                                               │   │
+                         │ │      Code                                                                                │   │
+  Requests,              │ │      Docs                      ┌── Rules ────────────────────────────────────────────┐   │   │
+  Feedback,              │ │      Decisions                 │                                                     │   │   │
+  Bugs,               ◄────────►  Tickets                 ◄───►  Automations    ┌── Agents ───────────────────┐   │   │   │
+  Requirements,          │ │      Patterns                  │    Skills         │                             │   │   │   │
+  User stories           │ │                                │    Permissions   ◄──►       [█████████]         ◄──────────────► Output
+                         │ │                                │                   │                             │   │   │   │
+                         │ │                                │                   └─────────────────────────────┘   │   │   │
+                         │ │                                └─────────────────────────────────────────────────────┘   │   │
+                         │ │                                                                                          │   │
+                         │ └──────────────────────────────────────────────────────────────────────────────────────────┘   │
+                         │                                                                                                │
+                         └────────────────────────────────────────────────────────────────────────────────────────────────┘</code></pre>
+
+---
+
 
 ```text
          ┌──────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────┐  ┌─────────┐  ┌──────────┐
@@ -993,35 +1083,34 @@
        That is the whole loop.
 ```
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │              [1] SPEC  ─  CREATE THE SHARED PLAN              │
+    │              [1] EPIC  ─  HIGH LEVEL VISION                   │
     └───────────────────────────────────────────────────────────────┘
 
-    TRIGGER   Assigned an Epic / Requirement ticket.
-    OUTPUT    /docs/specs/PROJ-1234.md
-    PURPOSE   One parent ticket, one shared plan for child work.
+    TRIGGER   New feature request or business goal.
+    OUTPUT    Epic ticket in Jira.
+    PURPOSE   Define the "why" and the "what" at a high level.
 
 
     PROMPT SHAPE
     ─────────────────────────────────────────────────────────────────
 
-    > /spec PROJ-1234
+    > /epic
     >
-    > Read Epic / Requirement ticket PROJ-1234 from Jira.
-    > Draft /docs/specs/PROJ-1234.md with:
-    > - problem
-    > - proposed solution
-    > - API / data changes
-    > - acceptance criteria
-    > - open questions / risks
+    > Draft an Epic for "User Authentication".
+    > Include:
+    > - business value
+    > - target audience
+    > - high-level scope
+    > - success metrics
 
 
     ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: one parent ticket = one spec. Every child ticket     │
-    │  must point back to that file.                              │
+    │  RULE: Epics must be approved by product owners before      │
+    │  generating technical requirements.                         │
     └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -1029,51 +1118,65 @@
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │                 [1A] SPEC = THE DELTA                         │
+    │         [2] REQUIREMENT  ─  THE TECHNICAL SPEC                │
     └───────────────────────────────────────────────────────────────┘
 
-
-    WHAT WE WANT                                    WHAT WE HAVE
-    ────────────                                    ────────────
-
-    ┌──────────────────┐                    ┌──────────────────┐
-    │                  │                    │                  │
-    │  Ticket /        │                    │  Code on main    │
-    │  Requirement     │                    │                  │
-    │                  │                    │  current         │
-    │  desired         │                    │  behavior,       │
-    │  behavior,       │                    │  current         │
-    │  business need   │                    │  system          │
-    │                  │                    │                  │
-    └────────┬─────────┘                    └────────┬─────────┘
-             │                                       │
-             │              ┌───────┐                │
-             └─────────────►│  GAP  │◄───────────────┘
-                            └───┬───┘
-                                │
-                    ┌───────────▼───────────┐
-                    │                       │
-                    │     S P E C           │
-                    │                       │
-                    │  the exact delta      │
-                    │  from here to there   │
-                    │                       │
-                    └───────────┬───────────┘
-                                │
-                                ▼
-                    ┌───────────────────────┐
-                    │  Code + Tests + Merge │
-                    └───────────────────────┘
+    TRIGGER   Approved Epic.
+    OUTPUT    Technical Requirement document / ticket.
+    PURPOSE   Bridge the gap between business and engineering.
 
 
-    ═══════════════════════════════════════════════════════════════
-    The spec is not a wish list.  It is the measured gap
-    between what the ticket asks and what main has today.
-    Code is how we close that gap.  Nothing more.
+    PROMPT SHAPE
+    ─────────────────────────────────────────────────────────────────
+
+    > /requirement PROJ-1234
+    >
+    > Read Epic PROJ-1234.
+    > Draft technical requirements including:
+    > - proposed architecture
+    > - API / data models
+    > - security constraints
+    > - edge cases to handle
+
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  RULE: Requirements define the boundaries. They do not      │
+    │  write the code, they constrain it.                         │
+    └─────────────────────────────────────────────────────────────┘
 ```
 
 --
 
+```text
+    ┌───────────────────────────────────────────────────────────────┐
+    │             [3] TICKET  ─  ACTIONABLE TASKS                   │
+    └───────────────────────────────────────────────────────────────┘
+
+    TRIGGER   Approved Technical Requirement.
+    OUTPUT    Ready-to-work Jira tickets.
+    PURPOSE   Break the work down into assignable chunks.
+
+
+    PROMPT SHAPE
+    ─────────────────────────────────────────────────────────────────
+
+    > /ticket PROJ-1235
+    >
+    > Read Requirement PROJ-1235.
+    > Generate implementation tickets.
+    > For each ticket include:
+    > - context and parent link
+    > - clear acceptance criteria
+    > - testing requirements
+
+
+    ┌─────────────────────────────────────────────────────────────┐
+    │  RULE: A ticket must be small enough to be completed and    │
+    │  reviewed in a single PR.                                   │
+    └─────────────────────────────────────────────────────────────┘
+```
+
+--
 
 ```text
     ┌──────────────────────────────────────────────────────────────────────────────────────┐
@@ -1117,20 +1220,20 @@
                                        └──────────────┘                └────────────────┘
 ```
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │                  [2] CODING  ─  CONTEXT FIRST                 │
+    │                  [4] CODING  ─  CONTEXT FIRST                 │
     └───────────────────────────────────────────────────────────────┘
 
     Never start with "implement this" alone.
-    Give the agent the task, the parent, and the spec.
+    Give the agent the task, the parent, and the requirement.
 
          ┌──────────────────────┐
          │ 1. Task ticket       │  what changed now
          │ 2. Parent ticket     │  why it exists
-         │ 3. Spec file         │  how it should fit
+         │ 3. Requirement       │  how it should fit
          └──────────┬───────────┘
                     │
                     ▼
@@ -1145,10 +1248,10 @@
     > Context:
     > - Task: PROJ-1234-subtask-01
     > - Parent: PROJ-1234
-    > - Spec: /docs/specs/PROJ-1234.md
+    > - Requirement: /docs/reqs/PROJ-1234.md
     >
     > Implement only this task.
-    > Follow the spec.
+    > Follow the requirement.
     > Add tests for new behavior.
 
 
@@ -1158,11 +1261,11 @@
 
 ```
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │          [3] LOCAL REVIEW  ─  SAME CONTEXT, NEW LENS          │
+    │          [5] LOCAL REVIEW  ─  SAME CONTEXT, NEW LENS          │
     └───────────────────────────────────────────────────────────────┘
 
     Review is not for style nits.
@@ -1173,7 +1276,7 @@
          │ Branch diff          │  what changed
          │ Task ticket          │  what was asked
          │ Parent ticket        │  why it exists
-         │ Spec file            │  what was agreed
+         │ Requirement          │  what was agreed
          └──────────┬───────────┘
                     │
                     ▼
@@ -1188,7 +1291,7 @@
     > Review this branch against:
     > - task ticket
     > - parent ticket
-    > - /docs/specs/PROJ-1234.md
+    > - /docs/reqs/PROJ-1234.md
     >
     > Check for:
     > - logic mistakes
@@ -1206,13 +1309,8 @@
 --
 
 ```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │        [3A] SUBAGENT REVIEW  ─  SIX LENSES                    │
-    └───────────────────────────────────────────────────────────────┘
-
-
                    📦 PINNED REVIEW UNIT
-               (ticket + spec + diff + proof)
+               (ticket + req + diff + proof)
                              │
                              ▼
                              🤖
@@ -1237,11 +1335,11 @@
        Together they cut blind spots.
 ```
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │         [4] QA  ─  TEST THE APP, NOT JUST THE DIFF            │
+    │         [6] QA  ─  TEST THE APP, NOT JUST THE DIFF            │
     └───────────────────────────────────────────────────────────────┘
 
     Use Playwright MCP when acceptance depends on real behavior.
@@ -1260,7 +1358,7 @@
     >
     > Context:
     > - Task: PROJ-1234-subtask-01
-    > - Spec: /docs/specs/PROJ-1234.md
+    > - Requirement: /docs/reqs/PROJ-1234.md
     > - URL: http://localhost:3000
     >
     > Open the app in the browser.
@@ -1276,56 +1374,11 @@
 
 ```
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │        [5] NEW TICKETS  ─  PROTECT THE CURRENT SCOPE          │
-    └───────────────────────────────────────────────────────────────┘
-
-    Agents will find extra work.
-    That does not mean the current ticket should absorb it.
-
-    FOUND DURING WORK
-    - unrelated bug
-    - tech debt
-    - follow-up improvement
-    - "while we're here..." scope
-
-
-    ACTION
-    - create backlog ticket
-    - link parent Epic
-    - keep current branch focused
-
-
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /ticket
-    >
-    > While working on PROJ-1234-subtask-01, I found:
-    > [describe the issue]
-    >
-    > Create a backlog ticket with:
-    > - clear title
-    > - impact / reproduction
-    > - link to Epic PROJ-1234
-    > - suggested priority
-    > - acceptance criteria
-
-
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: scope creep goes to backlog, not the current         │
-    │  branch.                                                    │
-    └─────────────────────────────────────────────────────────────┘
-```
-
----
-
-```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │               [6] ADR  ─  WRITE DOWN THE WHY                  │
+    │               [7] ADR  ─  WRITE DOWN THE WHY                  │
     └───────────────────────────────────────────────────────────────┘
 
     Code shows what changed.
@@ -1343,7 +1396,7 @@
     > Context:
     > - Branch: feature/PROJ-1234-subtask-01
     > - Task: PROJ-1234-subtask-01
-    > - Spec: /docs/specs/PROJ-1234.md
+    > - Requirement: /docs/reqs/PROJ-1234.md
     >
     > Write an ADR with:
     > - context
@@ -1361,18 +1414,18 @@
 
 ```
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │                  [7] PR REVIEW  ─  FINAL AUDIT                │
+    │                  [8] PR REVIEW  ─  FINAL AUDIT                │
     └───────────────────────────────────────────────────────────────┘
 
     By PR time, the branch should already have:
-    spec + code + local review + QA + ADR
+    req + code + local review + QA + ADR
 
 
-       spec -> code -> local review -> QA / ADR -> PR -> GH review
+       req -> code -> local review -> QA / ADR -> PR -> GH review
 
 
     PR AGENT SHOULD FIND
@@ -1390,7 +1443,7 @@
 
     > Review this PR against:
     > - linked ticket context
-    > - spec file
+    > - requirement file
     > - ADR
     >
     > Check for:

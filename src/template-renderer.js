@@ -94,10 +94,10 @@ function renderThemeToggle() {
   </button>`;
 }
 
-function renderPresentationItems(presentations) {
+function renderPresentationItems(presentations, presentationBasePath, presentationIndexPathname) {
   return presentations
     .map((presentation) => {
-      const defaultRoute = `/presentation/${presentation.name}`;
+      const defaultRoute = `${presentationBasePath}/${presentation.name}${presentationIndexPathname}`;
 
       return `
         <article class="index-card">
@@ -112,22 +112,53 @@ function renderPresentationItems(presentations) {
     .join("");
 }
 
-export async function renderIndexPage({ indexTitle, presentations }) {
+export async function renderIndexPage({
+  indexTitle,
+  presentations,
+  urls = {}
+}) {
   const template = await loadTemplate("index.html");
+  const faviconHref = urls.faviconHref ?? "/static/favicon.svg";
+  const baseCssHref = urls.baseCssHref ?? "/static/styles/base.css";
+  const indexCssHref = urls.indexCssHref ?? "/static/styles/index.css";
+  const presentationBasePath = urls.presentationBasePath ?? "/presentation";
+  const presentationIndexPathname = urls.presentationIndexPathname ?? "/";
 
   return injectTokens(template, {
     PAGE_TITLE: escapeHtml(indexTitle),
+    FAVICON_HREF: faviconHref,
+    BASE_CSS_HREF: baseCssHref,
+    INDEX_CSS_HREF: indexCssHref,
     INDEX_TITLE: escapeHtml(indexTitle),
     PRESENTATION_COUNT: String(presentations.length),
     PRESENTATION_LABEL: presentations.length === 1 ? "presentation" : "presentations",
-    PRESENTATION_ITEMS: renderPresentationItems(presentations),
+    PRESENTATION_ITEMS: renderPresentationItems(
+      presentations,
+      presentationBasePath,
+      presentationIndexPathname
+    ),
     THEME_BOOT_SCRIPT: renderThemeBootScript(),
     THEME_TOGGLE: renderThemeToggle()
   });
 }
 
-export async function renderPresentationPage(presentation) {
+export async function renderPresentationPage(presentation, urls = {}) {
   const template = await loadTemplate("presentation.html");
+  const faviconHref = urls.faviconHref ?? "/static/favicon.svg";
+  const revealResetHref = urls.revealResetHref ?? "/reveal/dist/reset.css";
+  const revealCssHref = urls.revealCssHref ?? "/reveal/dist/reveal.css";
+  const revealThemeHref =
+    urls.revealThemeHref ?? `/reveal/dist/theme/${presentation.theme}.css`;
+  const baseCssHref = urls.baseCssHref ?? "/static/styles/base.css";
+  const presentationCssHref = urls.presentationCssHref ?? "/static/styles/presentation.css";
+  const revealScriptSrc = urls.revealScriptSrc ?? "/reveal/dist/reveal.js";
+  const revealMarkdownScriptSrc =
+    urls.revealMarkdownScriptSrc ?? "/reveal/plugin/markdown/markdown.js";
+  const revealNotesScriptSrc = urls.revealNotesScriptSrc ?? "/reveal/plugin/notes/notes.js";
+  const revealZoomScriptSrc = urls.revealZoomScriptSrc ?? "/reveal/plugin/zoom/zoom.js";
+  const presentationRuntimeSrc =
+    urls.presentationRuntimeSrc ?? "/static/scripts/presentation-runtime.js";
+  const asciiMorphVendorSrc = urls.asciiMorphVendorSrc ?? "/vendor/ascii-morph.js";
   const extraStyles = presentation.styles
     .map((href) => `<link rel="stylesheet" href="${href}" />`)
     .join("\n");
@@ -137,11 +168,22 @@ export async function renderPresentationPage(presentation) {
 
   return injectTokens(template, {
     PAGE_TITLE: escapeHtml(presentation.title),
-    REVEAL_THEME: escapeHtml(presentation.theme),
+    FAVICON_HREF: faviconHref,
+    REVEAL_RESET_HREF: revealResetHref,
+    REVEAL_CSS_HREF: revealCssHref,
+    REVEAL_THEME_HREF: revealThemeHref,
+    BASE_CSS_HREF: baseCssHref,
+    PRESENTATION_CSS_HREF: presentationCssHref,
     EXTRA_STYLES: extraStyles,
     EXTRA_SCRIPTS: extraScripts,
     MARKDOWN_SOURCE: escapeMarkdownTemplate(presentation.markdown),
     REVEAL_CONFIG: JSON.stringify(presentation.reveal, null, 2),
+    REVEAL_SCRIPT_SRC: revealScriptSrc,
+    REVEAL_MARKDOWN_SCRIPT_SRC: revealMarkdownScriptSrc,
+    REVEAL_NOTES_SCRIPT_SRC: revealNotesScriptSrc,
+    REVEAL_ZOOM_SCRIPT_SRC: revealZoomScriptSrc,
+    PRESENTATION_RUNTIME_SRC: presentationRuntimeSrc,
+    ASCII_MORPH_VENDOR_SRC: asciiMorphVendorSrc,
     THEME_BOOT_SCRIPT: renderThemeBootScript(),
     THEME_TOGGLE: renderThemeToggle()
   });

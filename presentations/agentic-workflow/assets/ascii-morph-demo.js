@@ -328,7 +328,11 @@
   const pause = (timeMs) => new Promise((resolve) => window.setTimeout(resolve, timeMs));
 
   async function mountAsciiMorphStages() {
-    const { default: AsciiMorph } = await import("/vendor/ascii-morph.js");
+    const AsciiMorph = window.AsciiMorph;
+
+    if (!AsciiMorph) {
+      return;
+    }
 
     document.querySelectorAll("[data-ascii-morph]").forEach((element) => {
       if (mountedStages.has(element)) {

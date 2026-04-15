@@ -70,10 +70,10 @@ function normalizeEntryName(entryName) {
   return normalized;
 }
 
-function normalizeAssetList(presentationName, items = []) {
+function normalizeAssetList(presentationName, items = [], contentBasePath = "/content") {
   return items.map((item) => {
     const normalized = normalizePresentationAssetPath(item);
-    return `/content/${presentationName}/${normalized}`;
+    return `${contentBasePath}/${presentationName}/${normalized}`;
   });
 }
 
@@ -98,7 +98,13 @@ export async function listPresentations(presentationsRoot) {
   return presentations.sort((left, right) => left.name.localeCompare(right.name));
 }
 
-export async function loadPresentation(presentationsRoot, presentationName, requestedEntryName) {
+export async function loadPresentation(
+  presentationsRoot,
+  presentationName,
+  requestedEntryName,
+  options = {}
+) {
+  const contentBasePath = options.contentBasePath ?? "/content";
   const presentationDir = path.join(presentationsRoot, presentationName);
 
   const stats = await fs.stat(presentationDir).catch(() => null);
@@ -128,15 +134,20 @@ export async function loadPresentation(presentationsRoot, presentationName, requ
     entry
   });
   const markdownRelativePath = path.posix.normalize(entry.split(path.sep).join(path.posix.sep));
-  const markdown = rewriteMarkdownAssetUrls(rawMarkdown, presentationName, markdownRelativePath);
+  const markdown = rewriteMarkdownAssetUrls(
+    rawMarkdown,
+    presentationName,
+    markdownRelativePath,
+    contentBasePath
+  );
 
   return {
     name: presentationName,
     title: config.title,
     markdown,
     theme: config.theme,
-    styles: normalizeAssetList(presentationName, config.styles),
-    scripts: normalizeAssetList(presentationName, config.scripts),
+    styles: normalizeAssetList(presentationName, config.styles, contentBasePath),
+    scripts: normalizeAssetList(presentationName, config.scripts, contentBasePath),
     reveal: config.reveal,
     entry
   };
