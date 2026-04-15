@@ -1089,25 +1089,29 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │         DEFINE THE WORK  ─  EPIC / REQUIREMENT / TICKET       │
+    │          DEFINE THE WORK  ─  EPIC / REQUIREMENT / TICKET      │
     └───────────────────────────────────────────────────────────────┘
 
+    BEFORE   PM writes epic. Dev breaks down tickets.
+             Weeks of ping-pong.
 
-    BEFORE: PM writes epic. Dev breaks down tickets. Weeks of ping-pong.
-    AFTER:  PM defines intent. Agent drafts all tickets. PM approves.
+    AFTER    PM defines intent. Agent drafts all three.
+             PM reviews and approves.
 
+    ─────────────────────────────────────────────────────────────────
 
-         ┌─────────┐     ┌─────────────┐     ┌──────────┐
-         │  Epic   │────►│ Requirement │────►│ Tickets  │
-         │ the why │     │ the how     │     │ the work │
-         └─────────┘     └─────────────┘     └──────────┘
-              ▲                 ▲                  ▲
-              │                 │                  │
-           👤 approve        👤 approve         👤 approve
-
+         ┌────────────┐       ┌────────────┐       ┌────────────┐
+         │            │       │            │       │            │
+         │    EPIC    │──────►│    REQ     │──────►│  TICKETS   │
+         │            │       │            │       │            │
+         │  the why   │       │  the how   │       │  the work  │
+         │            │       │            │       │            │
+         └─────┬──────┘       └─────┬──────┘       └─────┬──────┘
+               │                    │                    │
+            👤 approve           👤 approve           👤 approve
 
     ╔═════════════════════════════════════════════════════════════╗
-    ║  The agent writes. The human owns the decisions.            ║
+    ║  The agent writes.  The human owns the decisions.           ║
     ╚═════════════════════════════════════════════════════════════╝
 ```
 
@@ -1115,27 +1119,36 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │                  WRITE THE CODE  ─  CONTEXT FIRST             │
+    │               WRITE THE CODE  ─  CONTEXT FIRST                │
     └───────────────────────────────────────────────────────────────┘
 
+    BEFORE   Dev gets ticket. Asks 10 questions.
+             Reads 5 docs. Then starts coding.
 
-    BEFORE: Dev gets ticket. Asks 10 questions. Reads 5 docs. Codes.
-    AFTER:  Agent gets ticket + parent + requirement. Codes instantly.
+    AFTER    Agent gets ticket + parent + requirement.
+             Context is built in. Codes right away.
 
+    ─────────────────────────────────────────────────────────────────
 
-         ┌──────────────────────┐
-         │ Task ticket          │  what to build
-         │ Parent ticket        │  why it exists
-         │ Requirement          │  how it should fit
-         └──────────┬───────────┘
-                    │
-                    ▼
-              🤖 writes code
-              that fits the system
-
+              ┌─────────────────────────────────────┐
+              │                                     │
+              │   Task ticket      what to build    │
+              │   Parent ticket    why it exists     │
+              │   Requirement      how it should fit │
+              │                                     │
+              └──────────────────┬──────────────────┘
+                                 │
+                                 ▼
+                      ┌─────────────────────┐
+                      │                     │
+                      │   agent writes code │
+                      │   that fits the     │
+                      │   system            │
+                      │                     │
+                      └─────────────────────┘
 
     ╔═════════════════════════════════════════════════════════════╗
-    ║  No context, no code. Context is the input.                 ║
+    ║  No context, no code.  Context is the input.               ║
     ╚═════════════════════════════════════════════════════════════╝
 ```
 
@@ -1143,22 +1156,27 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │              CATCH PROBLEMS EARLY  ─  REVIEW + QA             │
+    │             CATCH PROBLEMS EARLY  ─  REVIEW + QA              │
     └───────────────────────────────────────────────────────────────┘
 
+    BEFORE   PR review discovers bugs. QA is manual and late.
 
-    BEFORE: PR review discovers bugs. QA is manual and late.
-    AFTER:  Agent reviews locally. Agent QAs in browser.
+    AFTER    Agent reviews locally. Agent QAs in browser.
+             Problems caught at the source, not the finish line.
 
+    ─────────────────────────────────────────────────────────────────
 
-     LOCAL REVIEW                         QA
-     ────────────                         ──
-     Did this branch solve               Does the app actually
-     the right problem?                  work for the user?
-
-     Checks: logic, scope,              Checks: happy path,
-     missing tests, drift               edge cases, real clicks
-
+     ┌────────────────────────────┐   ┌────────────────────────────┐
+     │       LOCAL REVIEW         │   │            QA              │
+     ├────────────────────────────┤   ├────────────────────────────┤
+     │                            │   │                            │
+     │  Did this branch solve     │   │  Does the app actually     │
+     │  the right problem?        │   │  work for the user?        │
+     │                            │   │                            │
+     │  logic    scope            │   │  happy path   edge cases   │
+     │  tests    drift            │   │  real clicks  real waits   │
+     │                            │   │                            │
+     └────────────────────────────┘   └────────────────────────────┘
 
     ╔═════════════════════════════════════════════════════════════╗
     ║  PR review should confirm quality, not discover basics.     ║
@@ -1168,42 +1186,63 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 --
 
 ```text
-                   📦  CODE REVIEW UNIT
-               (ticket + req + diff + proof)
-                             │
-                             ▼
-      ┌───────────────────────────────────────────────────────────────┐
-      │                     6 PARALLEL SUBAGENTS                      │
-      ├───────────────────────────────────────────────────────────────┤
-      │  [ Contract ]       ──► APIs, Interfaces                      │
-      │  [ Correctness ]    ──► Business Logic, Edge Cases            │
-      │  [ State ]          ──► DB, Migrations                        │
-      │  [ Resilience ]     ──► Performance, Timeouts                 │
-      │  [ Security ]       ──► Auth, Leaks                           │
-      │  [ Verification ]   ──► Tests, Evidence                       │
-      └──────────────────────┬────────────────────────────────────────┘
-                             │
-                             ▼
-             🎯 CODE REVIEW FINDINGS & SIGNAL
+    ┌───────────────────────────────────────────────────────────────┐
+    │                  CODE REVIEW  ─  6 PARALLEL LENSES            │
+    └───────────────────────────────────────────────────────────────┘
+
+                      ticket + req + diff + proof
+                                  │
+                                  ▼
+    ┌───────────────────────────────────────────────────────────────┐
+    │                                                               │
+    │   Contract        ──►  APIs, compatibility, interfaces        │
+    │                                                               │
+    │   Correctness     ──►  business logic, invariants, edges      │
+    │                                                               │
+    │   State           ──►  DB, persistence, migrations            │
+    │                                                               │
+    │   Resilience      ──►  performance, operability, timeouts     │
+    │                                                               │
+    │   Security        ──►  auth, privacy, leaks                   │
+    │                                                               │
+    │   Verification    ──►  tests, evidence, reproducibility       │
+    │                                                               │
+    └───────────────────────────────┬───────────────────────────────┘
+                                    │
+                                    ▼
+                        merged findings and signal
+                       (one lens each = less overlap)
 ```
+
 --
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │              PROTECT DECISIONS  ─  ADR + PR REVIEW            │
+    │             PROTECT DECISIONS  ─  ADR + PR REVIEW             │
     └───────────────────────────────────────────────────────────────┘
 
+    BEFORE   Decisions live in Slack threads and heads.
+             PR review is the only gate.
 
-    BEFORE: Decisions live in Slack. PR review is the only gate.
-    AFTER:  ADR written before merge. PR review is the final audit.
+    AFTER    ADR is written before merge. PR review
+             is the final audit, not the first check.
 
+    ─────────────────────────────────────────────────────────────────
 
-     ADR                                  PR REVIEW
-     ───                                  ─────────
-     Code shows what changed.             Branch already has: code,
-     ADR explains WHY this                local review, QA, and ADR.
-     design won.                          PR checks for scope drift.
-
+     ┌────────────────────────────┐   ┌────────────────────────────┐
+     │           ADR              │   │        PR REVIEW           │
+     ├────────────────────────────┤   ├────────────────────────────┤
+     │                            │   │                            │
+     │  Code shows WHAT changed.  │   │  By PR time the branch     │
+     │                            │   │  already has:              │
+     │  ADR explains WHY this     │   │                            │
+     │  change exists and WHY     │   │  code + local review       │
+     │  this design won.          │   │  + QA + ADR                │
+     │                            │   │                            │
+     │  Written before merge.     │   │  PR checks for gaps        │
+     │  After local review.       │   │  and scope drift.          │
+     │                            │   │                            │
+     └────────────────────────────┘   └────────────────────────────┘
 
     ╔═════════════════════════════════════════════════════════════╗
     ║  If the decision mattered, write it down.                   ║
