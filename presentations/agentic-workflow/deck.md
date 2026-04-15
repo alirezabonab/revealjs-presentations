@@ -94,11 +94,11 @@
                                Why? ──────────────────────────►
 ```
 
----
+--
 
 ![Presentation asset example](./assets/sarah-hired.png)
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
@@ -121,7 +121,7 @@
          what could go wrong?  ──────────────────────────────►
 ```
 
----
+--
 
 ```text
 
@@ -151,11 +151,11 @@
     ╚═════════════════════════════════════════════════════════════╝
 ```
 
----
+--
 
 ![Presentation asset example](./assets/sarah-upset.png)
 
----
+--
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
@@ -190,7 +190,7 @@
                          what happens next?  ─────────────────►
 ```
 
----
+--
 
 ```text
 
@@ -230,55 +230,16 @@
        
 ```
 
----
+--
 
 ![Presentation asset example](./assets/sarah-proud.png)
 
----
+--
 
 ```text
-    ┌──────────────────────────┐    ┌──────────────────────────┐
-    │     ✗  THE BAD WAY       │    │     ✓  THE GOOD WAY      │
-    ├──────────────────────────┤    ├──────────────────────────┤
-    │                          │    │                          │
-    │                          │    │                          │
-    │  "here's a laptop"       │    │  "here's your plan"      │
-    │                          │    │                          │
-    │  Week 1:  ?  (lost)      │    │  Week 1:  ✓  (oriented)  │
-    │  Week 2:  ~  (guessing)  │    │  Week 2:  ✓✓ (delivers)  │
-    │  Week 3:  ✗  (wrong)     │    │  Week 3:  ✓✓ (refines)   │
-    │  Week 4:  ✗✗ (rework)    │    │  Week 4:  ✓✓✓(owns it)   │
-    │                          │    │                          │
-    │                          │    │                          │
-    └──────────────────────────┘    └──────────────────────────┘
 
-     ══════════════════════════════════════════════════════════
-      Now replace 👤 with 🤖 ...  same story, same lesson.
-     ══════════════════════════════════════════════════════════
-```
+            Now replace 👤 with 🤖 ...  same story, same lesson.
 
----
-
-<!-- ## Slide (Section: human-vs-agent) -->
-
-```text
-┌───────────────────────────────────────────────────────────────┐
-│                  HUMAN VS AGENT MAPPING                       │
-└───────────────────────────────────────────────────────────────┘
-
-
-
-        👤 Human hire                    🤖 AI agent
-        -------------                    -----------
-
-        Onboarding       <--------->     Context / MCP
-
-        Clear task       <--------->     Prompt / intent
-         
-        Team standards   <--------->     Skill / template
-         
-        Feedback         <--------->     Validation / iteration
-          
 ```
 
 --
@@ -303,6 +264,30 @@
                                 │
                                 ▼
                         Unreliable Output
+```
+
+--
+
+<!-- ## Slide (Section: human-vs-agent) -->
+
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                  HUMAN VS AGENT MAPPING                       │
+└───────────────────────────────────────────────────────────────┘
+
+
+
+        👤 Human hire                    🤖 AI agent
+        -------------                    -----------
+
+        Onboarding       <--------->     Context / MCP
+
+        Clear task       <--------->     Prompt / intent
+         
+        Team standards   <--------->     Skill / template
+         
+        Feedback         <--------->     Validation / iteration
+          
 ```
 
 --
@@ -476,7 +461,7 @@
 
 ```text
 ┌───────────────────────────────────────────────────────────────────┐
-│                   HOW THEY TALK TO YOU                             │
+│                   HOW THEY TALK TO YOU                            │
 └───────────────────────────────────────────────────────────────────┘
 
 
@@ -621,7 +606,7 @@
 
 ```text
 ┌───────────────────────────────────────────────────────────────────┐
-│                     THE TRUST PARADOX                              │
+│                     THE TRUST PARADOX                             │
 └───────────────────────────────────────────────────────────────────┘
 
 
