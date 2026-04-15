@@ -129,8 +129,11 @@
   function fitAsciiStage(section, stage) {
     const code = stage.querySelector("code") ?? stage;
     const { width, height } = getAvailableStageBox(section);
-    const minimumSize = readCssPixels(document.documentElement, "--ascii-font-size-min", 8);
-    const maximumSize = readCssPixels(document.documentElement, "--ascii-font-size-max", 32);
+    const zoomScale = readCssPixels(document.documentElement, "--ascii-zoom-scale", 1);
+    const minimumSize =
+      readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8) * zoomScale;
+    const maximumSize =
+      readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32) * zoomScale;
     let low = minimumSize;
     let high = maximumSize;
     let bestSize = minimumSize;

@@ -65,11 +65,17 @@ kbd {
   font-family: var(--font-mono);
 }
 
-.theme-toggle {
+.presentation-toolbar {
   position: fixed;
   top: 12px;
   right: 12px;
   z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.presentation-control {
   display: inline-grid;
   place-items: center;
   width: 34px;
@@ -94,7 +100,7 @@ kbd {
     backdrop-filter 120ms ease;
 }
 
-.theme-toggle:hover {
+.presentation-control:hover {
   opacity: 1;
   transform: translateY(-1px);
   border-color: var(--panel-border);
@@ -103,7 +109,7 @@ kbd {
   backdrop-filter: blur(16px);
 }
 
-.theme-toggle:focus-visible {
+.presentation-control:focus-visible {
   opacity: 1;
   outline: 2px solid var(--accent);
   outline-offset: 2px;
@@ -111,6 +117,25 @@ kbd {
   background: var(--panel-bg);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
   backdrop-filter: blur(16px);
+}
+
+.presentation-control:disabled,
+.presentation-control:disabled:hover,
+.presentation-control:disabled:focus-visible {
+  opacity: 0.18;
+  cursor: default;
+  transform: none;
+  outline: none;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.presentation-control--text {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .theme-toggle__icon {

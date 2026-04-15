@@ -1,8 +1,11 @@
 :root {
   --slide-pad-inline: clamp(20px, 2.6vw, 38px);
   --slide-pad-block: clamp(52px, 7vh, 84px);
-  --ascii-font-size-min: 6px;
-  --ascii-font-size-max: 16px;
+  --ascii-font-size-min-base: 6px;
+  --ascii-font-size-max-base: 16px;
+  --ascii-zoom-scale: 1;
+  --ascii-font-size-min: calc(var(--ascii-font-size-min-base) * var(--ascii-zoom-scale));
+  --ascii-font-size-max: calc(var(--ascii-font-size-max-base) * var(--ascii-zoom-scale));
   --ascii-line-height: 1.08;
 }
 
@@ -272,7 +275,7 @@ body.presentation-shell {
   :root {
     --slide-pad-inline: 18px;
     --slide-pad-block: 44px;
-    --ascii-font-size-max: 16px;
+    --ascii-font-size-max-base: 16px;
   }
 }
 
@@ -280,7 +283,7 @@ body.presentation-shell {
   :root {
     --slide-pad-inline: 14px;
     --slide-pad-block: 32px;
-    --ascii-font-size-min: 5px;
-    --ascii-font-size-max: 15px;
+    --ascii-font-size-min-base: 5px;
+    --ascii-font-size-max-base: 15px;
   }
 }
