@@ -982,19 +982,19 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 
 ```text
-         ┌──────┐  ┌───────┐  ┌────────┐  ┌──────┐  ┌────────┐  ┌──────┐  ┌───────┐  ┌──────┐
-         │      │  │       │  │        │  │      │  │        │  │      │  │       │  │      │
-         │ Epic │─►│  Req  │─►│ Ticket │─►│ Code │─►│ Review │─►│  QA  │─►│  ADR  │─►│  PR  │
-         │      │  │       │  │        │  │      │  │        │  │      │  │       │  │      │
-         └──────┘  └───────┘  └────────┘  └──────┘  └────┬───┘  └──┬───┘  └───────┘  └──────┘
-              ▲                                          │         │
-              ╵                                          │         │
-           Backlog                                       │         │
-              ╷                                          │         │
-              │                ┌───────────────────┐     │         │
-              └────────────────┤    New Ticket     │◄────┘         │
-                               │  (Scope Control)  │◄──────────────┘
-                               └───────────────────┘
+         ┌────────┐      ┌────────┐      ┌────────┐      ┌────────┐      ┌────────┐
+         │        │      │        │      │        │      │        │      │        │
+         │ Ticket │─────►│  Code  │─────►│ Review │─────►│   QA   │─────►│   PR   │
+         │        │      │        │      │        │      │        │      │        │
+         └────────┘      └────────┘      └────┬───┘      └────┬───┘      └────────┘
+              ▲                               │               │
+              ╵                               │               │
+           Backlog                            │               │
+              ╷                               │               │
+              │          ┌──────────────────┐ │               │
+              └──────────┤    New Ticket    │◄┘               │
+                         │ (Scope Control)  │◄────────────────┘
+                         └──────────────────┘
 ```
 
 --
@@ -1031,21 +1031,24 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
 
-            👤🤖     🤖👤        🤖👤        🤖         👤🤖       🤖👤       🤖       🤖👤
-         ╔══════╗  ╔═══════╗  ╔════════╗  ╔════════╗  ╔════════╗  ╔══════╗  ╔═══════╗  ╔══════╗
-         ║      ║  ║       ║  ║        ║  ║        ║  ║        ║  ║      ║  ║       ║  ║      ║
-         ║ Epic ║─►║  Req  ║─►║ Ticket ║─►║  Code  ║─►║ Review ║─►║  QA  ║─►║  ADR  ║─►║  PR  ║
-         ║      ║  ║       ║  ║        ║  ║        ║  ║        ║  ║      ║  ║       ║  ║      ║
-         ╚══════╝  ╚═══════╝  ╚════════╝  ╚════════╝  ╚════════╝  ╚══╤═══╝  ╚═══════╝  ╚══════╝
-              ▲                                            │         │
-              ╵                                            │         │
-           Backlog                                         │         │
-              ╷                                            │         │
-              │                  ╔═══════════════════╗     │         │
-              └──────────────────╢   New Ticket      ║◄────┘         │
-                                 ║  (Scope Control)  ║◄──────────────┘
-                                 ╚═══════════════════╝
-                                          🤖👤
+           👤🤖     🤖👤        🤖👤           🤖          👤🤖       🤖👤       🤖       🤖👤
+                               ╔════════╗
+                             ┌►║        ║─┐
+                             │ ║ Ticket ║ │     
+         ╔══════╗  ╔═══════╗ │ ║        ║ │  ╔════════╗  ╔════════╗  ╔══════╗  ╔═══════╗  ╔══════╗
+         ║      ║  ║       ║ │ ╚════════╝ └─►║        ║  ║        ║  ║      ║  ║       ║  ║      ║
+         ║ Epic ║─►║  Req  ║─┤               ║  Code  ║─►║ Review ║─►║  QA  ║─►║  ADR  ║─►║  PR  ║
+         ║      ║  ║       ║ │ ╔════════╗ ┌─►║        ║  ║        ║  ║      ║  ║       ║  ║      ║
+         ╚══════╝  ╚═══════╝ │ ║        ║ │  ╚════════╝  ╚═══╤════╝  ╚══╤═══╝  ╚═══════╝  ╚══════╝
+              ▲              │ ║ Design ║ │                  │          │
+              ╵              └►║        ║─┘                  │          │
+           Backlog             ╚════════╝                    │          │
+              ╷                                              │          │
+              │                ╔═══════════════════╗         │          │
+              └────────────────╢   New Ticket      ║◄────────┘          │
+                               ║  (Scope Control)  ║◄───────────────────┘
+                               ╚═══════════════════╝
+                                        
 
 
 ```
@@ -1086,96 +1089,128 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │              [1] EPIC  ─  HIGH LEVEL VISION                   │
+    │         DEFINE THE WORK  ─  EPIC / REQUIREMENT / TICKET       │
     └───────────────────────────────────────────────────────────────┘
 
-    TRIGGER   New feature request or business goal.
-    OUTPUT    Epic ticket in Jira.
-    PURPOSE   Define the "why" and the "what" at a high level.
+
+    BEFORE: PM writes epic. Dev breaks down tickets. Weeks of ping-pong.
+    AFTER:  PM defines intent. Agent drafts all tickets. PM approves.
 
 
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /epic
-    >
-    > Draft an Epic for "User Authentication".
-    > Include:
-    > - business value
-    > - target audience
-    > - high-level scope
-    > - success metrics
+         ┌─────────┐     ┌─────────────┐     ┌──────────┐
+         │  Epic   │────►│ Requirement │────►│ Tickets  │
+         │ the why │     │ the how     │     │ the work │
+         └─────────┘     └─────────────┘     └──────────┘
+              ▲                 ▲                  ▲
+              │                 │                  │
+           👤 approve        👤 approve         👤 approve
 
 
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: Epics must be approved by product owners before      │
-    │  generating technical requirements.                         │
-    └─────────────────────────────────────────────────────────────┘
+    ╔═════════════════════════════════════════════════════════════╗
+    ║  The agent writes. The human owns the decisions.            ║
+    ╚═════════════════════════════════════════════════════════════╝
 ```
 
 --
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │         [2] REQUIREMENT  ─  THE TECHNICAL SPEC                │
+    │                  WRITE THE CODE  ─  CONTEXT FIRST             │
     └───────────────────────────────────────────────────────────────┘
 
-    TRIGGER   Approved Epic.
-    OUTPUT    Technical Requirement document / ticket.
-    PURPOSE   Bridge the gap between business and engineering.
+
+    BEFORE: Dev gets ticket. Asks 10 questions. Reads 5 docs. Codes.
+    AFTER:  Agent gets ticket + parent + requirement. Codes instantly.
 
 
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /requirement PROJ-1234
-    >
-    > Read Epic PROJ-1234.
-    > Draft technical requirements including:
-    > - proposed architecture
-    > - API / data models
-    > - security constraints
-    > - edge cases to handle
+         ┌──────────────────────┐
+         │ Task ticket          │  what to build
+         │ Parent ticket        │  why it exists
+         │ Requirement          │  how it should fit
+         └──────────┬───────────┘
+                    │
+                    ▼
+              🤖 writes code
+              that fits the system
 
 
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: Requirements define the boundaries. They do not      │
-    │  write the code, they constrain it.                         │
-    └─────────────────────────────────────────────────────────────┘
+    ╔═════════════════════════════════════════════════════════════╗
+    ║  No context, no code. Context is the input.                 ║
+    ╚═════════════════════════════════════════════════════════════╝
 ```
 
 --
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │             [3] TICKET  ─  ACTIONABLE TASKS                   │
+    │              CATCH PROBLEMS EARLY  ─  REVIEW + QA             │
     └───────────────────────────────────────────────────────────────┘
 
-    TRIGGER   Approved Technical Requirement.
-    OUTPUT    Ready-to-work Jira tickets.
-    PURPOSE   Break the work down into assignable chunks.
+
+    BEFORE: PR review discovers bugs. QA is manual and late.
+    AFTER:  Agent reviews locally. Agent QAs in browser.
 
 
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
+     LOCAL REVIEW                         QA
+     ────────────                         ──
+     Did this branch solve               Does the app actually
+     the right problem?                  work for the user?
 
-    > /ticket PROJ-1235
-    >
-    > Read Requirement PROJ-1235.
-    > Generate implementation tickets.
-    > For each ticket include:
-    > - context and parent link
-    > - clear acceptance criteria
-    > - testing requirements
+     Checks: logic, scope,              Checks: happy path,
+     missing tests, drift               edge cases, real clicks
 
 
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: A ticket must be small enough to be completed and    │
-    │  reviewed in a single PR.                                   │
-    └─────────────────────────────────────────────────────────────┘
+    ╔═════════════════════════════════════════════════════════════╗
+    ║  PR review should confirm quality, not discover basics.     ║
+    ╚═════════════════════════════════════════════════════════════╝
 ```
 
 --
+
+```text
+                   📦  CODE REVIEW UNIT
+               (ticket + req + diff + proof)
+                             │
+                             ▼
+      ┌───────────────────────────────────────────────────────────────┐
+      │                     6 PARALLEL SUBAGENTS                      │
+      ├───────────────────────────────────────────────────────────────┤
+      │  [ Contract ]       ──► APIs, Interfaces                      │
+      │  [ Correctness ]    ──► Business Logic, Edge Cases            │
+      │  [ State ]          ──► DB, Migrations                        │
+      │  [ Resilience ]     ──► Performance, Timeouts                 │
+      │  [ Security ]       ──► Auth, Leaks                           │
+      │  [ Verification ]   ──► Tests, Evidence                       │
+      └──────────────────────┬────────────────────────────────────────┘
+                             │
+                             ▼
+             🎯 CODE REVIEW FINDINGS & SIGNAL
+```
+--
+
+```text
+    ┌───────────────────────────────────────────────────────────────┐
+    │              PROTECT DECISIONS  ─  ADR + PR REVIEW            │
+    └───────────────────────────────────────────────────────────────┘
+
+
+    BEFORE: Decisions live in Slack. PR review is the only gate.
+    AFTER:  ADR written before merge. PR review is the final audit.
+
+
+     ADR                                  PR REVIEW
+     ───                                  ─────────
+     Code shows what changed.             Branch already has: code,
+     ADR explains WHY this                local review, QA, and ADR.
+     design won.                          PR checks for scope drift.
+
+
+    ╔═════════════════════════════════════════════════════════════╗
+    ║  If the decision mattered, write it down.                   ║
+    ╚═════════════════════════════════════════════════════════════╝
+```
+
+---
 
 ```text
     ┌──────────────────────────────────────────────────────────────────────────────────────┐
@@ -1217,243 +1252,4 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
                                        │ • Epics      │                │ • Refine       │ │
                                        │ • Tickets    │                │ • Re-prompt    ├─┘
                                        └──────────────┘                └────────────────┘
-```
-
---
-
-```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │                  [4] CODING  ─  CONTEXT FIRST                 │
-    └───────────────────────────────────────────────────────────────┘
-
-    Never start with "implement this" alone.
-    Give the agent the task, the parent, and the requirement.
-
-         ┌──────────────────────┐
-         │ 1. Task ticket       │  what changed now
-         │ 2. Parent ticket     │  why it exists
-         │ 3. Requirement       │  how it should fit
-         └──────────┬───────────┘
-                    │
-                    ▼
-               agent writes code
-
-
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /code PROJ-1234-subtask-01
-    >
-    > Context:
-    > - Task: PROJ-1234-subtask-01
-    > - Parent: PROJ-1234
-    > - Requirement: /docs/reqs/PROJ-1234.md
-    >
-    > Implement only this task.
-    > Follow the requirement.
-    > Add tests for new behavior.
-
-
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: no context, no code.                                 │
-    └─────────────────────────────────────────────────────────────┘
-
-```
-
---
-
-```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │          [5] LOCAL REVIEW  ─  SAME CONTEXT, NEW LENS          │
-    └───────────────────────────────────────────────────────────────┘
-
-    Review is not for style nits.
-    Review asks: did this branch solve the right problem well?
-
-
-         ┌──────────────────────┐
-         │ Branch diff          │  what changed
-         │ Task ticket          │  what was asked
-         │ Parent ticket        │  why it exists
-         │ Requirement          │  what was agreed
-         └──────────┬───────────┘
-                    │
-                    ▼
-               agent reviews
-
-
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /review feature/PROJ-1234-subtask-01
-    >
-    > Review this branch against:
-    > - task ticket
-    > - parent ticket
-    > - /docs/reqs/PROJ-1234.md
-    >
-    > Check for:
-    > - logic mistakes
-    > - missing tests
-    > - security risks
-    > - drift from agreed scope
-
-
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: review locally before PR. PR review should confirm   │
-    │  quality, not discover basics.                              │
-    └─────────────────────────────────────────────────────────────┘
-
-```
---
-
-```text
-                   📦 PINNED REVIEW UNIT
-               (ticket + req + diff + proof)
-                             │
-                             ▼
-                             🤖
-      ┌───────────────────────────────────────────────────────────────┐
-      │                     6 PARALLEL SUBAGENTS                      │
-      ├───────────────────────────────────────────────────────────────┤
-      │  [ Contract ]       ──► APIs, Compatibility, Interfaces       │
-      │  [ Correctness ]    ──► Business Logic, Invariants, Edge Cases│
-      │  [ State ]          ──► DB, Persistence Integrity, Migrations │
-      │  [ Resilience ]     ──► Performance, Operability, Timeouts    │
-      │  [ Security ]       ──► Privacy, Abuse Risks, Auth, Leaks     │
-      │  [ Verification ]   ──► Tests, Evidence, Reproducibility      │
-      └───────────────────────────────┬───────────────────────────────┘
-                             │
-                             ▼
-                 🎯 MERGED FINDINGS & SIGNAL
-                (1 lens each = less overlap)
-
-
-    ═════════════════════════════════════════════════════════════════
-       Each agent stays focused on one topic.
-       Together they cut blind spots.
-```
-
---
-
-```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │         [6] QA  ─  TEST THE APP, NOT JUST THE DIFF            │
-    └───────────────────────────────────────────────────────────────┘
-
-    Use Playwright MCP when acceptance depends on real behavior.
-
-
-          ┌─────────┐     ┌──────────────┐     ┌────────────┐
-          │ Agent   │────►│ Playwright   │────►│ Running App│
-          └─────────┘     │ MCP          │     └────────────┘
-                          └──────────────┘
-
-
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /qa PROJ-1234-subtask-01
-    >
-    > Context:
-    > - Task: PROJ-1234-subtask-01
-    > - Requirement: /docs/reqs/PROJ-1234.md
-    > - URL: http://localhost:3000
-    >
-    > Open the app in the browser.
-    > Walk the acceptance criteria.
-    > Check happy path + edge cases.
-    > Screenshot failures.
-
-
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: if a user can click it, type in it, or wait on it,   │
-    │  QA it in the browser.                                      │
-    └─────────────────────────────────────────────────────────────┘
-
-```
-
---
-
-```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │               [7] ADR  ─  WRITE DOWN THE WHY                  │
-    └───────────────────────────────────────────────────────────────┘
-
-    Code shows what changed.
-    ADR explains why this change exists and why this design won.
-
-    WHEN     Before merge. After local review passes.
-    SAVE TO  /docs/ADRs/2026-04-12-PROJ-1234-subtask-01.md
-
-
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > /adr feature/PROJ-1234-subtask-01
-    >
-    > Context:
-    > - Branch: feature/PROJ-1234-subtask-01
-    > - Task: PROJ-1234-subtask-01
-    > - Requirement: /docs/reqs/PROJ-1234.md
-    >
-    > Write an ADR with:
-    > - context
-    > - decision
-    > - alternatives considered
-    > - consequences
-    >
-    > Save to /docs/ADRs/2026-04-12-PROJ-1234-subtask-01.md
-
-
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: if the decision mattered, do not leave future        │
-    │  engineers to reconstruct it from git.                      │
-    └─────────────────────────────────────────────────────────────┘
-
-```
-
---
-
-```text
-    ┌───────────────────────────────────────────────────────────────┐
-    │                  [8] PR REVIEW  ─  FINAL AUDIT                │
-    └───────────────────────────────────────────────────────────────┘
-
-    By PR time, the branch should already have:
-    req + code + local review + QA + ADR
-
-
-       req -> code -> local review -> QA / ADR -> PR -> GH review
-
-
-    PR AGENT SHOULD FIND
-    - missing links to context
-    - scope drift
-    - missing tests
-    - undocumented decisions
-
-    NOT THIS
-    - first discovery of obvious logic bugs
-
-
-    PROMPT SHAPE
-    ─────────────────────────────────────────────────────────────────
-
-    > Review this PR against:
-    > - linked ticket context
-    > - requirement file
-    > - ADR
-    >
-    > Check for:
-    > - scope drift
-    > - missing tests
-    > - security issues
-    > - undocumented decisions
-
-
-    ┌─────────────────────────────────────────────────────────────┐
-    │  RULE: if PR review keeps finding basics, tune the          │
-    │  upstream prompts and skills.                               │
-    └─────────────────────────────────────────────────────────────┘
 ```
