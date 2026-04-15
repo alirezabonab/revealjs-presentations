@@ -753,24 +753,26 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
     │               THE FILES THAT MAKE IT WORK                     │
     └───────────────────────────────────────────────────────────────┘
 
+
     Your standards, conventions, and decisions
     need to live in the repo, not in people's heads.
 
 
-    your-project/
-    │
-    ├── CLAUDE.md                project instructions for Claude
-    ├── AGENTS.md                project instructions for Codex
-    │
-    ├── .claude/
-    │   ├── settings.json        permissions, allowed tools
-    │   └── commands/            custom slash commands
-    │
-    ├── .codex/
-    │   └── skills/              reusable prompt templates
-    │
-    └── .github/
-        └── copilot-instructions.md   instructions for Copilot
+
+       your-project/
+       │
+       ├── CLAUDE.md
+       ├── AGENTS.md
+       │
+       ├── .claude/
+       │   ├── settings.json
+       │   └── commands/
+       │
+       ├── .codex/
+       │   └── skills/
+       │
+       └── .github/
+           └── copilot-instructions.md
 ```
 
 --
@@ -780,25 +782,24 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
     │               CLAUDE.md  /  AGENTS.md                         │
     └───────────────────────────────────────────────────────────────┘
 
+
     The first file the agent reads. Every session. Every task.
-    This is your onboarding document.
 
-    ─────────────────────────────────────────────────────────────────
 
-    WHAT GOES IN                         WHY IT MATTERS
+    ┌─────────────────────────────┐   ┌─────────────────────────────┐
+    │                             │   │                             │
+    │  WHAT GOES IN               │   │  WHY IT MATTERS             │
+    │                             │   │                             │
+    │  Project purpose            │   │  Agent knows the "why"      │
+    │  Architecture               │   │  Agent follows your style   │
+    │  Do's and don'ts            │   │  Agent stays in bounds      │
+    │  Workflow rules             │   │  Agent uses the right tools │
+    │  Testing expectations       │   │  Agent meets your bar       │
+    │                             │   │                             │
+    └─────────────────────────────┘   └─────────────────────────────┘
 
-    Project purpose and context          agent knows the "why"
-    Architecture and conventions         agent follows your patterns
-    Do's and don'ts                      agent stays in bounds
-    Tool and workflow rules              agent uses the right process
-    Testing and review expectations      agent meets your bar
 
-    ─────────────────────────────────────────────────────────────────
-
-    CLAUDE.md  =  for Claude Code
-    AGENTS.md  =  for Codex
-
-    Same idea. Same purpose. Different agent.
+    CLAUDE.md = for Claude Code       AGENTS.md = for Codex
 
     ╔═════════════════════════════════════════════════════════════╗
     ║  No instruction file = no onboarding = unreliable output.   ║
@@ -812,33 +813,31 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
     │               .claude/  AND  .codex/  FOLDERS                 │
     └───────────────────────────────────────────────────────────────┘
 
-    Instruction files say what to do.
-    These folders say how to do it.
+
+    Instruction files say WHAT to do.
+    These folders say HOW to do it.
 
 
-     .claude/                             .codex/
-     ────────                             ────────
+    ┌──────────────────────────┐      ┌──────────────────────────┐
+    │                          │      │                          │
+    │  .claude/                │      │  .codex/                 │
+    │                          │      │                          │
+    │  settings.json           │      │  skills/                 │
+    │    permissions           │      │    reusable prompts      │
+    │    allowed tools         │      │    one per step          │
+    │    safety boundaries     │      │    /epic /ticket /review │
+    │                          │      │                          │
+    │  commands/               │      │                          │
+    │    custom slash commands │      │                          │
+    │                          │      │                          │
+    └──────────────────────────┘      └──────────────────────────┘
 
-     settings.json                        skills/
-       permissions the agent has            reusable prompt templates
-       which tools are allowed              one skill per workflow step
-       safety boundaries                    /epic, /ticket, /review ...
 
-     commands/
-       custom slash commands
-       shortcuts for common tasks
-
-
-    ─────────────────────────────────────────────────────────────────
-
-     Think of it this way:
-
-     CLAUDE.md / AGENTS.md    =    onboarding handbook
-     .claude/  / .codex/      =    desk setup + toolkit
+    CLAUDE.md / AGENTS.md   =   the handbook
+    .claude/  / .codex/     =   the toolkit
 
     ╔═════════════════════════════════════════════════════════════╗
-    ║  Commit these folders.  Every dev on the team gets the      ║
-    ║  same agent behavior from day one.                          ║
+    ║  Commit these folders. Every dev gets the same agent.       ║
     ╚═════════════════════════════════════════════════════════════╝
 ```
 
@@ -1058,7 +1057,7 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
 
-           👤🤖     🤖👤        🤖👤           🤖          👤🤖       🤖👤       🤖       🤖👤
+           👤🤖      🤖👤          🤖👤           🤖          👤🤖        🤖👤        🤖       🤖👤
                                ╔════════╗
                              ┌►║        ║─┐
                              │ ║ Ticket ║ │     
@@ -1067,17 +1066,14 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
          ║ Epic ║─►║  Req  ║─┤               ║  Code  ║─►║ Review ║─►║  QA  ║─►║  ADR  ║─►║  PR  ║
          ║      ║  ║       ║ │ ╔════════╗ ┌─►║        ║  ║        ║  ║      ║  ║       ║  ║      ║
          ╚══════╝  ╚═══════╝ │ ║        ║ │  ╚════════╝  ╚═══╤════╝  ╚══╤═══╝  ╚═══════╝  ╚══════╝
-              ▲              │ ║ Design ║ │                  │          │
-              ╵              └►║        ║─┘                  │          │
-           Backlog             ╚════════╝                    │          │
-              ╷                                              │          │
-              │                ╔═══════════════════╗         │          │
-              └────────────────╢   New Ticket      ║◄────────┘          │
+                  ▲          │ ║ Design ║ │                  │          │
+                  ╵          └►║        ║─┘                  │          │
+               Backlog         ╚════════╝                    │          │
+                  ╷                                          │          │
+                  │            ╔═══════════════════╗         │          │
+                  └────────────╢   New Ticket      ║◄────────┘          │
                                ║  (Scope Control)  ║◄───────────────────┘
                                ╚═══════════════════╝
-                                        
-
-
 ```
 --
 
@@ -1142,8 +1138,9 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
        BEFORE   PM writes epic. Dev breaks down tickets.
                 Weeks of ping-pong.
 
-       AFTER    PM defines intent. Agent drafts all three.
-                PM reviews and approves.
+       AFTER    PM defines intent. Agent drafts Epic.
+                Tech Leads intent and architecture. Agent drafts Requirements.
+                PM & Tech Leads review and approves.
 
        ───────────────────────────────────────────────────────────
 
