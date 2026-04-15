@@ -126,20 +126,16 @@
     };
   }
 
-  function fitAsciiStage(section, stage) {
+  function measureAsciiStage(section, stage, minimumSize, maximumSize) {
     const code = stage.querySelector("code") ?? stage;
     const { width, height } = getAvailableStageBox(section);
-    const zoomScale = readCssPixels(document.documentElement, "--ascii-zoom-scale", 1);
-    const minimumSize =
-      readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8) * zoomScale;
-    const maximumSize =
-      readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32) * zoomScale;
     let low = minimumSize;
     let high = maximumSize;
     let bestSize = minimumSize;
+    const originalFontSize = code.style.fontSize;
 
     if (width === 0 || height === 0) {
-      return;
+      return null;
     }
 
     while (low <= high) {
@@ -156,7 +152,50 @@
       }
     }
 
+    code.style.fontSize = originalFontSize;
+    return bestSize;
+  }
+
+  function fitAsciiStage(section, stage) {
+    const code = stage.querySelector("code") ?? stage;
+    const zoomScale = readCssPixels(document.documentElement, "--ascii-zoom-scale", 1);
+    const minimumSize =
+      readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8) * zoomScale;
+    const maximumSize =
+      readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32) * zoomScale;
+    const bestSize = measureAsciiStage(section, stage, minimumSize, maximumSize);
+
+    if (!Number.isFinite(bestSize)) {
+      return;
+    }
+
     code.style.fontSize = `${bestSize}px`;
+  }
+
+  function getActiveAsciiSlide() {
+    const presentSections = Array.from(document.querySelectorAll(".reveal .slides section.present"));
+    const section = presentSections.find((node) => {
+      return !Array.from(node.children).some((child) => {
+        return child.tagName === "SECTION" && child.classList.contains("present");
+      });
+    }) ?? presentSections.at(-1);
+
+    if (!section) {
+      return null;
+    }
+
+    const stage =
+      section.querySelector(".slide-ascii-stage") ??
+      section.querySelector("pre");
+
+    if (!stage) {
+      return null;
+    }
+
+    return {
+      section,
+      stage
+    };
   }
 
   function fitImageStage(section, stage) {
@@ -293,6 +332,34 @@
   }
 
   window.refreshAsciiPresentation = scheduleRefresh;
+  window.measureAsciiSizeForZoom = (zoom) => {
+    const activeAsciiSlide = getActiveAsciiSlide();
+
+    if (!activeAsciiSlide) {
+      return null;
+    }
+
+    const minimumSize =
+      readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8) * zoom;
+    const maximumSize =
+      readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32) * zoom;
+    const renderedSize = measureAsciiStage(
+      activeAsciiSlide.section,
+      activeAsciiSlide.stage,
+      minimumSize,
+      maximumSize
+    );
+
+    if (!Number.isFinite(renderedSize)) {
+      return null;
+    }
+
+    return {
+      minimumSize,
+      maximumSize,
+      renderedSize
+    };
+  };
 
   window.initializeAsciiPresentation = (Reveal) => {
     if (!runtimeState.initialized) {

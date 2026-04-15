@@ -844,6 +844,8 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 
 
+
+
     FULL AUTONOMOUS
     ─────────────────────────────────────────────────────────────
 
@@ -851,6 +853,8 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
     No human in the loop. No guardrails. No accountability.
     Impressive demos. Terrifying in production.
+
+
 
 
 

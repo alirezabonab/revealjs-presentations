@@ -64,52 +64,73 @@ function renderThemeBootScript() {
         return clampAsciiZoom(savedZoom);
       };
 
-      const readCurrentAsciiZoom = (delta = 0) => {
-        const storedZoom = clampAsciiZoom(
+      const readAppliedAsciiZoom = () => {
+        return clampAsciiZoom(
           Number.parseFloat(
             getComputedStyle(document.documentElement).getPropertyValue("--ascii-zoom-scale")
           )
         );
-        const activeAsciiCode =
-          document.querySelector(".reveal .slides section.present .slide-ascii-stage code") ??
-          document.querySelector(".reveal .slides section.present .slide-ascii-stage") ??
-          document.querySelector(".reveal .slides section.present pre code");
-        const maximumBaseSize = Number.parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue("--ascii-font-size-max-base")
-        );
+      };
 
-        if (!activeAsciiCode || !Number.isFinite(maximumBaseSize) || maximumBaseSize <= 0) {
-          return storedZoom;
+      const findNextVisibleAsciiZoom = (startZoom, delta) => {
+        const currentZoom = clampAsciiZoom(startZoom);
+        const currentMeasurement = window.measureAsciiSizeForZoom?.(currentZoom);
+
+        if (!currentMeasurement) {
+          return clampAsciiZoom(currentZoom + delta);
         }
 
-        const renderedFontSize = Number.parseFloat(getComputedStyle(activeAsciiCode).fontSize);
-
-        if (!Number.isFinite(renderedFontSize) || renderedFontSize <= 0) {
-          return storedZoom;
-        }
-
-        const minimumBaseSize = Number.parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue("--ascii-font-size-min-base")
-        );
-        const requestedMinimumSize = minimumBaseSize * storedZoom;
-        const requestedMaximumSize = maximumBaseSize * storedZoom;
         const epsilon = 0.5;
+        let candidateZoom = currentZoom;
 
-        if (
-          !Number.isFinite(minimumBaseSize) ||
-          minimumBaseSize <= 0 ||
-          Math.abs(renderedFontSize - requestedMinimumSize) <= epsilon ||
-          Math.abs(renderedFontSize - requestedMaximumSize) <= epsilon ||
-          delta === 0
-        ) {
-          return storedZoom;
+        while (true) {
+          const nextCandidateZoom = clampAsciiZoom(candidateZoom + delta);
+
+          if (Math.abs(nextCandidateZoom - candidateZoom) < 0.0001) {
+            return currentZoom;
+          }
+
+          const nextMeasurement = window.measureAsciiSizeForZoom?.(nextCandidateZoom);
+
+          if (!nextMeasurement) {
+            return nextCandidateZoom;
+          }
+
+          if (
+            delta > 0 &&
+            nextMeasurement.renderedSize > currentMeasurement.renderedSize + epsilon
+          ) {
+            return nextCandidateZoom;
+          }
+
+          if (
+            delta < 0 &&
+            nextMeasurement.renderedSize < currentMeasurement.renderedSize - epsilon
+          ) {
+            return nextCandidateZoom;
+          }
+
+          candidateZoom = nextCandidateZoom;
         }
+      };
 
-        if (delta > 0) {
-          return clampAsciiZoom(renderedFontSize / minimumBaseSize);
-        }
+      const syncAsciiZoomButtons = () => {
+        const currentZoom = readAppliedAsciiZoom();
+        const zoomPercent = Math.round(currentZoom * 100);
+        const nextLowerZoom = findNextVisibleAsciiZoom(currentZoom, -asciiZoomStep);
+        const nextHigherZoom = findNextVisibleAsciiZoom(currentZoom, asciiZoomStep);
 
-        return clampAsciiZoom(renderedFontSize / maximumBaseSize);
+        document.querySelectorAll("[data-ascii-zoom-out]").forEach((node) => {
+          node.disabled = Math.abs(nextLowerZoom - currentZoom) < 0.0001;
+          node.setAttribute("aria-label", \`Decrease ASCII size (\${zoomPercent}%)\`);
+          node.setAttribute("title", \`Decrease ASCII size (\${zoomPercent}%)\`);
+        });
+
+        document.querySelectorAll("[data-ascii-zoom-in]").forEach((node) => {
+          node.disabled = Math.abs(nextHigherZoom - currentZoom) < 0.0001;
+          node.setAttribute("aria-label", \`Increase ASCII size (\${zoomPercent}%)\`);
+          node.setAttribute("title", \`Increase ASCII size (\${zoomPercent}%)\`);
+        });
       };
 
       const themeColors = {
@@ -141,22 +162,8 @@ function renderThemeBootScript() {
 
       const applyAsciiZoom = (zoom) => {
         const nextZoom = clampAsciiZoom(zoom);
-        const zoomPercent = Math.round(nextZoom * 100);
 
         document.documentElement.style.setProperty("--ascii-zoom-scale", String(nextZoom));
-
-        document.querySelectorAll("[data-ascii-zoom-out]").forEach((node) => {
-          node.disabled = nextZoom <= minAsciiZoom;
-          node.setAttribute("aria-label", \`Decrease ASCII size (\${zoomPercent}%)\`);
-          node.setAttribute("title", \`Decrease ASCII size (\${zoomPercent}%)\`);
-        });
-
-        document.querySelectorAll("[data-ascii-zoom-in]").forEach((node) => {
-          node.disabled = nextZoom >= maxAsciiZoom;
-          node.setAttribute("aria-label", \`Increase ASCII size (\${zoomPercent}%)\`);
-          node.setAttribute("title", \`Increase ASCII size (\${zoomPercent}%)\`);
-        });
-
         window.refreshAsciiPresentation?.();
       };
 
@@ -167,8 +174,13 @@ function renderThemeBootScript() {
       };
 
       window.adjustAsciiZoom = (delta) => {
-        const currentZoom = readCurrentAsciiZoom(delta);
-        const nextZoom = clampAsciiZoom(currentZoom + delta);
+        const currentZoom = readAppliedAsciiZoom();
+        const nextZoom = findNextVisibleAsciiZoom(currentZoom, delta);
+
+        if (Math.abs(nextZoom - currentZoom) < 0.0001) {
+          syncAsciiZoomButtons();
+          return;
+        }
 
         window.localStorage.setItem(asciiZoomStorageKey, String(nextZoom));
         applyAsciiZoom(nextZoom);
@@ -184,10 +196,12 @@ function renderThemeBootScript() {
 
       applyMode(readMode());
       applyAsciiZoom(readAsciiZoom());
+      window.addEventListener("presentation:refresh", syncAsciiZoomButtons);
 
       document.addEventListener("DOMContentLoaded", () => {
         applyMode(readMode());
         applyAsciiZoom(readAsciiZoom());
+        syncAsciiZoomButtons();
       });
     })();
   </script>`;
