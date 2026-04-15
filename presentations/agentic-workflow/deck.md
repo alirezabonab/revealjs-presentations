@@ -884,16 +884,16 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
     Speed                 ✓              ✓                 ✓
 
-    Scalability           ✓              ~                 ✓
+    Scalability           ~              ~                 ✓
 
     Team trust            ✗              ✗                 ✓
 
 
     ═══════════════════════════════════════════════════════════
 
-    Vibe coding     =  fun, no control
-    Full autonomous =  fast, no trust
-    Agentic         =  fast AND controlled
+    Vibe coding       =  fun, no control
+    Full autonomous   =  fast, no trust
+    Agentic Workflow  =  fast AND controlled
 
 ```
 
@@ -901,15 +901,14 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     Enterprise doesn't need faster chaos.
-    It needs structured speed.
+    Enterprise needs structured speed.
 ```
 
 ---
 
 ```text
-
-
                             intent
+                            
                                │
                                │  
                                ▼
@@ -983,19 +982,19 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 
 ```text
-         ┌──────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────┐  ┌─────────┐  ┌──────────┐
-         │          │  │         │  │         │  │          │  │      │  │         │  │          │
-         │  Ticket  │─►│  Spec   │─►│  Code   │─►│  Review  │─►│  QA  │─►│  Build  │─►│  Deploy  │
-         │          │  │         │  │         │  │          │  │      │  │         │  │          │
-         └──────────┘  └─────────┘  └─────────┘  └────┬─────┘  └──┬───┘  └─────────┘  └──────────┘
-              ▲                                       │           │
-              ╵                                       │           │
-           Backlog                                    │           │
-              ╷                                       │           │
-              │             ┌───────────────────┐     │           │
-              └─────────────┤    New Ticket     │◄────┘           │
-                            │  (Scope Control)  │◄────────────────┘
-                            └───────────────────┘             
+         ┌──────┐  ┌───────┐  ┌────────┐  ┌──────┐  ┌────────┐  ┌──────┐  ┌───────┐  ┌──────┐
+         │      │  │       │  │        │  │      │  │        │  │      │  │       │  │      │
+         │ Epic │─►│  Req  │─►│ Ticket │─►│ Code │─►│ Review │─►│  QA  │─►│  ADR  │─►│  PR  │
+         │      │  │       │  │        │  │      │  │        │  │      │  │       │  │      │
+         └──────┘  └───────┘  └────────┘  └──────┘  └────┬───┘  └──┬───┘  └───────┘  └──────┘
+              ▲                                          │         │
+              ╵                                          │         │
+           Backlog                                       │         │
+              ╷                                          │         │
+              │                ┌───────────────────┐     │         │
+              └────────────────┤    New Ticket     │◄────┘         │
+                               │  (Scope Control)  │◄──────────────┘
+                               └───────────────────┘
 ```
 
 --
@@ -1010,13 +1009,13 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
              🤖 EXECUTION                       🛑 HUMAN GATE
              ────────────                       ─────────────
 
-      1. Agent drafts the tech spec  ─────►  👤 Approve Architecture
-                                                    │
-                                                    ▼
-      2. Agent writes the code       ─────►  👤 Code Review (Look Good To Me)
-         and unit tests                             │
-                                                    ▼
-      3. Agent does the code review  ─────►  👤 Approve for Deployment
+      1. Agent drafts the requirement  ─────►  👤 Approve Requirement
+                                                      │
+                                                      ▼
+      2. Agent writes the code        ─────►  👤 Code Review (Look Good To Me)
+         and unit tests                               │
+                                                      ▼
+      3. Agent does the code review   ─────►  👤 Approve for Merge
 
 
 
@@ -1032,21 +1031,21 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
 
-            👤🤖          🤖👤           👤            🤖            👤          🤖👤        🤖            🤖           👤
-         ┌──────────┐  ╔═════════╗  ┌──────────┐  ╔═════════╗  ┌──────────┐  ╔══════╗  ╔═════════╗  ╔═════════╗  ┌──────────┐
-         │          │  ║         ║  │          │  ║         ║  │          │  ║      ║  ║         ║  ║         ║  │          │
-         │  Ticket  │─►║  Spec   ║─►│  Verify  │─►║  Code   ║─►│  Review  │─►║  QA  ║─►║  ADRs   ║─►║  Build  ║─►│  Deploy  │
-         │          │  ║         ║  │          │  ║         ║  │          │  ║      ║  ║         ║  ║         ║  │          │
-         └──────────┘  ╚═════════╝  └──────────┘  ╚═════════╝  └────┬─────┘  ╚══╤═══╝  ╚═════════╝  ╚═════════╝  └──────────┘
-              ▲                                                     │           │
-              ╵                                                     │           │
-           Backlog                                                  │           │
-              ╷                                                     │           │
-              │                           ╔═══════════════════╗     │           │
-              └───────────────────────────╢   New Ticket      ║◄────┘           │
-                                          ║  (Scope Control)  ║◄────────────────┘
-                                          ╚═══════════════════╝
-                                                   🤖👤
+            👤🤖     🤖👤        🤖👤        🤖         👤🤖       🤖👤       🤖       🤖👤
+         ┌──────┐  ╔═══════╗  ╔════════╗  ╔════════╗  ┌────────┐  ╔══════╗  ╔═══════╗  ╔══════╗
+         │      │  ║       ║  ║        ║  ║        ║  │        │  ║      ║  ║       ║  ║      ║
+         │ Epic │─►║  Req  ║─►║ Ticket ║─►║  Code  ║─►│ Review │─►║  QA  ║─►║  ADR  ║─►║  PR  ║
+         │      │  ║       ║  ║        ║  ║        ║  │        │  ║      ║  ║       ║  ║      ║
+         └──────┘  ╚═══════╝  ╚════════╝  ╚════════╝  └───┬────┘  ╚══╤═══╝  ╚═══════╝  ╚══════╝
+              ▲                                            │         │
+              ╵                                            │         │
+           Backlog                                         │         │
+              ╷                                            │         │
+              │                  ╔═══════════════════╗     │         │
+              └──────────────────╢   New Ticket      ║◄────┘         │
+                                 ║  (Scope Control)  ║◄──────────────┘
+                                 ╚═══════════════════╝
+                                          🤖👤
 
 
 ```
