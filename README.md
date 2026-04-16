@@ -182,6 +182,18 @@ If you also want extra markdown entry routes, set:
 STATIC_EXPORT_ALL_MARKDOWN=true yarn build:static
 ```
 
+## Firebase Hosting
+
+Deploy the current static export with:
+
+```bash
+yarn deploy:hosting
+```
+
+Live URL:
+
+- `https://presentations-31d64.web.app`
+
 ## Environment variables
 
 The project reads `.env` automatically.
