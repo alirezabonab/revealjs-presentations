@@ -1026,8 +1026,29 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 --
 
 ```text
+              ┌───────────────┐
+              │ FEATURE REQ.  │
+              └───────┬───────┘
+                      │
+                      ▼
+                     ╱ ╲
+                    ╱   ╲
+                   ╱     ╲
+     TICKETS ────►╱   %   ╲◄──── CODEBASE
+                 ╱  DELTA  ╲
+                ╱───────────╲
+                      │
+                      ▼
+┌────────────┐  ┌────────────┐  ┌────────────┐
+│  GENERATE  │─►│   REVIEW   │─►│    SHIP    │
+└────────────┘  └────────────┘  └────────────┘
+```
 
-    You define intent. You verify output. AI handles the brickwork.
+--
+
+```text
+
+    Humans define intent. Humans verify output. AI handles the brickwork.
 
 
 
@@ -1075,26 +1096,7 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
                                ║  (Scope Control)  ║◄───────────────────┘
                                ╚═══════════════════╝
 ```
---
 
-```text
-                               ┌───────────────┐
-                               │ FEATURE REQ.  │
-                               └───────┬───────┘
-                                       │
-                                       ▼
-                                      ╱ ╲
-                                     ╱   ╲
-                                    ╱     ╲
-                      TICKETS ────►╱   %   ╲◄──── CODEBASE
-                                  ╱  DELTA  ╲
-                                 ╱───────────╲
-                                       │
-                                       ▼
-                 ┌────────────┐  ┌────────────┐  ┌────────────┐
-                 │  GENERATE  │─►│   REVIEW   │─►│    SHIP    │
-                 └────────────┘  └────────────┘  └────────────┘
-```
 
 ---
 
@@ -1139,7 +1141,7 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
                 Weeks of ping-pong.
 
        AFTER    PM defines intent. Agent drafts Epic.
-                Tech Leads intent and architecture. Agent drafts Requirements.
+                Tech Leads defines the intent. Agent drafts Requirements.
                 PM & Tech Leads review and approves.
 
        ───────────────────────────────────────────────────────────
