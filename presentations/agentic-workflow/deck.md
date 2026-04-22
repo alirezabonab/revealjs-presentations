@@ -810,6 +810,48 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
+    │        AGENTS.md EXAMPLE  ─  A TASTE, NOT THE FULL FILE       │
+    └───────────────────────────────────────────────────────────────┘
+
+    # AGENTS.md
+
+    ## Project
+    NestJS microservice. TypeScript. MySQL + TypeORM.
+    Events over RabbitMQ. One service = one bounded context.
+
+    ## Golden rules
+    - do not call other services by HTTP  publish an event
+    - every event handler is idempotent  assume redelivery
+    - schema changes ship a TypeORM migration  never `synchronize`
+    - run `yarn`  never npm or pnpm
+
+    ## Project structure
+    - `nest/src/`  the code
+    - `nest/src/database/`  the database
+    - `package.json`  the dependencies
+    - `docs/`  the documentation
+    - `docs/adr/`  the architectural decisions
+
+    ## testing expectations
+    - every function has a unit test
+    - every service has an e2e test
+    - every integration test is isolated
+    - every test is fast
+    - every test is reliable
+    - every test is reproducible
+    - every test is maintainable
+    - every test is scalable
+
+    ## Done means
+    - `yarn lint:fix` clean
+    - `yarn test` and `yarn test:e2e` green
+    - new decisions captured in `docs/adr/`
+```
+
+--
+
+```text
+    ┌───────────────────────────────────────────────────────────────┐
     │               .claude/  AND  .codex/  FOLDERS                 │
     └───────────────────────────────────────────────────────────────┘
 
@@ -1293,6 +1335,77 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
        ╔═════════════════════════════════════════════════════════════╗
        ║  If the decision mattered, write it down.                   ║
        ╚═════════════════════════════════════════════════════════════╝
+```
+
+--
+
+```text
+    ┌──────────────────────────────────────────────────────────────────┐
+    │                ADR EXAMPLE  ─  WHAT IT LOOKS LIKE                │
+    └──────────────────────────────────────────────────────────────────┘
+
+      ADR-042   Use mysql for the audit log
+      Status    Accepted      Date  2026-04-22      Ticket  PROJ-812
+
+      ── CONTEXT ─────────────────────────────────────────────────────
+        Legal needs 30-day audit retention. Today logs live in
+        Redis and get wiped on restart. We keep losing evidence.
+
+      ── DECISION ────────────────────────────────────────────────────
+        Store audit events in mysql, same cluster as core data.
+        Partition by month. Index on user_id and event_type.
+
+      ── ALTERNATIVES ────────────────────────────────────────────────
+        S3 + Athena        too slow for on-call lookups
+        Dedicated cluster  too heavy for current volume
+        Keep Redis         fails the durability requirement
+
+      ── CONSEQUENCES ────────────────────────────────────────────────
+        +  durable, queryable, one system to operate
+        +  fits existing backup and DR story
+        -  adds write load on the primary DB
+        -  need a migration for the last 90 days of Redis data
+
+      ── LINKS ───────────────────────────────────────────────────────
+        PR #3421   schema.sql   benchmark.md
+```
+
+--
+
+```text
+    ┌──────────────────────────────────────────────────────────────────┐
+    │            ADRs LIVE WITH THE CODE  ─  FILE STRUCTURE            │
+    └──────────────────────────────────────────────────────────────────┘
+
+      repo/
+      ├── src/
+      ├── tests/
+      ├── package.json
+      └── docs/
+          └── adr/
+              ├── 2026-02-14-PROJ-712-use-mysql-for-audit-log/
+              │   ├── README.md         the ADR itself
+              │   ├── schema.sql        supporting artifact
+              │   └── benchmark.md
+              │
+              ├── 2026-03-03-PROJ-844-switch-to-pnpm-workspaces/
+              │   └── README.md
+              │
+              └── 2026-04-22-PROJ-1042-agent-review-pipeline/
+                  ├── README.md
+                  └── diagram.txt
+
+      ────────────────────────────────────────────────────────────────
+
+        folder name   =   {date}-{ticket}-{short-title}
+
+           date      when the decision was made
+           ticket    link back to the work that drove it
+           title     short, readable hint of the topic
+
+      ────────────────────────────────────────────────────────────────
+
+        lives in the repo   travels with the code   reviewed in the PR
 ```
 
 
