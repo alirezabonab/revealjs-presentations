@@ -810,42 +810,41 @@ As of April 4, 2026, Anthropic ended the quiet subsidy for third-party framework
 
 ```text
     ┌───────────────────────────────────────────────────────────────┐
-    │        AGENTS.md EXAMPLE  ─  A TASTE, NOT THE FULL FILE       │
+    │        AGENTS.md EXAMPLE  ─  NESTJS EVENT-DRIVEN SERVICE      │
     └───────────────────────────────────────────────────────────────┘
 
-    # AGENTS.md
-
     ## Project
-    NestJS microservice. TypeScript. MySQL + TypeORM.
-    Events over RabbitMQ. One service = one bounded context.
+    - NestJS microservice in TypeScript (strict).
+    - MySQL via TypeORM. RabbitMQ for events.
 
     ## Golden rules
-    - do not call other services by HTTP  publish an event
-    - every event handler is idempotent  assume redelivery
-    - schema changes ship a TypeORM migration  never `synchronize`
-    - run `yarn`  never npm or pnpm
+    - never commit `.env*`  secrets live in our vault
+    - run `yarn`  do not use npm or pnpm
 
-    ## Project structure
-    - `nest/src/`  the code
-    - `nest/src/database/`  the database
-    - `package.json`  the dependencies
-    - `docs/`  the documentation
-    - `docs/adr/`  the architectural decisions
+    ## Code style
+    - one module per domain, folder = `src/<domain>/`
+    - controllers stay thin, business logic in services
+    - entities in `src/database/entities/`, DTOs with `class-validator`
+    - no `any`, no `as unknown as`
+    - `Logger` from `@nestjs/common` only
 
-    ## testing expectations
-    - every function has a unit test
-    - every service has an e2e test
-    - every integration test is isolated
-    - every test is fast
-    - every test is reliable
-    - every test is reproducible
-    - every test is maintainable
-    - every test is scalable
+    ## Events + RabbitMQ
+    - event names are past tense  `invoice.created`, `payment.failed`
+    - every handler is idempotent  assume redelivery
 
-    ## Done means
-    - `yarn lint:fix` clean
-    - `yarn test` and `yarn test:e2e` green
-    - new decisions captured in `docs/adr/`
+    ## Data + TypeORM
+    - every schema change ships a migration in `src/migrations/`
+    - no `synchronize: true`  ever
+
+    ## Testing bar
+    - unit tests for services with mocked repos and event bus
+    - run `yarn test` and `yarn test:e2e` before you call it done
+
+    ## Commands the agent should use
+    - `yarn lint:fix`              format + lint
+    - `yarn migration:generate`    after any entity change
+    - `yarn start:dev`             local service on :3000
+
 ```
 
 --
