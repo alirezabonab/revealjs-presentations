@@ -1,0 +1,34 @@
+:root {
+  --page-bg: #06110d;
+  --page-bg-strong: #0d1914;
+  --text-strong: #f3f8ef;
+  --text-muted: #b7c7b4;
+  --accent: #78d6a3;
+  --accent-strong: #f0c44f;
+  --panel-bg: rgba(10, 26, 20, 0.84);
+  --panel-border: rgba(120, 214, 163, 0.3);
+  --panel-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+  --ascii-font-size-max-base: 16px;
+  --ascii-line-height: 1.08;
+}
+
+body.presentation-shell {
+  background:
+    linear-gradient(rgba(120, 214, 163, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 214, 163, 0.04) 1px, transparent 1px),
+    linear-gradient(135deg, #06110d 0%, #101814 54%, #18150b 100%) !important;
+  background-size: 42px 42px, 42px 42px, cover !important;
+}
+
+.presentation-shell .slide-mode-ascii .slide-ascii-stage code {
+  color: var(--text-strong);
+  text-shadow: 0 0 18px rgba(120, 214, 163, 0.1);
+}
+
+.presentation-shell .reveal .controls {
+  color: var(--accent-strong);
+}
+
+.presentation-shell .reveal .progress span {
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+}
