@@ -241,28 +241,6 @@ Where safety and usefulness meet. Every request is grounded in identity, context
 
 ---
 
-<!-- ## Slide (Section: use cases) -->
-```text
-                              W H A T   T H I S   E N A B L E S                               
-                            ─────────────────────────────────────                             
-                                                                                              
-      ┌─ SALES ────────────────┐  ┌─ MARKETING ────────────┐  ┌─ CUSTOMER SERVICE ─────┐      
-      │ daily report           │  │ ads + sales data       │  │ customer context       │      
-      │ next best action       │  │ campaign insight       │  │ approved actions       │      
-      └────────────────────────┘  └────────────────────────┘  └────────────────────────┘      
-                                                                                              
-      ┌─ PRODUCT ──────────────┐  ┌─ ENGINEERING ──────────┐  ┌─ LEADERSHIP ───────────┐      
-      │ process insight        │  │ system + code map      │  │ org-wide answers       │      
-      │ user behavior          │  │ Codex workflows        │  │ governed actions       │      
-      └────────────────────────┘  └────────────────────────┘  └────────────────────────┘      
-                                                                                              
-            One platform. Many interfaces. Same permissions and shared knowledge.             
-```
-
-Notes:
-Use cases stay concrete, but the point is shared infrastructure. We should not build separate one-off bots per department — same permissions, same knowledge, many interfaces.
-
---
 
 <!-- ## Slide (Section: example prompts) -->
 ```text
