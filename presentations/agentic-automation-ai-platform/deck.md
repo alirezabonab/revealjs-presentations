@@ -189,7 +189,7 @@ The vision in one frame: pair the data platform with reasoning agents (Codex / C
                         │     ┌───────────────────────────────────┐                           
 ┌────────────────────┐  │     │                                   │      ┌───────────────────┐
 │ KNOWLEDGE GRAPH    │  │     │     AUTOMATION / AI PLATFORM      │      │ Slack apps        │
-│ context · terms    │  ├────►│                                   │─────►│ Chat support      │
+│ context · terms    │  ├────►│                                   │─────►│ Chat Bots         │
 │ codebase           │  │     │    RBAC · tools · Skills / MCP    │      │ Codex / Claude    │
 └────────────────────┘  │     │ agents · query · actions · audits │      └───────────────────┘
                         │     └───────────────────────────────────┘                           
