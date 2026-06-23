@@ -111,10 +111,10 @@ The foundation exists. The proposal is not "start from zero" — it is unlocking
 
 ╭─ BUSINESS LANGUAGE ──────────────╮                      ╭─ TECHNICAL REALITY ──────────────╮
 │                                  │                      │                                  │
-│  ▪ "lead quality"                │        manual        │  ▪ events · tables · IDs         │
-│  ▪ "sales performance"           │◀────────────────────►│  ▪ services · dashboards         │
-│  ▪ "customer problem"            │     translation      │  ▪ tickets · calls               │
-│  ▪ "campaign impact"             │                      │  ▪ attribution · funnels         │
+│  ▪ "bid volume"                  │        manual        │  ▪ events · tables · IDs         │
+│  ▪ "LAMM"                        │◀────────────────────►│  ▪ services · dashboards         │
+│  ▪ "customer complaint"          │     translation      │  ▪ tickets · calls               │
+│  ▪ "channel ROI"                 │                      │  ▪ attribution · funnels         │
 │                                  │                      │                                  │
 ╰──────────────────────────────────╯                      ╰──────────────────────────────────╯
 
@@ -173,32 +173,29 @@ The vision in one frame: pair the data platform with reasoning agents (Codex / C
 
 <!-- ## Slide (Section: proposal) -->
 ```text
-                                      T H E   P L A T F O R M                                
-                            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━      
-
-
-
-                                                                                      
-       SOURCES                             CONTROL LAYER                      INTERFACES  
-                                                                                           
-┌────────────────────┐                                                                        
-│ DATA PLATFORM      │                                                                        
-│ facts · metrics    │──┐                                                                     
-│ models             │  │                                                                     
-└────────────────────┘  │                                                                     
-                        │     ┌───────────────────────────────────┐                           
+                                   T H E   P L A T F O R M                                   
+                          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━                           
+                                                                                             
+       SOURCES                          CONTROL LAYER                         INTERFACES     
+                                                                                             
+┌────────────────────┐                                                                       
+│ DATA PLATFORM      │                                                                       
+│ facts · metrics    │──┐                                                                    
+│ models             │  │                                                                    
+└────────────────────┘  │                                                                    
+                        │     ┌───────────────────────────────────┐                          
 ┌────────────────────┐  │     │                                   │      ┌───────────────────┐
 │ KNOWLEDGE GRAPH    │  │     │     AUTOMATION / AI PLATFORM      │      │ Slack apps        │
-│ context · terms    │  ├────►│                                   │─────►│ Chat Bots         │
+│ context · terms    │  ├────►│                                   │─────►│ Chat bots         │
 │ codebase           │  │     │    RBAC · tools · Skills / MCP    │      │ Codex / Claude    │
 └────────────────────┘  │     │ agents · query · actions · audits │      └───────────────────┘
-                        │     └───────────────────────────────────┘                           
-┌────────────────────┐  │                                                                     
-│ SYSTEMS & SERVICES │  │                                                                     
-│ APIs · events      │──┘                                                                     
-│ actions            │                                                                        
-└────────────────────┘                                                                        
-```    
+                        │     └───────────────────────────────────┘                          
+┌────────────────────┐  │                                                                    
+│ SYSTEMS & SERVICES │  │                                                                    
+│ APIs · events      │──┘                                                                    
+│ actions            │                                                                       
+└────────────────────┘                                                                       
+```
 
 Notes:
 The architecture in one picture. The platform is not just a chatbot UI — it is identity, permissions, tools, agents, query, actions, and logs, sitting between data + knowledge and the interfaces.
