@@ -8,15 +8,35 @@
   --panel-bg: rgba(10, 26, 20, 0.84);
   --panel-border: rgba(120, 214, 163, 0.3);
   --panel-shadow: 0 28px 70px rgba(0, 0, 0, 0.34);
+  --deck-grid: rgba(120, 214, 163, 0.04);
+  --deck-bg-start: #06110d;
+  --deck-bg-mid: #101814;
+  --deck-bg-end: #18150b;
   --ascii-font-size-max-base: 16px;
   --ascii-line-height: 1.08;
 }
 
+html[data-color-mode="light"] {
+  --page-bg: #f6f4eb;
+  --page-bg-strong: #ece7da;
+  --text-strong: #132126;
+  --text-muted: #546167;
+  --accent: #2f8f6c;
+  --accent-strong: #9a6a00;
+  --panel-bg: rgba(255, 255, 255, 0.78);
+  --panel-border: rgba(47, 143, 108, 0.18);
+  --panel-shadow: 0 24px 58px rgba(19, 33, 38, 0.12);
+  --deck-grid: rgba(47, 143, 108, 0.08);
+  --deck-bg-start: #f8f5ec;
+  --deck-bg-mid: #edf4ee;
+  --deck-bg-end: #f3ead7;
+}
+
 body.presentation-shell {
   background:
-    linear-gradient(rgba(120, 214, 163, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120, 214, 163, 0.04) 1px, transparent 1px),
-    linear-gradient(135deg, #06110d 0%, #101814 54%, #18150b 100%) !important;
+    linear-gradient(var(--deck-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--deck-grid) 1px, transparent 1px),
+    linear-gradient(135deg, var(--deck-bg-start) 0%, var(--deck-bg-mid) 54%, var(--deck-bg-end) 100%) !important;
   background-size: 42px 42px, 42px 42px, cover !important;
 }
 

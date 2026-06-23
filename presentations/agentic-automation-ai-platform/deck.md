@@ -105,7 +105,7 @@ The foundation exists. The proposal is not "start from zero" — it is unlocking
 
 <!-- ## Slide (Section: gap) -->
 ```text
-                        T H E   T R A N S L A T I O N   G A P                         
+                          T H E   T R A N S L A T I O N   G A P                       
                    ────────────────────────────────────────────────────────                   
 
 
@@ -154,16 +154,19 @@ The vision in one frame: pair the data platform with reasoning agents (Codex / C
                        ───────────────────────────────────────                        
 
 
+                                    DATA PLATFORM 
 
-
-
-                                    DATA PLATFORM                                     
                                           +                                           
-  ╭───────────────────────╮         KNOWLEDGE BASE         ╭─────────────────────────╮
-  │                       │               +                │                         │
+
+                                    KNOWLEDGE BASE
+
+  ╭───────────────────────╮               +                ╭─────────────────────────╮
+  │                       │                                │                         │
   │ ask in plain language │  ───►     CODEBASE      ───►   │ a clear answer / action │
-  │                       │               +                │                         │
-  ╰───────────────────────╯       SYSTEMS & SERVICES       ╰─────────────────────────╯
+  │                       │                                │                         │
+  ╰───────────────────────╯               +                ╰─────────────────────────╯
+                                  
+                                  SYSTEMS & SERVICES
 ```
 
 ---
@@ -268,29 +271,25 @@ Use cases stay concrete, but the point is shared infrastructure. We should not b
                                                                                               
     ┌─ ENGINEERING ────────────────────────────────────────────────────────────────────┐      
     │                                                                                  │      
-    │  "What was the exact error and stack trace for the last bug reported on the      │      
-    │   customer portal?"                                                              │      
+    │  "Find the root cause and stack trace for the latest customer portal crash."     │      
     │                                                                                  │      
     └──────────────────────────────────────────────────────────────────────────────────┘      
                                                                                               
     ┌─ SALES ──────────────────────────────────────────────────────────────────────────┐      
     │                                                                                  │      
-    │  "How many retention meetings should I call today, and which accounts have       │      
-    │   the highest probability of payout?"                                            │      
+    │  "Which 5 customers should I call today to maximize retention payout?"           │      
     │                                                                                  │      
     └──────────────────────────────────────────────────────────────────────────────────┘      
                                                                                               
     ┌─ MARKETING ──────────────────────────────────────────────────────────────────────┐      
     │                                                                                  │      
-    │  "Compare our sales performance from last month with the latest Google Ads       │      
-    │   campaign data and summarize the ROI."                                          │      
+    │  "Calculate true ROI by joining last month's ad spend with closed payouts."      │      
     │                                                                                  │      
     └──────────────────────────────────────────────────────────────────────────────────┘      
                                                                                               
     ┌─ CUSTOMER SERVICE ───────────────────────────────────────────────────────────────┐      
     │                                                                                  │      
-    │  "Summarize the recent ticket history, active issues, and current sentiment      │      
-    │   for this specific customer before I call them."                                │      
+    │  "Give me a 3-bullet brief on this customer's sentiment and open tickets."       │      
     │                                                                                  │      
     └──────────────────────────────────────────────────────────────────────────────────┘      
 ```
