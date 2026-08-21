@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Missing Link</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #f5f8f7;
+    --surface: #ffffff;
+    --surface-2: #eef3f2;
+    --ink: #17211f;
+    --muted: #5b6c68;
+    --line: #d7e0dd;
+    --accent: #0e6f68;
+    --accent-soft: #e2efed;
+    --accent-ink: #ffffff;
+    --warn: #8a6100;
+    --warn-soft: #f5ecd6;
+    --bad: #a33b2e;
+    --bad-soft: #f6e4e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1514;
+      --surface: #151e1c;
+      --surface-2: #1b2624;
+      --ink: #e3ecea;
+      --muted: #93a5a1;
+      --line: #27332f;
+      --accent: #4cc6b9;
+      --accent-soft: #143430;
+      --accent-ink: #06211e;
+      --warn: #d9a93f;
+      --warn-soft: #332a12;
+      --bad: #e08172;
+      --bad-soft: #3a201b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1514;
+    --surface: #151e1c;
+    --surface-2: #1b2624;
+    --ink: #e3ecea;
+    --muted: #93a5a1;
+    --line: #27332f;
+    --accent: #4cc6b9;
+    --accent-soft: #143430;
+    --accent-ink: #06211e;
+    --warn: #d9a93f;
+    --warn-soft: #332a12;
+    --bad: #e08172;
+    --bad-soft: #3a201b;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.65;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 28px 96px;
+  }
+  h1, h2, h3, h4 {
+    font-family: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.15;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p, li { max-width: 68ch; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  strong { font-weight: 600; }
+
+  .mono, .eyebrow, .meta, figcaption, th, .tag {
+    font-family: "Spline Sans Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  /* ---------- header ---------- */
+  header.doc {
+    border-bottom: 1px solid var(--line);
+    padding: 40px 0 36px;
+    margin-bottom: 56px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    font-size: 12px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .meta .status { color: var(--warn); }
+  header.doc h1 {
+    font-size: clamp(38px, 6vw, 60px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    max-width: 20ch;
+  }
+  .subtitle {
+    font-size: 21px;
+    color: var(--muted);
+    margin: 18px 0 0;
+    max-width: 52ch;
+    font-style: italic;
+  }
+  .thesis {
+    margin-top: 32px;
+    padding: 20px 24px;
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 8px 8px 0;
+    max-width: 76ch;
+  }
+  .thesis p { margin: 0; font-size: 18px; }
+
+  /* ---------- table of contents ---------- */
+  nav.toc {
+    margin: 0 0 64px;
+  }
+  nav.toc ol {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 6px 32px;
+    font-family: "Schibsted Grotesk", Arial, sans-serif;
+    font-size: 15px;
+  }
+  nav.toc a { text-decoration: none; color: var(--ink); display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  nav.toc a:hover { color: var(--accent); }
+  nav.toc .n { color: var(--muted); font-family: "Spline Sans Mono", monospace; font-size: 13px; padding-top: 1px; }
+
+  /* ---------- sections ---------- */
+  section { margin-bottom: 84px; }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  section h2 {
+    font-size: clamp(26px, 3.4vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+  }
+  section h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 36px 0 12px;
+  }
+  section > p { margin: 0 0 16px; }
+
+  /* ---------- cards ---------- */
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin: 28px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 15px; margin: 0 0 8px; color: var(--ink); }
+  .card .hint { color: var(--muted); font-size: 14px; margin: 0; }
+  .card.pillar { border-top: 3px solid var(--accent); }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-bottom: 10px;
+  }
+
+  /* ---------- callouts ---------- */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px;
+    margin: 28px 0;
+    max-width: 78ch;
+  }
+  .callout.warn { border-left-color: var(--warn); }
+  .callout.bad { border-left-color: var(--bad); }
+  .callout h4 {
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-family: "Spline Sans Mono", monospace;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+  .callout.warn h4 { color: var(--warn); }
+  .callout.bad h4 { color: var(--bad); }
+  .callout p, .callout li { font-size: 15.5px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout ul { margin: 0; padding-left: 20px; }
+  .callout li { margin-bottom: 8px; }
+  .callout li:last-child { margin-bottom: 0; }
+
+  /* ---------- figures ---------- */
+  figure {
+    margin: 32px 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    overflow-x: auto;
+  }
+  figure svg { display: block; max-width: 100%; height: auto; min-width: 640px; margin: 0 auto; }
+  figure svg text { font-family: "Spline Sans Mono", Menlo, monospace; }
+  /* halo so message labels stay legible where they cross a lifeline */
+  figure svg .lbl { paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+  figcaption {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 16px;
+    letter-spacing: .02em;
+    max-width: none;
+  }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; margin: 28px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th {
+    text-align: left;
+    font-size: 11.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    min-width: 160px;
+  }
+  tr:last-child td { border-bottom: none; }
+  td .b { font-weight: 600; font-family: "Schibsted Grotesk", Arial, sans-serif; font-size: 14.5px; }
+  td.phase { font-family: "Spline Sans Mono", monospace; font-size: 13px; color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+  /* ---------- steps ---------- */
+  ol.steps { counter-reset: step; list-style: none; padding: 0; margin: 16px 0 0; }
+  ol.steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 14px 44px;
+    font-size: 15px;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 1px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  footer.doc {
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    font-family: "Spline Sans Mono", monospace;
+    font-size: 12px;
+    letter-spacing: .05em;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a { transition: color .15s ease; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="doc">
+  <div class="meta">
+    <span>E2E Group · Platform Proposal</span>
+    <span>2026-08-21</span>
+    <span class="status">Draft for discussion</span>
+    <span>Internal</span>
+    <span>Author: Alireza Bonab</span>
+  </div>
+  <h1>The Missing Link</h1>
+  <p class="subtitle">Connecting AI harnesses to our data and our actions — a governed MCP platform for an AI-native E2E.</p>
+  <div class="thesis">
+    <p><strong>The proposal in one sentence:</strong> every team that owns data, a service, or a system makes it agent-accessible through an MCP it owns; a shared identity layer and a thin gateway make that access governed, scoped, and audited; and on top of it, anyone in the organisation can get dashboards and durable automations by describing what they need.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#why"><span class="n">01</span> Why now</a></li>
+    <li><a href="#estates"><span class="n">02</span> What we already have</a></li>
+    <li><a href="#pillars"><span class="n">03</span> The proposal — three pillars</a></li>
+    <li><a href="#architecture"><span class="n">04</span> Target architecture</a></li>
+    <li><a href="#capabilities"><span class="n">05</span> What people get on day one</a></li>
+    <li><a href="#governance"><span class="n">06</span> Governance by design</a></li>
+    <li><a href="#roadmap"><span class="n">07</span> Roadmap</a></li>
+    <li><a href="#operating"><span class="n">08</span> Operating model &amp; the ask</a></li>
+    <li><a href="#objections"><span class="n">09</span> Objections, answered</a></li>
+  </ol>
+</nav>
+
+<!-- ================================================================ -->
+<section id="why">
+  <div class="eyebrow">01 · Why now</div>
+  <h2>Built for two, asked by everyone</h2>
+  <p>Our core services were built around two audiences: the customer platform and the sales team. Those two have integrated services and own their domain APIs. <strong>Finance, Compliance, Marketing, Customer Support and the banking back office have no integrated services at all.</strong> They run their day-to-day work in third-party SaaS tools, and there is no path from those tools into our core platform.</p>
+  <p>So every time they need something from it, they come to product and dev: give me access to this data, build me this report, automate this job, reconcile these two systems, send this notification. Each request becomes a ticket, a context switch for an engineer, and a two-week wait for a ten-minute job. <strong>Today the dev backlog is the only door into the platform</strong> — and that is the bottleneck this proposal removes.</p>
+  <p>At the same time, the tools that could serve that demand have quietly become capable. AI harnesses — Claude Code, Codex, and whatever comes next — are no longer novelty chatbots but orchestrators: they understand intent, discover tools at runtime, plan and compose calls across systems, recover from transient failures, and stop to ask before doing anything consequential. That last property is what makes the rest of this proposal safe. The reasoning half of the problem is already solved for us by vendors; we do not have to build it.</p>
+  <p>The missing piece is not intelligence. It is <strong>access</strong>. There is no governed path between the harnesses and the things they would read or act on. So today, value leaks through the worst possible channel: copy-paste into chat windows, ad-hoc credentials, one-off scripts on laptops — exactly the pattern our AI policy exists to prevent, happening informally because no sanctioned path exists.</p>
+
+  <figure>
+    <svg viewBox="0 0 920 356" role="img" aria-label="Diagram: AI harnesses on the left, our data and systems on the right, and a gap in the middle where no governed path exists.">
+      <defs>
+        <marker id="arr" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+          <polygon points="0 0, 9 4, 0 8" fill="currentColor"/>
+        </marker>
+        <marker id="arrw" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+          <polygon points="0 0, 9 4, 0 8" fill="var(--warn)"/>
+        </marker>
+      </defs>
+      <g stroke="currentColor" fill="none" stroke-width="1.3">
+        <rect x="40" y="70" width="300" height="190" rx="10"/>
+        <rect x="600" y="40" width="280" height="250" rx="10"/>
+      </g>
+      <g fill="var(--surface-2)" stroke="var(--line)" stroke-width="1">
+        <rect x="616" y="82" width="248" height="42" rx="6"/>
+        <rect x="616" y="132" width="248" height="42" rx="6"/>
+        <rect x="616" y="182" width="248" height="42" rx="6"/>
+        <rect x="616" y="232" width="248" height="42" rx="6"/>
+      </g>
+      <g fill="currentColor" font-size="13" font-weight="600">
+        <text x="190" y="98" text-anchor="middle">AI HARNESSES</text>
+        <text x="740" y="66" text-anchor="middle">WHAT WE OWN</text>
+      </g>
+      <g fill="currentColor" font-size="12">
+        <text x="190" y="128" text-anchor="middle">Claude Code · Codex</text>
+      </g>
+      <g fill="var(--muted)" font-size="11.5">
+        <text x="190" y="158" text-anchor="middle">understand intent · plan</text>
+        <text x="190" y="180" text-anchor="middle">compose tool calls</text>
+        <text x="190" y="202" text-anchor="middle">ask for approval</text>
+        <text x="190" y="224" text-anchor="middle">recover from failure</text>
+      </g>
+      <g fill="currentColor" font-size="12">
+        <text x="740" y="100" text-anchor="middle">Data Platform · BigQuery</text>
+        <text x="740" y="150" text-anchor="middle">~80 event-driven services</text>
+        <text x="740" y="200" text-anchor="middle">SaaS systems &amp; tools</text>
+        <text x="740" y="250" text-anchor="middle">Windmill orchestration</text>
+      </g>
+      <g fill="var(--muted)" font-size="10.5">
+        <text x="740" y="114" text-anchor="middle">versioned record history</text>
+        <text x="740" y="164" text-anchor="middle">eventual consistency</text>
+        <text x="740" y="214" text-anchor="middle">marketing · comms · observability</text>
+        <text x="740" y="264" text-anchor="middle">durable workflows</text>
+      </g>
+      <!-- the gap -->
+      <line x1="340" y1="165" x2="425" y2="165" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
+      <circle cx="470" cy="165" r="26" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="470" y="172" text-anchor="middle" fill="var(--warn)" font-size="18" font-weight="700">?</text>
+      <line x1="515" y1="165" x2="595" y2="165" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrw)"/>
+      <text x="470" y="112" text-anchor="middle" fill="var(--warn)" font-size="13" font-weight="600">NO GOVERNED PATH</text>
+      <g fill="var(--muted)" font-size="11">
+        <text x="470" y="322" text-anchor="middle">no shared roles · no tokens · no audit</text>
+        <text x="470" y="342" text-anchor="middle">today: copy-paste &amp; ad-hoc credentials</text>
+      </g>
+    </svg>
+    <figcaption>Fig. 1 — The gap. Capable orchestrators on one side, valuable assets on the other, and no sanctioned, auditable path between them.</figcaption>
+  </figure>
+
+  <p>The organisations that win the next five years are the ones where an employee's intent travels to data and action with the least friction — <em>without giving up control</em>. That is what "AI-native" means in practice: not more chatbots, but every asset we own reachable through a governed interface, with identity — not habit — deciding who can do what.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="estates">
+  <div class="eyebrow">02 · What we already have</div>
+  <h2>Four estates, one identity — and no shared authorization</h2>
+  <p>We are not starting from zero. The raw material for an AI-native organisation already exists in four estates:</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Data</span>
+      <h4>Data Platform (GCP / BigQuery)</h4>
+      <p>Collects transactional log data from services and builds <strong>versioned records of every row</strong> — we can replay how any record changed over time.</p>
+      <p class="hint">Agent value: the perfect substrate for questions and dashboards. "How did this change over time?" is a first-class query, already built.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Services</span>
+      <h4>~80 event-driven services</h4>
+      <p>Event-driven messaging architecture with eventual consistency. Each service owns its domain, its data, and in some cases its own local roles.</p>
+      <p class="hint">Agent value: domain lookups and guarded actions. Caveat: reads may trail writes — tool descriptions must say so, and MCPs must expose it honestly.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Systems</span>
+      <h4>SaaS systems &amp; tooling</h4>
+      <p>Marketing platforms, SMS &amp; email, monitoring and log gathering, debugging tools — the operational glue, mostly behind vendor APIs.</p>
+      <p class="hint">Agent value: observability answers ("why is this failing?") and communication actions ("notify these customers") — the highest-frequency requests we field.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Execution</span>
+      <h4>Windmill</h4>
+      <p>Our workflow orchestration platform: scripts, flows, schedules, retries, approval steps — durable execution we already trust.</p>
+      <p class="hint">Agent value: the execution plane the harness lacks. The harness plans; Windmill runs things durably and deterministically.</p>
+    </div>
+  </div>
+
+  <h3>The identity reality</h3>
+  <p>Everyone signs in through Google Workspace — so we have a single, strong identity for every person. But we have <strong>no organisation-wide role and access model</strong>. Some services carry domain-local roles; they don't compose, and nothing outside those services can reason about them.</p>
+
+  <div class="callout warn">
+    <h4>The honest blocker</h4>
+    <p>The missing piece is not AI tooling — it is authorization. Any serious agent platform forces us to answer "who may see what, who may do what" in a machine-readable way. That investment is overdue regardless of AI: it pays off for every integration, every audit, and every DORA conversation we will ever have. This proposal treats it as the foundation, not a footnote.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="pillars">
+  <div class="eyebrow">03 · The proposal</div>
+  <h2>Three pillars, one operating principle</h2>
+  <p>The proposal is deliberately boring at its core: standard protocols, thin infrastructure, and ownership pushed to the teams that already own the assets.</p>
+
+  <div class="grid">
+    <div class="card pillar">
+      <span class="tag">Pillar 1</span>
+      <h4>Domain MCPs, owned by owning teams</h4>
+      <p>Each team that owns data, a service domain, or a system builds and maintains an <strong>MCP server</strong> for it — and carries it on their roadmap like any other product surface.</p>
+      <p class="hint">Per <em>domain</em>, not per service: ~80 services does not mean 80 MCPs — realistically 8–12 cover the estate that matters. The MCP owns model-friendly tools and schemas, domain rules, tool-level authorization, ownership checks, PII redaction, and side-effect classification. "Done" starts to include "agent-accessible".</p>
+    </div>
+    <div class="card pillar">
+      <span class="tag">Pillar 2</span>
+      <h4>Identity &amp; authorization foundation</h4>
+      <p>Google Workspace stays the IdP. We add an <strong>OAuth authorization server</strong> in front of it: token issuance, refresh, revocation, and — critically — <strong>token exchange</strong> into short-lived, audience-bound tokens per domain.</p>
+      <p class="hint">Roles v1 is pragmatic: Google Workspace groups mapped to scopes. A user's token can only ever be exchanged for the domains their groups grant, and the token the harness holds is itself bound to the gateway — it never reaches a domain MCP. No standing credentials anywhere in the chain.</p>
+    </div>
+    <div class="card pillar">
+      <span class="tag">Pillar 3</span>
+      <h4>A thin MCP gateway</h4>
+      <p>One endpoint that harnesses connect to. It aggregates and routes tool calls, applies platform policy and rate limits, handles name collisions, and writes the <strong>central audit and trace log</strong>.</p>
+      <p class="hint">Thin is a feature: no workflow planning, no business logic, no domain knowledge. Everything smart lives in the harness (orchestration) or the domain MCP (rules).</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Operating principle</h4>
+    <p><strong>The harness orchestrates. The gateway routes. The domain MCP guards. Windmill executes durably.</strong> Every layer does one job, which is what keeps the system auditable, testable, and replaceable — including replacing the harness vendor, because MCP is an open standard supported across the ecosystem.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="architecture">
+  <div class="eyebrow">04 · Target architecture</div>
+  <h2>One picture: identity in, audited action out</h2>
+
+  <figure>
+    <svg viewBox="0 0 960 690" role="img" aria-label="Target architecture: user authenticates via Google Workspace identity, harness calls a thin MCP gateway, the gateway exchanges tokens with the identity layer and routes scoped calls to domain MCP servers, which guard access to BigQuery, services, SaaS systems, and Windmill.">
+      <defs>
+        <marker id="arr2" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+          <polygon points="0 0, 9 4, 0 8" fill="currentColor"/>
+        </marker>
+        <marker id="arra" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+          <polygon points="0 0, 9 4, 0 8" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <!-- user -->
+      <rect x="390" y="14" width="180" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text x="480" y="34" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">USER</text>
+      <text x="480" y="50" text-anchor="middle" fill="var(--muted)" font-size="10.5">Google Workspace identity</text>
+
+      <!-- identity -->
+      <rect x="24" y="96" width="200" height="216" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text x="124" y="124" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">IDENTITY</text>
+      <g fill="var(--muted)" font-size="11">
+        <text x="124" y="152" text-anchor="middle">Google Workspace SSO</text>
+        <text x="124" y="174" text-anchor="middle">OAuth authorization server</text>
+        <text x="124" y="196" text-anchor="middle">issue · exchange · revoke</text>
+        <text x="124" y="218" text-anchor="middle">groups → scopes (roles v1)</text>
+        <text x="124" y="240" text-anchor="middle">short-lived tokens</text>
+        <text x="124" y="262" text-anchor="middle">audience-bound per domain</text>
+      </g>
+
+      <!-- harness -->
+      <rect x="310" y="96" width="340" height="72" rx="8" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <text x="480" y="124" text-anchor="middle" fill="currentColor" font-size="13" font-weight="600">HARNESS · Claude Code / Codex / next</text>
+      <text x="480" y="146" text-anchor="middle" fill="var(--muted)" font-size="11">plans · composes tool calls · requests approval</text>
+
+      <!-- gateway -->
+      <rect x="270" y="230" width="420" height="92" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+      <text x="480" y="260" text-anchor="middle" fill="var(--accent)" font-size="13.5" font-weight="700">MCP GATEWAY — ONE ENDPOINT</text>
+      <g fill="var(--muted)" font-size="11">
+        <text x="480" y="284" text-anchor="middle">discovery · routing · policy · rate limits</text>
+        <text x="480" y="304" text-anchor="middle">audit &amp; tracing · no business logic</text>
+      </g>
+
+      <!-- flow arrows top -->
+      <line x1="480" y1="60" x2="480" y2="92" stroke="currentColor" stroke-width="1.4" marker-end="url(#arr2)"/>
+      <text x="492" y="82" fill="var(--muted)" font-size="10.5">asks for an outcome</text>
+      <polyline points="390,37 124,37 124,92" fill="none" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr2)"/>
+      <text x="186" y="30" fill="var(--muted)" font-size="10.5">SSO · MFA</text>
+      <line x1="224" y1="132" x2="306" y2="132" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr2)"/>
+      <text x="267" y="122" text-anchor="middle" fill="var(--muted)" font-size="10.5">access token</text>
+      <line x1="480" y1="168" x2="480" y2="226" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#arra)"/>
+      <text x="492" y="202" fill="var(--muted)" font-size="10.5">tool call + user identity</text>
+      <line x1="266" y1="278" x2="230" y2="278" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr2)"/>
+      <line x1="230" y1="292" x2="262" y2="292" stroke="currentColor" stroke-width="1.2" marker-end="url(#arr2)"/>
+      <text x="124" y="334" text-anchor="middle" fill="var(--muted)" font-size="10.5">token exchange → audience-bound token</text>
+
+      <!-- gateway to MCPs -->
+      <g stroke="var(--accent)" stroke-width="1.3" fill="none">
+        <polyline points="330,322 330,352 129,352 129,372" marker-end="url(#arra)"/>
+        <polyline points="430,322 430,352 363,352 363,372" marker-end="url(#arra)"/>
+        <polyline points="530,322 530,352 597,352 597,372" marker-end="url(#arra)"/>
+        <polyline points="630,322 630,352 831,352 831,372" marker-end="url(#arra)"/>
+      </g>
+      <text x="700" y="342" fill="var(--muted)" font-size="10.5">scoped, short-lived token per domain</text>
+
+      <!-- MCP row -->
+      <g fill="none" stroke="currentColor" stroke-width="1.3">
+        <rect x="24" y="376" width="210" height="88" rx="8"/>
+        <rect x="258" y="376" width="210" height="88" rx="8"/>
+        <rect x="492" y="376" width="210" height="88" rx="8"/>
+        <rect x="726" y="376" width="210" height="88" rx="8"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-weight="600">
+        <text x="129" y="402" text-anchor="middle">Data Platform MCP</text>
+        <text x="363" y="402" text-anchor="middle">Service-domain MCPs</text>
+        <text x="597" y="402" text-anchor="middle">System MCPs</text>
+        <text x="831" y="402" text-anchor="middle">Windmill MCP</text>
+      </g>
+      <g fill="var(--muted)" font-size="10.5">
+        <text x="129" y="424" text-anchor="middle">query tools · schema catalog</text>
+        <text x="129" y="442" text-anchor="middle">user-scoped SQL · redaction</text>
+        <text x="363" y="424" text-anchor="middle">per domain, not per service</text>
+        <text x="363" y="442" text-anchor="middle">lookups · guarded actions</text>
+        <text x="597" y="424" text-anchor="middle">observability · comms</text>
+        <text x="597" y="442" text-anchor="middle">marketing · debugging</text>
+        <text x="831" y="424" text-anchor="middle">author · deploy · run</text>
+        <text x="831" y="442" text-anchor="middle">track progress · approvals</text>
+      </g>
+
+      <!-- MCP to estates -->
+      <g stroke="currentColor" stroke-width="1.2" fill="none">
+        <line x1="129" y1="464" x2="129" y2="512" marker-end="url(#arr2)"/>
+        <line x1="363" y1="464" x2="363" y2="512" marker-end="url(#arr2)"/>
+        <line x1="597" y1="464" x2="597" y2="512" marker-end="url(#arr2)"/>
+        <line x1="831" y1="464" x2="831" y2="512" marker-end="url(#arr2)"/>
+      </g>
+      <g fill="var(--muted)" font-size="10">
+        <text x="138" y="494">SQL, read-only first</text>
+        <text x="372" y="494">domain APIs</text>
+        <text x="606" y="494">vendor APIs</text>
+        <text x="840" y="494">deploy + execute</text>
+      </g>
+
+      <!-- estates row -->
+      <g fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2">
+        <rect x="24" y="516" width="210" height="84" rx="8"/>
+        <rect x="258" y="516" width="210" height="84" rx="8"/>
+        <rect x="492" y="516" width="210" height="84" rx="8"/>
+        <rect x="726" y="516" width="210" height="84" rx="8"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-weight="600">
+        <text x="129" y="544" text-anchor="middle">BigQuery</text>
+        <text x="363" y="544" text-anchor="middle">~80 services</text>
+        <text x="597" y="544" text-anchor="middle">SaaS systems</text>
+        <text x="831" y="544" text-anchor="middle">Windmill runtime</text>
+      </g>
+      <g fill="var(--muted)" font-size="10.5">
+        <text x="129" y="566" text-anchor="middle">versioned record history</text>
+        <text x="363" y="566" text-anchor="middle">event-driven</text>
+        <text x="363" y="582" text-anchor="middle">eventually consistent</text>
+        <text x="597" y="566" text-anchor="middle">monitoring · logs</text>
+        <text x="597" y="582" text-anchor="middle">SMS / email · marketing</text>
+        <text x="831" y="566" text-anchor="middle">durable flows · schedules</text>
+        <text x="831" y="582" text-anchor="middle">retries · approval steps</text>
+      </g>
+
+      <text x="480" y="648" text-anchor="middle" fill="var(--accent)" font-size="11.5" font-weight="600">every hop authenticated · every call audited · nothing reaches a system except through its owning MCP</text>
+    </svg>
+    <figcaption>Fig. 2 — Target architecture. The middle row is the domain MCPs, each built and owned by the team that owns the asset. The bottom row is what we already own. The gateway is deliberately thin: intelligence sits in the harness, rules sit in the domain MCPs, durable execution sits in Windmill.</figcaption>
+  </figure>
+
+  <h3>One request, end to end</h3>
+  <p>The trust chain matters more than the boxes, and the important detail is that <strong>the gateway swaps tokens rather than forwarding them</strong>. You connect the gateway in the harness once and sign in with Workspace. The harness then holds one token whose audience is the gateway and nothing else. On every call after that, the harness sends that token to the gateway, the gateway checks it, and Auth mints a <em>new</em> short-lived token whose audience is exactly one domain MCP. The gateway sends the new token onward.</p>
+  <p><strong>The user token never leaves the gateway.</strong> Each domain MCP only ever sees a token minted for it, and checks that too — signature, expiry, scopes, and "was this minted for me?". A token minted for the Data Platform is useless against Windmill or the comms system. That is token exchange, not forwarding. Nothing in the chain holds standing credentials on behalf of "the AI", the user never logs in again, domain MCPs never show a login screen, and revoking the person in Workspace kills every token in the chain.</p>
+
+  <figure>
+    <svg viewBox="0 0 960 686" role="img" aria-label="Sequence diagram of one tool call: the user signs in once through identity and the harness receives a token bound to the gateway; the harness sends a tool call to the gateway; the gateway exchanges that token with identity for a short-lived token bound to one domain; the gateway calls the domain MCP with the new token while the user token stops at the gateway; the MCP verifies signature, expiry, scopes and audience before touching the system; results are returned and audited, and denials or approval requests are returned the same way.">
+      <defs>
+        <marker id="arr3" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+          <polygon points="0 0, 9 4, 0 8" fill="currentColor"/>
+        </marker>
+      </defs>
+
+      <!-- participant headers -->
+      <g stroke="var(--line)" stroke-width="1.2">
+        <rect x="27"  y="14" width="140" height="32" rx="6" fill="var(--surface-2)"/>
+        <rect x="180" y="14" width="140" height="32" rx="6" fill="var(--surface-2)"/>
+        <rect x="333" y="14" width="140" height="32" rx="6" fill="var(--surface-2)"/>
+        <rect x="640" y="14" width="140" height="32" rx="6" fill="var(--surface-2)"/>
+        <rect x="793" y="14" width="140" height="32" rx="6" fill="var(--surface-2)"/>
+      </g>
+      <rect x="487" y="14" width="140" height="32" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+      <g font-size="11" font-weight="600" fill="currentColor">
+        <text x="97"  y="34" text-anchor="middle">USER</text>
+        <text x="250" y="34" text-anchor="middle">HARNESS</text>
+        <text x="403" y="34" text-anchor="middle">IDENTITY</text>
+        <text x="557" y="34" text-anchor="middle" fill="var(--accent)">GATEWAY</text>
+        <text x="710" y="34" text-anchor="middle">DOMAIN MCP</text>
+        <text x="863" y="34" text-anchor="middle">SYSTEM</text>
+      </g>
+
+      <!-- lifelines -->
+      <g stroke="var(--line)" stroke-width="1.1" stroke-dasharray="3 5">
+        <line x1="97"  y1="46" x2="97"  y2="664"/>
+        <line x1="250" y1="46" x2="250" y2="664"/>
+        <line x1="403" y1="46" x2="403" y2="664"/>
+        <line x1="557" y1="46" x2="557" y2="664"/>
+        <line x1="710" y1="46" x2="710" y2="664"/>
+        <line x1="863" y1="46" x2="863" y2="664"/>
+      </g>
+
+      <!-- messages -->
+      <g stroke="currentColor" stroke-width="1.3" fill="none">
+        <line x1="97"  y1="86"  x2="399" y2="86"  marker-end="url(#arr3)"/>
+        <line x1="403" y1="126" x2="254" y2="126" marker-end="url(#arr3)"/>
+        <line x1="97"  y1="166" x2="246" y2="166" marker-end="url(#arr3)"/>
+        <line x1="250" y1="206" x2="553" y2="206" marker-end="url(#arr3)"/>
+        <line x1="557" y1="246" x2="407" y2="246" marker-end="url(#arr3)"/>
+        <line x1="403" y1="286" x2="553" y2="286" marker-end="url(#arr3)"/>
+      </g>
+      <line x1="557" y1="334" x2="706" y2="334" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arr3)" fill="none"/>
+
+      <g font-size="10.5" fill="var(--muted)" text-anchor="middle" class="lbl">
+        <text x="250" y="78">1  sign in once · SSO · MFA</text>
+        <text x="326" y="118">2  token — audience: the gateway only</text>
+        <text x="173" y="158">3  asks for an outcome</text>
+        <text x="403" y="198">4  tool call + user token</text>
+        <text x="480" y="238">5  exchange for one target domain</text>
+        <text x="480" y="278">6  short-lived token, audience = that domain</text>
+        <text x="633" y="314" fill="var(--accent)">7  call + the new domain token</text>
+        <text x="633" y="326">the user token stops at the gateway</text>
+      </g>
+
+      <!-- what the MCP checks -->
+      <rect x="562" y="348" width="296" height="80" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+      <g font-size="10" fill="var(--muted)" text-anchor="middle">
+        <text x="710" y="366">the MCP checks the token it received:</text>
+        <text x="710" y="382">signature · expiry · scopes · audience</text>
+        <text x="710" y="398" fill="currentColor">"was this token minted for me?"</text>
+        <text x="710" y="414">then: redact PII · classify side effects</text>
+      </g>
+
+      <g stroke="currentColor" stroke-width="1.3" fill="none">
+        <line x1="710" y1="452" x2="859" y2="452" marker-end="url(#arr3)"/>
+        <line x1="863" y1="486" x2="714" y2="486" marker-end="url(#arr3)"/>
+        <line x1="710" y1="520" x2="254" y2="520" marker-end="url(#arr3)"/>
+        <line x1="250" y1="554" x2="101" y2="554" marker-end="url(#arr3)"/>
+      </g>
+      <g font-size="10.5" fill="var(--muted)" text-anchor="middle" class="lbl">
+        <text x="786" y="444">8  permitted operation</text>
+        <text x="786" y="478">9  result</text>
+        <text x="480" y="512">10  result — logged at the gateway</text>
+        <text x="173" y="546">11  outcome, in plain language</text>
+      </g>
+
+      <!-- denial / approval branch -->
+      <line x1="27" y1="582" x2="933" y2="582" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
+      <text x="480" y="602" text-anchor="middle" font-size="10.5" fill="var(--warn)" class="lbl">IF THE CHECK FAILS, OR THE ACTION NEEDS A HUMAN</text>
+      <g stroke="var(--warn)" stroke-width="1.3" fill="none">
+        <line x1="710" y1="634" x2="254" y2="634" marker-end="url(#arr3)"/>
+        <line x1="250" y1="664" x2="101" y2="664" marker-end="url(#arr3)"/>
+      </g>
+      <g font-size="10.5" fill="var(--muted)" text-anchor="middle" class="lbl">
+        <text x="480" y="626">approval required · or a denial with a reason</text>
+        <text x="173" y="656">asks for approval, or explains why not</text>
+      </g>
+    </svg>
+    <figcaption>Fig. 3 — The trust chain for a single tool call. The token the harness holds is bound to the gateway and never travels further; each domain MCP only ever sees a token minted for it. Denials and approval requests are first-class outcomes, not errors.</figcaption>
+  </figure>
+</section>
+
+<!-- ================================================================ -->
+<section id="capabilities">
+  <div class="eyebrow">05 · What people get on day one</div>
+  <h2>Two capabilities that make the platform tangible</h2>
+  <p>Architecture doesn't sell itself. These two experiences are what we demo, and they are fundamental platform capabilities — not side projects.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Capability A</span>
+      <h4>Dashboards from a conversation</h4>
+      <p>Anyone can ask a question of the data they are entitled to see, and get a living dashboard — not a CSV and a promise.</p>
+      <ol class="steps">
+        <li>A colleague asks in plain language: <em>"Weekly application volume by channel, and how conversion moved since the June change."</em></li>
+        <li>The harness discovers Data Platform MCP tools, reads the schema catalog, and queries — strictly within the user's scopes.</li>
+        <li>It publishes a dashboard and iterates as the user asks follow-ups. The Data Platform's versioned records make "how did this change over time" a native question.</li>
+        <li>Every query is logged with who asked, what ran, and what was returned.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <span class="tag">Capability B</span>
+      <h4>Automations without a backlog</h4>
+      <p>Anyone can describe a recurring job and get a durable, supervised automation — with the machinery hidden unless they ask.</p>
+      <ol class="steps">
+        <li>A colleague describes the job: <em>"Every morning, reconcile yesterday's X against Y and alert the team if they diverge."</em></li>
+        <li>The harness authors the script or flow and deploys it through the Windmill MCP, into the workspace that team's work belongs in — the colleague never has to know Windmill exists.</li>
+        <li>Anything with side effects passes an approval gate before it can run. Windmill provides schedules, retries, and durable execution.</li>
+        <li>The user follows progress and outcomes in plain language; the harness surfaces failures and fixes on request. Implementation details stay out of the way.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Where the boundary sits</h4>
+    <p>The harness handles <strong>interactive orchestration</strong> — the long tail of one-off intent that never justified building anything. Windmill handles <strong>durable, deterministic execution</strong> — scheduled, long-running, or regulated sequences with retries and recovery. The harness writes workflows; it does not <em>become</em> one. This split is what keeps agent behaviour reviewable and business processes reproducible.</p>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="governance">
+  <div class="eyebrow">06 · Governance by design</div>
+  <h2>The regulated-firm version of this idea</h2>
+  <p>We are a kreditmarknadsbolag under Finansinspektionen's supervision. That is not an obstacle to this proposal — it is the reason the proposal looks the way it does. A governed MCP platform is how AI access becomes <em>more</em> compliant than the status quo of informal copy-paste, not less. The mapping below is drafted for discussion; <strong>compliance and legal sign-off is a Phase 0 deliverable</strong>, not an afterthought.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>Framework</th><th>What it demands here</th><th>How the platform answers</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="b">AI Policy (ISMS 1.4)</span></td>
+          <td>Tiered controls for chat, workflow-integrated, and agentic AI use; approval gates; no customer PII / KYC / AML data or secrets into model context.</td>
+          <td>The platform <em>is</em> the controlled Tier 2/3 path. MCPs redact and mask at source so prohibited data classes never reach the harness. Side-effecting tools sit behind explicit approval gates; production-affecting actions follow the policy's approval chain.</td>
+        </tr>
+        <tr>
+          <td><span class="b">GDPR</span></td>
+          <td>Purpose limitation, data minimisation, accountability, auditability of access to personal data.</td>
+          <td>Minimisation enforced where it can actually be enforced: field-level allowlists and purpose-scoped tools in each MCP. The gateway's audit log records who accessed what, when, and through which tool — per call.</td>
+        </tr>
+        <tr>
+          <td><span class="b">DORA (EU 2022/2554)</span></td>
+          <td>ICT risk management, logging and traceability, third-party risk register, resilience.</td>
+          <td>Central tracing at the gateway gives one place to monitor and one place to cut access. Harness vendors (Anthropic, OpenAI) enter the ICT third-party register with defined exit paths — MCP being an open standard is itself a resilience measure. Degraded mode: read-only.</td>
+        </tr>
+        <tr>
+          <td><span class="b">EU AI Act (2024/1689)</span></td>
+          <td>High-risk classification for creditworthiness assessment (Annex III §5) and for employment and worker management (Annex III §4); prohibited practices under Article 5; transparency; human oversight.</td>
+          <td>The platform's scope is internal productivity. Credit decisioning, scoring and customer risk assessment are architecturally excluded, and so are agent-assisted decisions about employees (see boundaries below). Consequential actions always have a human approver in the loop.</td>
+        </tr>
+        <tr>
+          <td><span class="b">Sector rules (LBF, KKrL, PTL, FFFS)</span></td>
+          <td>Sound governance and internal control; AML data handling; outsourcing considerations for critical functions.</td>
+          <td>KYC/AML data classes are excluded from MCP outputs by design. Whether any part of the platform constitutes outsourcing of a critical function (FFFS 2014:1) is a question we put to compliance early, with the architecture documented and ready for that review.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout bad">
+    <h4>Hard boundaries — never through this platform</h4>
+    <ul>
+      <li><strong>No credit decisioning, scoring, or customer risk assessment.</strong> Likely high-risk under EU AI Act Annex III §5 — any such use case requires CTO + compliance review as a separate initiative, and is out of scope here.</li>
+      <li><strong>No automated decisions with legal or financial consequence for customers.</strong> Humans decide; agents prepare.</li>
+      <li><strong>No agent-assisted decisions about employees.</strong> Recruitment, promotion, task allocation and performance monitoring are high-risk under Annex III §4, and inferring emotions in the workplace is prohibited outright under Article 5. If an HR or people-data domain ever gets an MCP, it ships read-only and excludes these uses.</li>
+      <li><strong>No customer PII, credit, KYC, or AML data into harness context.</strong> MCPs redact, mask, or aggregate at source — the enforcement point finally exists.</li>
+      <li><strong>No secrets in tool outputs.</strong> Credentials and security configurations never transit the platform.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<section id="roadmap">
+  <div class="eyebrow">07 · Roadmap</div>
+  <h2>Read first, widen next, act last</h2>
+  <p>Sequencing is the risk control. We earn each phase by exiting the previous one cleanly, and <strong>nothing writes until Phase 3</strong>. The durations below are rough indications for shape only — real sizing and sequencing belong to the planning step, not to this document.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>Focus</th><th>What ships</th><th>Exit gate</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phase">Phase 0</td>
+          <td><span class="b">Foundation</span></td>
+          <td>Plumbing only: OAuth authorization server with token exchange; the thin gateway; roles v1 (Workspace groups → scopes); the Connect flow in the harness; the MCP starter kit (template, SDK, review checklist); compliance review of the design.</td>
+          <td>You sign in once and the token swap works end to end — and compliance has seen the architecture.</td>
+        </tr>
+        <tr>
+          <td class="phase">Phase 1</td>
+          <td><span class="b">Read-only MVP</span></td>
+          <td>Two read-only MCPs — the Data Platform and monitoring/logs — and one real question answered end to end through the governed path. Tool evaluation suite in CI.</td>
+          <td>A colleague outside the platform team gets a real answer, through the governed path, without a ticket.</td>
+        </tr>
+        <tr>
+          <td class="phase">Phase 2</td>
+          <td><span class="b">Read-only main domains</span></td>
+          <td>Read-only MCPs for the top service domains and key SaaS systems; conversational dashboards generally available; the audit log and an audit dashboard for the platform itself. Still no writes.</td>
+          <td>Weekly active users across multiple teams; zero policy incidents; the audit log answering real questions.</td>
+        </tr>
+        <tr>
+          <td class="phase">Phase 3</td>
+          <td><span class="b">Actions are possible</span></td>
+          <td>The first time anything writes: side-effect classification standard (safe / reversible / irreversible); write tools behind human approval gates; the Windmill MCP — author, deploy, run, track; the first durable automations.</td>
+          <td>The first action executed in production with a complete audit trail and a human approval at every consequential step.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Beyond Phase 3 the direction is that agent accessibility becomes part of definition of done, every owning team carries an MCP on its roadmap, and the informal access paths get decommissioned because the governed one is easier. That is a direction worth stating, not a phase we are committing to today.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="operating">
+  <div class="eyebrow">08 · Operating model &amp; the ask</div>
+  <h2>Who owns what — and what I'm asking for</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h4>Platform group owns</h4>
+      <p class="hint">The gateway, the identity integration, the MCP starter kit and standards (naming, scopes, schemas, side-effect classes, eval requirements), the audit pipeline, and developer support for teams building their first MCP.</p>
+    </div>
+    <div class="card">
+      <h4>Domain teams own</h4>
+      <p class="hint">Their MCP: tools, schemas, authorization checks, redaction rules, honesty about consistency. It is a product surface with a roadmap line, like an API — because it is one.</p>
+    </div>
+    <div class="card">
+      <h4>Compliance owns</h4>
+      <p class="hint">The guardrail review: data classification per MCP, the outsourcing question, the AI Act boundary, and sign-off gates between phases. Involved from Phase 0, not consulted after the fact.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>What I'm asking for</h4>
+    <p><strong>In this meeting</strong></p>
+    <ul>
+      <li><strong>Your input and your evaluation</strong> — of the reading of the problem as much as of the architecture.</li>
+      <li><strong>Sign-off on the architecture and the operating model:</strong> domain MCPs owned by owning teams, a shared identity and authorization foundation, and a thin gateway.</li>
+    </ul>
+    <p style="margin-top:14px"><strong>Next</strong></p>
+    <ul>
+      <li><strong>We plan it properly</strong> — roadmap, sizing, sequencing, and the compliance review running alongside so governance and engineering land together.</li>
+    </ul>
+    <p style="margin-top:14px"><strong>Then</strong></p>
+    <ul>
+      <li><strong>Phased implementation</strong>, starting read-only.</li>
+    </ul>
+    <p style="margin-top:14px">To be explicit about what this is <em>not</em>: I am not asking to staff a team or lock a roadmap today. <strong>Today we decide the model. Planning comes after.</strong></p>
+  </div>
+
+  <h3>How we'll know it's working</h3>
+  <p>Time from question to answered dashboard (target: minutes, not sprint-weeks). Number of automations running through the governed path. Share of estates agent-accessible. Percentage of AI-mediated access flowing through the gateway rather than around it — the metric that tells us the sanctioned path won.</p>
+</section>
+
+<!-- ================================================================ -->
+<section id="objections">
+  <div class="eyebrow">09 · Objections, answered</div>
+  <h2>The five questions this proposal will get</h2>
+
+  <h3>"~80 services — are you asking for 80 MCPs?"</h3>
+  <p>No. MCPs follow domains, not services. Realistically, 8–12 MCPs cover the estate that matters, and the read-only MVP ships two. The starter kit makes each subsequent one cheaper than the last.</p>
+
+  <h3>"Isn't giving AI access to our systems dangerous?"</h3>
+  <p>The AI already has access — through people, informally, with no audit trail. This proposal replaces invisible access with governed access: identity-bound, scoped, short-lived, logged, and revocable in one place. Read-only first; every write behind a human approval. The dangerous option is the status quo.</p>
+
+  <h3>"Why a gateway? Teams could connect harnesses to MCPs directly."</h3>
+  <p>Direct connections mean N×M configuration sprawl, no central policy or rate limits, no single audit log, and token handling reinvented per team. The gateway is thin precisely so it can be boring, and boring is what you want at the choke point where DORA asks "who accessed what?"</p>
+
+  <h3>"Are we locking ourselves into one AI vendor?"</h3>
+  <p>The opposite. MCP is an open standard adopted across the ecosystem — including both harnesses we already use. Everything we build (MCPs, identity, gateway, audit) is harness-agnostic; the harness is the most replaceable component in the diagram.</p>
+
+  <h3>"Why not just write more Windmill flows?"</h3>
+  <p>Windmill automates what someone already specified, built, and maintains. The unserved demand is the long tail of one-off questions and small automations that never justify that investment. The harness serves the long tail — and when a job deserves durability, it graduates into Windmill. They compose; neither replaces the other.</p>
+</section>
+
+<footer class="doc">
+  <span>E2E Group · Internal · Draft for discussion</span>
+  <span>Prepared by Alireza Bonab</span>
+  <span>2026-08-21</span>
+</footer>
+
+</div>
+
+</body>
+</html>

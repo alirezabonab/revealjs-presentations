@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(lsof -ti:4100)",
+      "Bash(find /Users/alirezabonab -maxdepth 4 -iname \"*codex-diagram*\" -not -path \"*/node_modules/*\" 2>/dev/null; echo \"--- done\")",
+      "Read(//Users/alirezabonab/**)",
+      "Bash(find /Users/alirezabonab -iname \"*codex-diagram*\" -not -path \"*/node_modules/*\" -not -path \"*/Library/*\" 2>/dev/null | head; echo \"--- broader\"; find /Users/alirezabonab/Downloads /Users/alirezabonab/Desktop /Users/alirezabonab/Documents -maxdepth 3 -iname \"*diagram*\" 2>/dev/null | head -20)",
+      "Read(//Users/alirezabonab/Downloads/**)",
+      "Bash(awk '{ print length }' presentations/agentic-automation-ai-platform/deck.md)",
+      "Bash(awk '/^```text/{c=1;n=0;max=0;next} /^```$/{if\\(c\\){print \"lines=\"n\" maxw=\"max; c=0}} c{n++; if\\(length>max\\)max=length}' presentations/agentic-automation-ai-platform/deck.md)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 two_truths.py)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4100/presentation/05-ai-native-mcp-platform)",
+      "mcp__MCP_DOCKER__browser_evaluate",
+      "Bash(echo \"\\(exit $?\\)\")",
+      "Bash(python3 -m http.server 8899 --bind 0.0.0.0)",
+      "Bash(curl -s -o /dev/null -w \"local status: %{http_code}\\\\n\" http://127.0.0.1:8899/proposal.html)",
+      "Bash(pkill -f \"http.server 8899\")"
+    ]
+  }
+}

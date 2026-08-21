@@ -1,9 +1,29 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
 
+/* Self-hosted so decks render identically off-Mac and with no network.
+   The Google Fonts build of JetBrains Mono is subsetted and drops
+   U+2500-257F, which sends box-drawing glyphs to a fallback font with a
+   different advance width and skews every ASCII panel. */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../fonts/JetBrainsMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
 :root {
   color-scheme: dark;
   --font-sans: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
-  --font-mono: "SFMono-Regular", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
   --page-bg: #040506;
   --page-bg-strong: #090a0d;
   --panel-bg: rgba(15, 22, 28, 0.82);

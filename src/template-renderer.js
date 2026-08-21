@@ -37,10 +37,13 @@ function renderThemeBootScript() {
       const colorModeStorageKey = "presentation-color-mode";
       const asciiZoomStorageKey = "presentation-ascii-zoom";
       const defaultMode = "dark";
-      const defaultAsciiZoom = 1;
-      const asciiZoomStep = 0.125;
-      const minAsciiZoom = 0.75;
-      const maxAsciiZoom = 2;
+      // Zoom is a fraction of the largest size that still fits the slide, so 1
+      // is the ceiling: anything above it would be clipped at the slide edge.
+      // The default sits a step below the ceiling so both buttons are usable.
+      const defaultAsciiZoom = 0.9;
+      const asciiZoomStep = 0.1;
+      const minAsciiZoom = 0.5;
+      const maxAsciiZoom = 1;
       const toggleIcons = {
         light: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.25"></circle><path d="M12 2.75v2.5M12 18.75v2.5M4.75 12h2.5M16.75 12h2.5M5.85 5.85l1.8 1.8M16.35 16.35l1.8 1.8M18.15 5.85l-1.8 1.8M7.65 16.35l-1.8 1.8"></path></svg>',
         dark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.2A8.8 8.8 0 0 1 9.8 3.8a9 9 0 1 0 10.4 10.4Z"></path></svg>'

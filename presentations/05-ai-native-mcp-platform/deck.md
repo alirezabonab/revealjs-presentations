@@ -1,0 +1,580 @@
+<!-- ## Slide (Section: cover) -->
+```text
+╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                                       ║
+║     █████╗     ██╗            ███╗   ██╗     █████╗     ████████╗    ██╗    ██╗   ██╗    ███████╗     ║
+║    ██╔══██╗    ██║            ████╗  ██║    ██╔══██╗    ╚══██╔══╝    ██║    ██║   ██║    ██╔════╝     ║
+║    ███████║    ██║            ██╔██╗ ██║    ███████║       ██║       ██║    ██║   ██║    █████╗       ║
+║    ██╔══██║    ██║            ██║╚██╗██║    ██╔══██║       ██║       ██║    ╚██╗ ██╔╝    ██╔══╝       ║
+║    ██║  ██║    ██║            ██║ ╚████║    ██║  ██║       ██║       ██║     ╚████╔╝     ███████╗     ║
+║    ╚═╝  ╚═╝    ╚═╝            ╚═╝  ╚═══╝    ╚═╝  ╚═╝       ╚═╝       ╚═╝      ╚═══╝      ╚══════╝     ║
+║                                                                                                       ║
+║   ██████╗     ██╗          █████╗     ████████╗    ███████╗     ██████╗     ██████╗     ███╗   ███╗   ║
+║   ██╔══██╗    ██║         ██╔══██╗    ╚══██╔══╝    ██╔════╝    ██╔═══██╗    ██╔══██╗    ████╗ ████║   ║
+║   ██████╔╝    ██║         ███████║       ██║       █████╗      ██║   ██║    ██████╔╝    ██╔████╔██║   ║
+║   ██╔═══╝     ██║         ██╔══██║       ██║       ██╔══╝      ██║   ██║    ██╔══██╗    ██║╚██╔╝██║   ║
+║   ██║         ███████╗    ██║  ██║       ██║       ██║         ╚██████╔╝    ██║  ██║    ██║ ╚═╝ ██║   ║
+║   ╚═╝         ╚══════╝    ╚═╝  ╚═╝       ╚═╝       ╚═╝          ╚═════╝     ╚═╝  ╚═╝    ╚═╝     ╚═╝   ║
+║                                                                                                       ║
+║                                                                                                       ║
+║                                                                                    August 2026        ║
+║                                                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+Open with the thesis, one sentence: every team that owns data, a service, or a system makes it agent-accessible through an MCP it owns; a shared identity layer and a thin gateway make that access governed, scoped, and audited; and on top of it, anyone in the organisation can get dashboards and durable automations by describing what they need. Compliance framing for an FI-supervised business: this is an internal capability story — anything touching credit decisioning or scoring is high-risk AI under the EU AI Act (Annex III §5) and is explicitly out of scope.
+
+---
+<!-- ## Slide (Section: ai-native) -->
+```text
+╔═════════════════════════════════════════════════════════════════════════╗
+║                                                                         ║
+║                What "AI-native" means in practice:                      ║
+║                                                                         ║
+║                                                                         ║    
+║                                                                         ║
+║        An Employee turns ideas into data and action fast and safe,      ║
+║        without giving up control.                                       ║
+║                                                                         ║
+║        Every asset we own is available through one safe path.           ║
+║        Your identity decides what you can see and do.                   ║
+║                                                                         ║
+║                                                                         ║
+║                                                                         ║
+╚═════════════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+The organisations that win the next five years are the ones where an employee's intent travels to data and action with the least friction — without giving up control. That is what "AI-native" means in practice: not more chatbots, but every asset we own reachable through a governed interface, with identity — not habit — deciding who can do what.
+
+
+---
+
+<!-- ## Slide (Section: section one) -->
+```text
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║                    SECTION ONE  -  THE GAP                    ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+---
+
+<!-- ## Slide (Section: departments outside the core) -->
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                 BUILT FOR TWO, ASKED BY EVERYONE                │
+└─────────────────────────────────────────────────────────────────┘
+
+
+    Core services were built for the customers and sales.
+    Every other department sits outside them.
+
+
+┌─────────────────────────────┐     ┌─────────────────────────────┐
+│       OUTSIDE THE CORE      │     │      WHAT THEY ASK FOR      │
+├─────────────────────────────┤     ├─────────────────────────────┤
+│  • Finance                  │     │  • data access              │
+│  • Compliance               │     │  • ad-hoc reports           │
+│  • Marketing                │     │  • automations              │
+│  • Customer Support         │ ──► │  • reconciliations          │
+│  • Banking Back Office      │     │  • notifications            │
+│                             │     │                             │
+│  all on third-party SaaS    │     │  all through product & DEV  │
+└─────────────────────────────┘     └─────────────────────────────┘
+
+
+╔═════════════════════════════════════════════════════════════════╗
+║  Today the dev backlog is the only door into the platform.      ║
+╚═════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+Be specific about who the platform serves today. Our services were built around the customer platform and the sales team — those two have integrated services and own their domain APIs. Finance, Compliance, Marketing, Customer Support, the banking back office and the other supporting functions have no integrated services at all. They run their day-to-day work in third-party SaaS tools, and there is no path from those tools into our core platform. So every time they need something from it, they come to product and dev: give me access to this data, build me this report, automate this job, reconcile these two systems, send this notification. Each one becomes a ticket, a context switch for an engineer, and a two-week wait for a ten-minute job. The dev backlog is currently the only door into the platform, and that is the bottleneck this proposal removes.
+
+---
+
+<!-- ## Slide (Section: harnesses) -->
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                     THE HARNESSES GREW UP                       │
+└─────────────────────────────────────────────────────────────────┘
+
+
+
+
+            Claude Code  ·  Codex  ·  whatever comes next
+
+                                │
+                                │
+                                ▼
+
+        understand  ·  discover  ·  plan  ·  recover  ·  ask
+
+
+
+
+╔═════════════════════════════════════════════════════════════════╗
+║      The reasoning half of the problem is already solved.       ║
+╚═════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+Walk the five verbs on the bottom line, one at a time — this slide is deliberately bare so the talking does the work.
+- understand: the user types plain language, the harness turns it into a technical goal. Nobody writes SQL or reads an API doc.
+- discover: it reads tool schemas at runtime, so it finds the right call instead of being hard-coded to one.
+- plan: it composes multi-step work across several systems, not one request at a time.
+- recover: transient failures get diagnosed, adjusted, and retried rather than dumped on the user.
+- ask: anything consequential stops and waits for explicit human approval. This is the property that makes the whole proposal safe, so land it hardest.
+The point to close on: this is not a novelty chatbot, it is an orchestrator, and the reasoning half of the problem is already solved for us by vendors. We do not have to build it. What we have to build is the access layer underneath it, which is the rest of this deck.
+
+---
+
+<!-- ## Slide (Section: access) -->
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│                        THE CORE PROBLEM                         │
+└─────────────────────────────────────────────────────────────────┘
+
+
+
+
+        DEMAND                                     CAPABILITY
+                ────────────►     ?     ◄────────────
+
+                          NO GOVERNED PATH
+
+
+
+        So the value leaks the worst possible way:
+        copy-paste · ad-hoc credentials · scripts on laptops
+
+
+
+╔═════════════════════════════════════════════════════════════════╗
+║     The missing piece is not intelligence.  It is ACCESS.       ║
+╚═════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+Put the last two slides side by side. The demand is real and it all queues behind one backlog. The capability is here and it is ready today. They never meet, because the missing piece is not intelligence — it is access. There is no governed path between the harnesses and the things they would read or act on. So today, value leaks through the worst possible channel: copy-paste into chat windows, ad-hoc credentials, one-off scripts on laptops — exactly the pattern our AI policy exists to prevent, happening informally because no sanctioned path exists.
+
+---
+
+<!-- ## Slide (Section: section two) -->
+```text
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║              SECTION TWO  -  WHAT WE ALREADY OWN              ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+---
+
+<!-- ## Slide (Section: estates) -->
+```text
+┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              WE ALREADY HAVE THE BUILDING BLOCKS                               │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐
+│    DATA PLATFORM    │  │       SERVICES      │  │       SYSTEMS       │  │       WINDMILL      │
+├─────────────────────┤  ├─────────────────────┤  ├─────────────────────┤  ├─────────────────────┤
+│  GCP · BigQuery     │  │  ~80 active repos   │  │  SaaS tools         │  │  orchestration      │
+│                     │  │                     │  │                     │  │                     │
+│  versioned rows     │  │  event-driven       │  │  finance            │  │  durable runs       │
+│  full history       │  │  domain APIs        │  │  marketing          │  │  schedules          │
+│  facts · models     │  │  own their data     │  │  compliance         │  │  approval steps     │
+│                     │  │                     │  │  customer support   │  │                     │
+│                     │  │                     │  │  banking back office│  │                     │
+└─────────────────────┘  └─────────────────────┘  └─────────────────────┘  └─────────────────────┘
+
+
+╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                  We are not starting from zero.                                ║
+║                              We are connecting what already exists.                            ║
+╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+We are not starting from zero — the raw material already exists in four estates. The Data Platform in GCP builds versioned records of every row, so "how did this change over time" is a first-class question, already built. Roughly 80 event-driven services own their domains (eventually consistent — the MCPs must say so honestly). The SaaS estate covers the highest-frequency requests: observability answers and communication actions. And Windmill is the durable execution plane the harness lacks: the harness plans, Windmill runs things durably and deterministically.
+
+---
+
+<!-- ## Slide (Section: identity reality) -->
+```text
+    ┌───────────────────────────────────────────────────────────────────┐
+    │                  ONE IDENTITY, ZERO AUTHORIZATION                 │
+    └───────────────────────────────────────────────────────────────────┘
+
+
+
+              ┌─────────────────────────────────────────┐
+              │                 IDENTITY                │
+              │         Google Workspace sign-in        │
+              │      one strong identity per person     │
+              └─────────────────────────────────────────┘
+
+
+              ┌─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─┐
+                             AUTHORIZATION
+              │              M I S S I N G              │
+                   who may see what · who may do what
+              └─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─┘
+
+
+
+    ╔═══════════════════════════════════════════════════════════════════╗
+    ║     The missing piece is not AI tooling. It is authorization.     ║
+    ╚═══════════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+Everyone signs in through Google Workspace — a single, strong identity for every person. That block is solid. The block under it does not exist: we have no organisation-wide role and access model. Some services carry domain-local roles; they don't compose, and nothing outside those services can reason about them. So the missing piece is not AI tooling — it is authorization. Any serious agent platform forces us to answer "who may see what, who may do what" in a machine-readable way. That investment is overdue regardless of AI: it pays off for every integration, every audit, and every DORA conversation we will ever have. This proposal treats it as the foundation, not a footnote.
+
+---
+
+<!-- ## Slide (Section: section three) -->
+```text
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║                 SECTION THREE  -  THE PLATFORM                ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+---
+
+<!-- ## Slide (Section: three pillars) -->
+```text
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                THE THREE PILLARS                                 │
+└──────────────────────────────────────────────────────────────────────────────────┘
+
+
+┌────────────────────────┐   ┌────────────────────────┐   ┌────────────────────────┐
+│    [1] DOMAIN MCPS     │   │      [2] IDENTITY      │   │    [3] THIN GATEWAY    │
+├────────────────────────┤   ├────────────────────────┤   ├────────────────────────┤
+│  every owning team     │   │  current Auth service  │   │  one endpoint for      │
+│  ships an MCP for      │   │  + Google Workspace    │   │  every harness,        │
+│  what it owns          │   │  grow for this model   │   │  present and next      │
+│                        │   │                        │   │                        │
+│  domain-owned          │   │  shared roles          │   │  one entry point       │
+│  clear tool contracts  │   │  scoped access         │   │  policy + limits       │
+│  safe by default       │   │  short-lived access    │   │  full audit trail      │
+│                        │   │                        │   │  routing only          │
+└────────────────────────┘   └────────────────────────┘   └────────────────────────┘
+
+
+```
+
+Notes:
+The build plan in three parts. One: every owning team ships and maintains an MCP for what they own — per domain, not per repo, so ~80 repositories become roughly 8-12 MCPs. Two: identity — our current Auth service and Google Workspace grow to support this model, including groups mapped to scopes, token exchange, and short-lived tokens. Three: a thin gateway — one endpoint, policy, rate limits, audit, and nothing clever inside. Division of labor: the harness orchestrates, the gateway routes, the MCP guards, Windmill executes.
+
+---
+
+<!-- ## Slide (Section: governed path) -->
+```text
+    ┌───────────────────────────────────────────────────────────────────────┐
+    │                           ONE GOVERNED PATH                           │
+    └───────────────────────────────────────────────────────────────────────┘
+
+
+                            ┌─────────────────────────┐
+                            │           USER          │
+                            └────────────┬────────────┘
+                                         │  signs in once
+                                         ▼
+                            ┌─────────────────────────┐
+                            │         HARNESS         │
+                            │   Claude Code · Codex   │
+                            └────────────┬────────────┘
+                                         │  user token
+                                         ▼
+                            ╔═════════════════════════╗
+                            ║       MCP GATEWAY       ║
+                            ║   checks the user token ║
+                            ║   Auth mints a new one  ║
+                            ╚════════════╤════════════╝
+                                         │  new token, minted for that MCP
+        ┌─────────────────────┬──────────┴──────────┬─────────────────────┐
+        ▼                     ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│    DATA MCP   │     │  SERVICE MCPS │     │  SYSTEM MCPS  │     │  WINDMILL MCP │
+│  checks that  │     │  checks that  │     │  checks that  │     │  checks that  │
+│  new token    │     │  new token    │     │  new token    │     │  new token    │
+└───────────────┘     └───────────────┘     └───────────────┘     └───────────────┘
+
+
+       The user token stops at the gateway.
+       Each MCP only ever sees a token made for it.
+```
+
+Notes:
+Walk the swap, not the boxes. The harness sends the user token to the gateway. The gateway checks it, then Auth mints a new short-lived token whose audience is exactly one domain MCP. The gateway sends that new token to the MCP. The original user token never leaves the gateway. The MCP checks the token it received — signature, expiry, scopes, and "was this minted for me?" A Data token is useless against Windmill. That is token exchange, not forwarding.
+
+---
+
+<!-- ## Slide (Section: trust chain) -->
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                        THE TRUST CHAIN                        │
+└───────────────────────────────────────────────────────────────┘
+
+
+    ONCE  —  CONNECT IN THE HARNESS
+    ────────────────────────────────
+    1   Connect the gateway plugin
+    2   user signs in               Workspace SSO · MFA
+    3   harness keeps that token    for the gateway only
+
+
+    EVERY CALL AFTER THAT
+    ────────────────────────────────
+    4   harness sends that token    to the gateway
+    5   Auth mints a new token      for one domain only
+    6   domain MCP checks the new   scopes · audience · expiry
+    7   the system does the work    reachable only via its MCP
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║  The user token never leaves the gateway.                     ║
+║  A token minted for one domain is useless against any other.  ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+Tell it as two timescales, like the Atlassian plugin. Once: you Connect the gateway in the harness, sign in with Workspace, and the harness keeps a user token meant only for the gateway. After that the user just asks. Every call: the harness sends that same user token to the gateway; Auth mints a new short-lived token for one domain; the gateway sends the new token, not the original; the domain MCP checks it. The user never logs in again. Domain MCPs never show a login. Revoke the user in Workspace and both tokens die.
+
+---
+
+<!-- ## Slide (Section: section four) -->
+```text
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║                SECTION FOUR  -  WHAT PEOPLE GET               ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+---
+
+<!-- ## Slide (Section: day one capabilities) -->
+```text
+┌──────────────────────────────────────────────────────────────────────────┐
+│                           DAY ONE CAPABILITIES                           │
+└──────────────────────────────────────────────────────────────────────────┘
+
+
+┌──────────────────────────────────┐    ┌──────────────────────────────────┐
+│  DASHBOARDS FROM A CONVERSATION  │    │  AUTOMATIONS WITHOUT A BACKLOG   │
+├──────────────────────────────────┤    ├──────────────────────────────────┤
+│  ask in plain language           │    │  describe the recurring job      │
+│     │                            │    │     │                            │
+│     ▼                            │    │     ▼                            │
+│  harness queries the             │    │  harness authors a Windmill      │
+│  Data Platform MCP, only         │    │  flow and deploys it             │
+│  within your own scopes          │    │  through the Windmill MCP        │
+│     │                            │    │     │                            │
+│     ▼                            │    │     ▼                            │
+│  live dashboard,                 │    │  approval gate, then             │
+│  iterate by asking               │    │  durable execution               │
+└──────────────────────────────────┘    └──────────────────────────────────┘
+
+
+    The harness serves the long tail.
+    Windmill runs what must be durable.
+```
+
+Notes:
+The two demos that make the platform real. Dashboards: ask a question in plain language and get a living dashboard built only from data you are allowed to see — the versioned records in the data platform make time-travel questions native. Automations: describe a recurring job; the harness writes and deploys a Windmill flow; anything with side effects waits for human approval; the user follows progress without ever seeing the machinery. Boundary: the harness serves the interactive long tail, Windmill runs everything that must be durable, scheduled, or regulated.
+
+---
+
+<!-- ## Slide (Section: example prompts) -->
+```text
+┌───────────────────────────────────────────────────────────────────────┐
+│                           ONE SENTENCE AWAY                           │
+└───────────────────────────────────────────────────────────────────────┘
+
+
+    ENGINEERING
+    ───────────
+        "Find the root cause and stack trace for the latest
+        customer portal crash."
+
+    SALES
+    ─────
+        "Which 5 customers should I call today to maximise
+        retention payout?"
+
+    MARKETING
+    ─────────
+        "Calculate true ROI by joining last month's ad spend
+        with closed payouts."
+
+    CUSTOMER SERVICE
+    ────────────────
+        "Give me a 3-bullet brief on this customer's sentiment
+        and open tickets."
+
+
+    No dashboard hopping. No ticket. No waiting.
+```
+
+Notes:
+These are concrete examples of what the platform enables. Instead of clicking through 4 different dashboards or asking a data analyst to run a query, anyone in the organisation is just one sentence away from complex, cross-system insights. The platform handles the translation from their natural language into the underlying APIs and databases.
+
+---
+
+<!-- ## Slide (Section: section five) -->
+```text
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║            SECTION FIVE  -  GOVERNANCE AND ROLLOUT            ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+---
+
+<!-- ## Slide (Section: governance) -->
+```text
+┌───────────────────────────────────────────────────────────────┐
+│                      GOVERNANCE BY DESIGN                     │
+└───────────────────────────────────────────────────────────────┘
+
+
+    ISMS 1.4     the controlled Tier 2/3 path
+                approval gates on every write
+
+    GDPR         data minimisation inside each MCP
+                 audit log at the gateway
+
+    DORA         one place to trace access
+                one place to cut it
+
+    EU AI ACT    internal productivity only
+                humans approve anything with consequence
+
+
+╔═══════════════════════════════════════════════════════════════╗
+║  NEVER through this platform:                                 ║
+║                                                               ║
+║  ✗  credit decisioning · scoring · customer risk              ║
+║  ✗  automated decisions with legal or financial effect        ║
+║  ✗  customer PII · KYC · AML data into model context          ║
+║  ✗  secrets in tool outputs                                   ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+Notes:
+For an FI-supervised kreditmarknadsbolag this is the compliance story, not a compliance problem. ISMS 1.4 tier controls become enforceable instead of aspirational. GDPR minimisation happens inside each MCP — the one place it can actually be enforced. The per-call audit log sits at the gateway. DORA gets central traceability at the gateway, and harness vendors go on the ICT third-party register. The EU AI Act boundary is architectural: credit decisioning, scoring, or customer risk assessment (Annex III §5, likely high-risk) is out of scope and would need CTO + compliance review as a separate initiative. Compliance sign-off is a Phase 0 deliverable, not an afterthought.
+
+---
+
+<!-- ## Slide (Section: rollout) -->
+```text
+┌───────────────────────────────────────────────────────────────────────┐
+│               READ FIRST  ·  WIDEN NEXT  ·  ACT LAST                  │
+└───────────────────────────────────────────────────────────────────────┘
+
+
+    PHASE 0    FOUNDATION
+                identity, token exchange, gateway,
+                Connect in the harness, starter kit
+                exit ──►  sign in once, token swap works
+
+    PHASE 1    READ-ONLY MVP
+                two read-only MCPs
+                one real question, end to end
+                exit ──►  a colleague gets an answer
+
+    PHASE 2    READ-ONLY MAIN DOMAINS
+                top domains, read-only
+                dashboards, audit log
+                exit ──►  weekly users, zero incidents
+
+    PHASE 3    ACTIONS ARE POSSIBLE
+                write tools behind approval gates
+                first durable automations
+                exit ──►  first action with a full audit trail
+
+
+═══════════════════════════════════════════════════════════════════════
+    Everything starts read-only. Each phase is earned.
+```
+
+Notes:
+Sequencing is the risk control: each phase is earned by exiting the previous one cleanly, and nothing writes until Phase 3. Phase 0 is plumbing only — identity, token exchange, the gateway, Connect in the harness, and a starter kit. Phase 1 is a read-only MVP: two MCPs and one real question answered end-to-end. Phase 2 widens that to the main domains, still read-only, with dashboards and an audit log. Phase 3 is the first time actions are possible: writes behind approval gates, then the first durable automations.
+
+---
+
+<!-- ## Slide (Section: the ask) -->
+```text
+    ┌───────────────────────────────────────────────────────────────┐
+    │                            THE ASK                            │
+    └───────────────────────────────────────────────────────────────┘
+
+
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║                                                               ║
+    ║  THIS MEETING                                                 ║
+    ║  1   your input and evaluation                                ║
+    ║  2   sign-off on the architecture and the model               ║
+    ║                                                               ║
+    ║  NEXT                                                         ║
+    ║  3   plan it  -  roadmap and the details                      ║
+    ║                                                               ║
+    ║  THEN                                                         ║
+    ║  4   phased implementation                                    ║
+    ║                                                               ║
+    ╚═══════════════════════════════════════════════════════════════╝
+
+
+       Today we decide the model. Planning comes after.
+```
+
+Notes:
+End on what this meeting is for. We are asking for your input, your evaluation, and sign-off on the architecture and the model. We are not staffing a team or locking a roadmap today. Next comes a proper plan with details. Implementation is phased after that, and it starts read-only.
+
+---
+
+<!-- ## Slide (Section: architecture diagram) -->
+![Target architecture](./assets/package.png)
+
+Notes:
+This is the full picture they are being asked to evaluate. Walk top to bottom: user signs in once, harness plans, gateway is the one door, Auth mints a short-lived token for one domain, each owning team’s MCP guards that domain. Nothing reaches a system except through its owning MCP. Stay on the rules at the bottom: every hop authenticated, every call audited.
+
+---
+
+<!-- ## Slide (Section: closing) -->
+<!-- Raw <pre> instead of a fenced block so the proposal link can sit inside the
+     ASCII stage. The runtime allows exactly one visible element per slide, so a
+     sibling <p> here would fail the whole deck. -->
+<pre><code>    ╔═════════════════════════════════════════════════════════════════════════╗
+    ║                                                                         ║
+    ║                                                                         ║
+    ║                                                                         ║
+    ║                                                                         ║
+    ║                         The harnesses are ready.                        ║
+    ║                The data and the systems are already ours.               ║
+    ║                                                                         ║
+    ║            What is missing is one governed path between them.           ║
+    ║                                                                         ║
+    ║               ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─               ║
+    ║                                                                         ║
+    ║             Every team makes what it owns agent-accessible.             ║
+    ║                    Identity decides who can do what.                    ║
+    ║                                                                         ║
+    ║                                                                         ║
+    ║                                                                         ║
+    ║                                                                         ║
+    ╚═════════════════════════════════════════════════════════════════════════╝
+
+                             <a href="./assets/proposal.html" target="_blank" rel="noopener">Read the full proposal →</a>
+</code></pre>

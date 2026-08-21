@@ -2,11 +2,17 @@
   --slide-pad-inline: clamp(20px, 2.6vw, 38px);
   --slide-pad-block: clamp(52px, 7vh, 84px);
   --ascii-font-size-min-base: 6px;
-  --ascii-font-size-max-base: 16px;
+  /* Ceiling on the fitted size. Sparse slides (a five-line section divider)
+     would otherwise fit at twice the size of a dense diagram, and the jump
+     between them is distracting when stepping through the deck. */
+  --ascii-font-size-max-base: 24px;
   --ascii-zoom-scale: 1;
   --ascii-font-size-min: calc(var(--ascii-font-size-min-base) * var(--ascii-zoom-scale));
   --ascii-font-size-max: calc(var(--ascii-font-size-max-base) * var(--ascii-zoom-scale));
-  --ascii-line-height: 1.08;
+  /* Editor-like leading. Box-drawing glyphs only paint one em tall, so above 1
+     the vertical panel borders show a gap between rows. That is the accepted
+     trade for readable prose; drop this to 1 for unbroken borders. */
+  --ascii-line-height: 1.5;
 }
 
 html.presentation-page {
@@ -193,6 +199,13 @@ body.presentation-shell {
   text-rendering: optimizeLegibility;
 }
 
+/* Solid block lettering (figlet banners, filled panels) needs its rows to
+   touch, so the deck-wide leading slices it into stripes. Opt a slide out with
+   <!-- .slide: class="ascii-tight" -->. */
+.presentation-shell .reveal .slides section.ascii-tight {
+  --ascii-line-height: 1;
+}
+
 .presentation-shell .slide-mode-image .slide-image-wrapper {
   width: 100%;
   height: 100%;
@@ -271,11 +284,13 @@ body.presentation-shell {
   white-space: pre-wrap;
 }
 
+/* The ascii stage is measured inside Reveal's fixed 1400x900 space, which
+   Reveal then scales to the viewport, so the fitted font size does not need a
+   viewport-specific cap. Only the padding and the lower bound change here. */
 @media (max-width: 900px) {
   :root {
     --slide-pad-inline: 18px;
     --slide-pad-block: 44px;
-    --ascii-font-size-max-base: 16px;
   }
 }
 
@@ -284,6 +299,5 @@ body.presentation-shell {
     --slide-pad-inline: 14px;
     --slide-pad-block: 32px;
     --ascii-font-size-min-base: 5px;
-    --ascii-font-size-max-base: 15px;
   }
 }

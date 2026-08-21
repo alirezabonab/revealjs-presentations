@@ -1,0 +1,22 @@
+/* Presentation-specific overrides are intentionally minimal.
+
+   The mono font stack used to be pinned here because the engine default fell
+   through to a font with no box-drawing coverage off-Mac. The engine now
+   self-hosts JetBrains Mono, which covers ─ │ ┌ ┘ at the same advance width as
+   every other glyph, so the override is no longer needed. */
+
+/* The closing slide links out to the written proposal. The link has to live
+   inside the ASCII stage, so it is styled here rather than as a block element.
+   Only colour and underline are touched — nothing that changes advance width,
+   which would break the box alignment above it. */
+.presentation-shell .slide-ascii-stage a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.presentation-shell .slide-ascii-stage a:hover,
+.presentation-shell .slide-ascii-stage a:focus-visible {
+  color: var(--accent-strong);
+}

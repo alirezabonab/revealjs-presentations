@@ -156,20 +156,36 @@
     return bestSize;
   }
 
+  // Zoom scales the size that actually fits, not the ceiling of the search.
+  // Scaling the ceiling only has an effect while the ceiling is the binding
+  // constraint; once a slide is bound by its own width or height the ceiling is
+  // never reached and every zoom level resolves to the same size.
+  function resolveAsciiSize(section, stage, zoomScale) {
+    const minimumSize = readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8);
+    const maximumSize = readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32);
+    const naturalSize = measureAsciiStage(section, stage, minimumSize, maximumSize);
+
+    if (!Number.isFinite(naturalSize)) {
+      return null;
+    }
+
+    return {
+      minimumSize,
+      naturalSize,
+      renderedSize: Math.max(minimumSize, Math.round(naturalSize * zoomScale))
+    };
+  }
+
   function fitAsciiStage(section, stage) {
     const code = stage.querySelector("code") ?? stage;
     const zoomScale = readCssPixels(document.documentElement, "--ascii-zoom-scale", 1);
-    const minimumSize =
-      readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8) * zoomScale;
-    const maximumSize =
-      readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32) * zoomScale;
-    const bestSize = measureAsciiStage(section, stage, minimumSize, maximumSize);
+    const resolved = resolveAsciiSize(section, stage, zoomScale);
 
-    if (!Number.isFinite(bestSize)) {
+    if (!resolved) {
       return;
     }
 
-    code.style.fontSize = `${bestSize}px`;
+    code.style.fontSize = `${resolved.renderedSize}px`;
   }
 
   function getActiveAsciiSlide() {
@@ -339,25 +355,16 @@
       return null;
     }
 
-    const minimumSize =
-      readCssPixels(document.documentElement, "--ascii-font-size-min-base", 8) * zoom;
-    const maximumSize =
-      readCssPixels(document.documentElement, "--ascii-font-size-max-base", 32) * zoom;
-    const renderedSize = measureAsciiStage(
-      activeAsciiSlide.section,
-      activeAsciiSlide.stage,
-      minimumSize,
-      maximumSize
-    );
+    const resolved = resolveAsciiSize(activeAsciiSlide.section, activeAsciiSlide.stage, zoom);
 
-    if (!Number.isFinite(renderedSize)) {
+    if (!resolved) {
       return null;
     }
 
     return {
-      minimumSize,
-      maximumSize,
-      renderedSize
+      minimumSize: resolved.minimumSize,
+      maximumSize: resolved.naturalSize,
+      renderedSize: resolved.renderedSize
     };
   };
 
