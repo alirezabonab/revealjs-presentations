@@ -334,7 +334,7 @@
     <li><a href="#estates"><span class="n">02</span> What we already have</a></li>
     <li><a href="#pillars"><span class="n">03</span> The proposal — three pillars</a></li>
     <li><a href="#architecture"><span class="n">04</span> Target architecture</a></li>
-    <li><a href="#capabilities"><span class="n">05</span> What people get on day one</a></li>
+    <li><a href="#capabilities"><span class="n">05</span> Where the value lands</a></li>
     <li><a href="#governance"><span class="n">06</span> Governance by design</a></li>
     <li><a href="#roadmap"><span class="n">07</span> Roadmap</a></li>
     <li><a href="#operating"><span class="n">08</span> Operating model &amp; the ask</a></li>
@@ -352,7 +352,7 @@
   <p>The missing piece is not intelligence. It is <strong>access</strong>. There is no governed path between the harnesses and the things they would read or act on. So today, value leaks through the worst possible channel: copy-paste into chat windows, ad-hoc credentials, one-off scripts on laptops — exactly the pattern our AI policy exists to prevent, happening informally because no sanctioned path exists.</p>
 
   <figure>
-    <svg viewBox="0 0 920 356" role="img" aria-label="Diagram: AI harnesses on the left, our data and systems on the right, and a gap in the middle where no governed path exists.">
+    <svg viewBox="0 0 920 398" role="img" aria-label="Diagram: AI harnesses on the left, our data, systems and knowledge graph on the right, and a gap in the middle where no governed path exists.">
       <defs>
         <marker id="arr" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
           <polygon points="0 0, 9 4, 0 8" fill="currentColor"/>
@@ -363,13 +363,14 @@
       </defs>
       <g stroke="currentColor" fill="none" stroke-width="1.3">
         <rect x="40" y="70" width="300" height="190" rx="10"/>
-        <rect x="600" y="40" width="280" height="250" rx="10"/>
+        <rect x="600" y="40" width="280" height="300" rx="10"/>
       </g>
       <g fill="var(--surface-2)" stroke="var(--line)" stroke-width="1">
         <rect x="616" y="82" width="248" height="42" rx="6"/>
         <rect x="616" y="132" width="248" height="42" rx="6"/>
         <rect x="616" y="182" width="248" height="42" rx="6"/>
         <rect x="616" y="232" width="248" height="42" rx="6"/>
+        <rect x="616" y="282" width="248" height="42" rx="6"/>
       </g>
       <g fill="currentColor" font-size="13" font-weight="600">
         <text x="190" y="98" text-anchor="middle">AI HARNESSES</text>
@@ -389,12 +390,14 @@
         <text x="740" y="150" text-anchor="middle">~80 event-driven services</text>
         <text x="740" y="200" text-anchor="middle">SaaS systems &amp; tools</text>
         <text x="740" y="250" text-anchor="middle">Windmill orchestration</text>
+        <text x="740" y="300" text-anchor="middle">Knowledge graph · agent-skills</text>
       </g>
       <g fill="var(--muted)" font-size="10.5">
         <text x="740" y="114" text-anchor="middle">versioned record history</text>
         <text x="740" y="164" text-anchor="middle">eventual consistency</text>
         <text x="740" y="214" text-anchor="middle">marketing · comms · observability</text>
         <text x="740" y="264" text-anchor="middle">durable workflows</text>
+        <text x="740" y="314" text-anchor="middle">business ↔ system meaning</text>
       </g>
       <!-- the gap -->
       <line x1="340" y1="165" x2="425" y2="165" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -403,21 +406,21 @@
       <line x1="515" y1="165" x2="595" y2="165" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrw)"/>
       <text x="470" y="112" text-anchor="middle" fill="var(--warn)" font-size="13" font-weight="600">NO GOVERNED PATH</text>
       <g fill="var(--muted)" font-size="11">
-        <text x="470" y="322" text-anchor="middle">no shared roles · no tokens · no audit</text>
-        <text x="470" y="342" text-anchor="middle">today: copy-paste &amp; ad-hoc credentials</text>
+        <text x="460" y="364" text-anchor="middle">no shared roles · no tokens · no audit</text>
+        <text x="460" y="384" text-anchor="middle">today: copy-paste &amp; ad-hoc credentials</text>
       </g>
     </svg>
     <figcaption>Fig. 1 — The gap. Capable orchestrators on one side, valuable assets on the other, and no sanctioned, auditable path between them.</figcaption>
   </figure>
 
-  <p>The organisations that win the next five years are the ones where an employee's intent travels to data and action with the least friction — <em>without giving up control</em>. That is what "AI-native" means in practice: not more chatbots, but every asset we own reachable through a governed interface, with identity — not habit — deciding who can do what.</p>
+  <p>The organisations that win the next five years are the ones where an employee's request reaches what it needs with the least friction — <em>without giving up control</em>. The range matters more than the phrasing: a question, a report, an action inside a system, a job that keeps running every week. Not just asking things — doing them too. That is what "AI-native" means in practice: not more chatbots, but every asset we own reachable through a governed interface, with identity — not habit — deciding who can do what.</p>
 </section>
 
 <!-- ================================================================ -->
 <section id="estates">
   <div class="eyebrow">02 · What we already have</div>
-  <h2>Four estates, one identity — and no shared authorization</h2>
-  <p>We are not starting from zero. The raw material for an AI-native organisation already exists in four estates:</p>
+  <h2>Five building blocks, one identity — and no shared authorization</h2>
+  <p>We are not starting from zero. The raw material for an AI-native organisation already exists. Four estates hold the data, the endpoints, the tools and the runs — and a fifth building block holds the thing none of them contain, which is what any of it <em>means</em> in business terms.</p>
 
   <div class="grid">
     <div class="card">
@@ -444,7 +447,72 @@
       <p>Our workflow orchestration platform: scripts, flows, schedules, retries, approval steps — durable execution we already trust.</p>
       <p class="hint">Agent value: the execution plane the harness lacks. The harness plans; Windmill runs things durably and deterministically.</p>
     </div>
+    <div class="card">
+      <span class="tag">Knowledge</span>
+      <h4>The knowledge graph (<span class="mono">agent-skills</span>)</h4>
+      <p>A markdown context library, versioned in git: business capabilities, products, journeys, systems, governance and ways of working — scoped <strong>Shared / Enklare / Entra</strong>, every file with a named owner and a review date, and an access matrix defining which use case may read which file.</p>
+      <p class="hint">Agent value: this is what an MCP reads to turn a business request into the right calls. It also carries the separation rule — Enklare context must not be used to infer Entra lending, credit or funding rules — so entity separation is enforced by the model, not left to a model's judgement.</p>
+    </div>
   </div>
+
+  <p>The distinction is worth being precise about, because it is the one that makes the other four usable. The four estates answer <em>"here are the rows"</em> or <em>"here is the endpoint"</em>. Nothing in them can answer <em>"what does this company mean by lead quality, where does it live, and whose rules apply to it?"</em> — and without that, an agent guesses at our vocabulary and returns something plausible and wrong. The knowledge graph is the cheapest block on this list, and it already has its own workstream and its own governance.</p>
+
+  <figure>
+    <svg viewBox="0 0 920 336" role="img" aria-label="Diagram: four estates - data platform, services, systems and Windmill - sit above the knowledge graph, which supplies the business meaning each of them lacks.">
+      <defs>
+        <marker id="arrk" markerWidth="9" markerHeight="8" refX="7" refY="4" orient="auto">
+          <polygon points="0 0, 9 4, 0 8" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <g fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2">
+        <rect x="20" y="20" width="205" height="118" rx="8"/>
+        <rect x="245" y="20" width="205" height="118" rx="8"/>
+        <rect x="470" y="20" width="205" height="118" rx="8"/>
+        <rect x="695" y="20" width="205" height="118" rx="8"/>
+      </g>
+      <g fill="currentColor" font-size="12" font-weight="700">
+        <text x="122" y="46" text-anchor="middle">DATA PLATFORM</text>
+        <text x="347" y="46" text-anchor="middle">SERVICES</text>
+        <text x="572" y="46" text-anchor="middle">SYSTEMS</text>
+        <text x="797" y="46" text-anchor="middle">WINDMILL</text>
+      </g>
+      <g fill="var(--muted)" font-size="10.5">
+        <text x="122" y="72" text-anchor="middle">GCP · BigQuery</text>
+        <text x="122" y="91" text-anchor="middle">versioned rows</text>
+        <text x="122" y="110" text-anchor="middle">full history</text>
+        <text x="347" y="72" text-anchor="middle">~80 active repos</text>
+        <text x="347" y="91" text-anchor="middle">event-driven</text>
+        <text x="347" y="110" text-anchor="middle">own their data</text>
+        <text x="572" y="72" text-anchor="middle">SaaS tools</text>
+        <text x="572" y="91" text-anchor="middle">finance · marketing</text>
+        <text x="572" y="110" text-anchor="middle">support · compliance</text>
+        <text x="797" y="72" text-anchor="middle">orchestration</text>
+        <text x="797" y="91" text-anchor="middle">durable runs</text>
+        <text x="797" y="110" text-anchor="middle">approval steps</text>
+      </g>
+
+      <!-- meaning rises from the graph into each estate -->
+      <g stroke="var(--accent)" stroke-width="1.3" fill="none">
+        <line x1="122" y1="176" x2="122" y2="142" marker-end="url(#arrk)"/>
+        <line x1="347" y1="176" x2="347" y2="142" marker-end="url(#arrk)"/>
+        <line x1="572" y1="176" x2="572" y2="142" marker-end="url(#arrk)"/>
+        <line x1="797" y1="176" x2="797" y2="142" marker-end="url(#arrk)"/>
+        <polyline points="122,176 797,176"/>
+        <line x1="460" y1="176" x2="460" y2="200"/>
+      </g>
+
+      <rect x="20" y="200" width="880" height="116" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/>
+      <text x="460" y="228" text-anchor="middle" fill="var(--accent)" font-size="13" font-weight="700">KNOWLEDGE GRAPH</text>
+      <text x="460" y="248" text-anchor="middle" fill="var(--muted)" font-size="11">agent-skills · markdown context, versioned in git</text>
+      <g fill="currentColor" font-size="10.5">
+        <text x="460" y="274" text-anchor="middle">business capabilities · products · journeys · systems · governance</text>
+        <text x="460" y="292" text-anchor="middle">scoped Shared · Enklare · Entra   —   owned files, review dates, access matrix</text>
+      </g>
+      <text x="460" y="310" text-anchor="middle" fill="var(--accent)" font-size="10.5" font-weight="600">the four above hold rows and endpoints · this holds what they mean</text>
+    </svg>
+    <figcaption>Fig. 2 — The knowledge graph is not a fifth data source; it is the layer that gives the other four business meaning. It resolves a business term into the data and system terms behind it, and states which entity's rules apply, before any tool is called.</figcaption>
+  </figure>
 
   <h3>The identity reality</h3>
   <p>Everyone signs in through Google Workspace — so we have a single, strong identity for every person. But we have <strong>no organisation-wide role and access model</strong>. Some services carry domain-local roles; they don't compose, and nothing outside those services can reason about them.</p>
@@ -466,7 +534,7 @@
       <span class="tag">Pillar 1</span>
       <h4>Domain MCPs, owned by owning teams</h4>
       <p>Each team that owns data, a service domain, or a system builds and maintains an <strong>MCP server</strong> for it — and carries it on their roadmap like any other product surface.</p>
-      <p class="hint">Per <em>domain</em>, not per service: ~80 services does not mean 80 MCPs — realistically 8–12 cover the estate that matters. The MCP owns model-friendly tools and schemas, domain rules, tool-level authorization, ownership checks, PII redaction, and side-effect classification. "Done" starts to include "agent-accessible".</p>
+      <p class="hint">Per <em>domain</em>, not per service: ~80 services does not mean 80 MCPs — realistically 8–12 cover the estate that matters, plus one over the knowledge graph. The MCP owns model-friendly tools and schemas, domain rules, tool-level authorization, ownership checks, PII redaction, and side-effect classification. "Done" starts to include "agent-accessible".</p>
     </div>
     <div class="card pillar">
       <span class="tag">Pillar 2</span>
@@ -494,7 +562,7 @@
   <h2>One picture: identity in, audited action out</h2>
 
   <figure>
-    <svg viewBox="0 0 960 690" role="img" aria-label="Target architecture: user authenticates via Google Workspace identity, harness calls a thin MCP gateway, the gateway exchanges tokens with the identity layer and routes scoped calls to domain MCP servers, which guard access to BigQuery, services, SaaS systems, and Windmill.">
+    <svg viewBox="0 0 960 690" role="img" aria-label="Target architecture: user authenticates via Google Workspace identity, harness calls a thin MCP gateway, the gateway exchanges tokens with the identity layer and routes scoped calls to five domain MCP servers, which guard access to BigQuery, services, SaaS systems, Windmill and the knowledge graph.">
       <defs>
         <marker id="arr2" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
           <polygon points="0 0, 9 4, 0 8" fill="currentColor"/>
@@ -549,77 +617,88 @@
 
       <!-- gateway to MCPs -->
       <g stroke="var(--accent)" stroke-width="1.3" fill="none">
-        <polyline points="330,322 330,352 129,352 129,372" marker-end="url(#arra)"/>
-        <polyline points="430,322 430,352 363,352 363,372" marker-end="url(#arra)"/>
-        <polyline points="530,322 530,352 597,352 597,372" marker-end="url(#arra)"/>
-        <polyline points="630,322 630,352 831,352 831,372" marker-end="url(#arra)"/>
+        <polyline points="310,322 310,352 108,352 108,372" marker-end="url(#arra)"/>
+        <polyline points="395,322 395,352 294,352 294,372" marker-end="url(#arra)"/>
+        <polyline points="480,322 480,372" marker-end="url(#arra)"/>
+        <polyline points="565,322 565,352 666,352 666,372" marker-end="url(#arra)"/>
+        <polyline points="650,322 650,352 852,352 852,372" marker-end="url(#arra)"/>
       </g>
       <text x="700" y="342" fill="var(--muted)" font-size="10.5">scoped, short-lived token per domain</text>
 
       <!-- MCP row -->
       <g fill="none" stroke="currentColor" stroke-width="1.3">
-        <rect x="24" y="376" width="210" height="88" rx="8"/>
-        <rect x="258" y="376" width="210" height="88" rx="8"/>
-        <rect x="492" y="376" width="210" height="88" rx="8"/>
-        <rect x="726" y="376" width="210" height="88" rx="8"/>
+        <rect x="24" y="376" width="168" height="88" rx="8"/>
+        <rect x="210" y="376" width="168" height="88" rx="8"/>
+        <rect x="396" y="376" width="168" height="88" rx="8"/>
+        <rect x="582" y="376" width="168" height="88" rx="8"/>
+        <rect x="768" y="376" width="168" height="88" rx="8"/>
       </g>
-      <g fill="currentColor" font-size="12" font-weight="600">
-        <text x="129" y="402" text-anchor="middle">Data Platform MCP</text>
-        <text x="363" y="402" text-anchor="middle">Service-domain MCPs</text>
-        <text x="597" y="402" text-anchor="middle">System MCPs</text>
-        <text x="831" y="402" text-anchor="middle">Windmill MCP</text>
+      <g fill="currentColor" font-size="11.5" font-weight="600">
+        <text x="108" y="402" text-anchor="middle">Data Platform MCP</text>
+        <text x="294" y="402" text-anchor="middle">Service-domain MCPs</text>
+        <text x="480" y="402" text-anchor="middle">System MCPs</text>
+        <text x="666" y="402" text-anchor="middle">Windmill MCP</text>
+        <text x="852" y="402" text-anchor="middle">Knowledge Graph MCP</text>
       </g>
       <g fill="var(--muted)" font-size="10.5">
-        <text x="129" y="424" text-anchor="middle">query tools · schema catalog</text>
-        <text x="129" y="442" text-anchor="middle">user-scoped SQL · redaction</text>
-        <text x="363" y="424" text-anchor="middle">per domain, not per service</text>
-        <text x="363" y="442" text-anchor="middle">lookups · guarded actions</text>
-        <text x="597" y="424" text-anchor="middle">observability · comms</text>
-        <text x="597" y="442" text-anchor="middle">marketing · debugging</text>
-        <text x="831" y="424" text-anchor="middle">author · deploy · run</text>
-        <text x="831" y="442" text-anchor="middle">track progress · approvals</text>
+        <text x="108" y="424" text-anchor="middle">query tools · schemas</text>
+        <text x="108" y="442" text-anchor="middle">user-scoped SQL</text>
+        <text x="294" y="424" text-anchor="middle">per domain, not service</text>
+        <text x="294" y="442" text-anchor="middle">lookups · actions</text>
+        <text x="480" y="424" text-anchor="middle">observability · comms</text>
+        <text x="480" y="442" text-anchor="middle">marketing · debugging</text>
+        <text x="666" y="424" text-anchor="middle">author · deploy · run</text>
+        <text x="666" y="442" text-anchor="middle">progress · approvals</text>
+        <text x="852" y="424" text-anchor="middle">the context library</text>
+        <text x="852" y="442" text-anchor="middle">business ↔ system terms</text>
       </g>
 
       <!-- MCP to estates -->
       <g stroke="currentColor" stroke-width="1.2" fill="none">
-        <line x1="129" y1="464" x2="129" y2="512" marker-end="url(#arr2)"/>
-        <line x1="363" y1="464" x2="363" y2="512" marker-end="url(#arr2)"/>
-        <line x1="597" y1="464" x2="597" y2="512" marker-end="url(#arr2)"/>
-        <line x1="831" y1="464" x2="831" y2="512" marker-end="url(#arr2)"/>
+        <line x1="108" y1="464" x2="108" y2="512" marker-end="url(#arr2)"/>
+        <line x1="294" y1="464" x2="294" y2="512" marker-end="url(#arr2)"/>
+        <line x1="480" y1="464" x2="480" y2="512" marker-end="url(#arr2)"/>
+        <line x1="666" y1="464" x2="666" y2="512" marker-end="url(#arr2)"/>
+        <line x1="852" y1="464" x2="852" y2="512" marker-end="url(#arr2)"/>
       </g>
-      <g fill="var(--muted)" font-size="10">
-        <text x="138" y="494">SQL, read-only first</text>
-        <text x="372" y="494">domain APIs</text>
-        <text x="606" y="494">vendor APIs</text>
-        <text x="840" y="494">deploy + execute</text>
+      <g fill="var(--muted)" font-size="10" text-anchor="middle" class="lbl">
+        <text x="108" y="492">read-only SQL</text>
+        <text x="294" y="492">domain APIs</text>
+        <text x="480" y="492">vendor APIs</text>
+        <text x="666" y="492">deploy · execute</text>
+        <text x="852" y="492">read-only, git</text>
       </g>
 
       <!-- estates row -->
       <g fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2">
-        <rect x="24" y="516" width="210" height="84" rx="8"/>
-        <rect x="258" y="516" width="210" height="84" rx="8"/>
-        <rect x="492" y="516" width="210" height="84" rx="8"/>
-        <rect x="726" y="516" width="210" height="84" rx="8"/>
+        <rect x="24" y="516" width="168" height="84" rx="8"/>
+        <rect x="210" y="516" width="168" height="84" rx="8"/>
+        <rect x="396" y="516" width="168" height="84" rx="8"/>
+        <rect x="582" y="516" width="168" height="84" rx="8"/>
+        <rect x="768" y="516" width="168" height="84" rx="8"/>
       </g>
-      <g fill="currentColor" font-size="12" font-weight="600">
-        <text x="129" y="544" text-anchor="middle">BigQuery</text>
-        <text x="363" y="544" text-anchor="middle">~80 services</text>
-        <text x="597" y="544" text-anchor="middle">SaaS systems</text>
-        <text x="831" y="544" text-anchor="middle">Windmill runtime</text>
+      <g fill="currentColor" font-size="11.5" font-weight="600">
+        <text x="108" y="544" text-anchor="middle">BigQuery</text>
+        <text x="294" y="544" text-anchor="middle">~80 services</text>
+        <text x="480" y="544" text-anchor="middle">SaaS systems</text>
+        <text x="666" y="544" text-anchor="middle">Windmill runtime</text>
+        <text x="852" y="544" text-anchor="middle">agent-skills</text>
       </g>
       <g fill="var(--muted)" font-size="10.5">
-        <text x="129" y="566" text-anchor="middle">versioned record history</text>
-        <text x="363" y="566" text-anchor="middle">event-driven</text>
-        <text x="363" y="582" text-anchor="middle">eventually consistent</text>
-        <text x="597" y="566" text-anchor="middle">monitoring · logs</text>
-        <text x="597" y="582" text-anchor="middle">SMS / email · marketing</text>
-        <text x="831" y="566" text-anchor="middle">durable flows · schedules</text>
-        <text x="831" y="582" text-anchor="middle">retries · approval steps</text>
+        <text x="108" y="566" text-anchor="middle">versioned record history</text>
+        <text x="294" y="566" text-anchor="middle">event-driven</text>
+        <text x="294" y="582" text-anchor="middle">eventually consistent</text>
+        <text x="480" y="566" text-anchor="middle">monitoring · logs</text>
+        <text x="480" y="582" text-anchor="middle">SMS / email · marketing</text>
+        <text x="666" y="566" text-anchor="middle">durable flows · schedules</text>
+        <text x="666" y="582" text-anchor="middle">retries · approval steps</text>
+        <text x="852" y="566" text-anchor="middle">markdown context in git</text>
+        <text x="852" y="582" text-anchor="middle">owned · reviewed · scoped</text>
       </g>
 
       <text x="480" y="648" text-anchor="middle" fill="var(--accent)" font-size="11.5" font-weight="600">every hop authenticated · every call audited · nothing reaches a system except through its owning MCP</text>
     </svg>
-    <figcaption>Fig. 2 — Target architecture. The middle row is the domain MCPs, each built and owned by the team that owns the asset. The bottom row is what we already own. The gateway is deliberately thin: intelligence sits in the harness, rules sit in the domain MCPs, durable execution sits in Windmill.</figcaption>
+    <figcaption>Fig. 3 — Target architecture. The middle row is the domain MCPs, each built and owned by the team that owns the asset. The bottom row is what we already own. Note that the knowledge graph is reached the same way as everything else — through its own MCP, behind the same gate — because context is not a special case that gets to bypass authorization. The gateway is deliberately thin: intelligence sits in the harness, rules sit in the domain MCPs, durable execution sits in Windmill.</figcaption>
   </figure>
 
   <h3>One request, end to end</h3>
@@ -718,19 +797,42 @@
         <text x="173" y="656">asks for approval, or explains why not</text>
       </g>
     </svg>
-    <figcaption>Fig. 3 — The trust chain for a single tool call. The token the harness holds is bound to the gateway and never travels further; each domain MCP only ever sees a token minted for it. Denials and approval requests are first-class outcomes, not errors.</figcaption>
+    <figcaption>Fig. 4 — The trust chain for a single tool call. The token the harness holds is bound to the gateway and never travels further; each domain MCP only ever sees a token minted for it. Denials and approval requests are first-class outcomes, not errors.</figcaption>
   </figure>
 </section>
 
 <!-- ================================================================ -->
 <section id="capabilities">
-  <div class="eyebrow">05 · What people get on day one</div>
-  <h2>Two capabilities that make the platform tangible</h2>
-  <p>Architecture doesn't sell itself. These two experiences are what we demo, and they are fundamental platform capabilities — not side projects.</p>
+  <div class="eyebrow">05 · What we get</div>
+  <h2>Where the value lands</h2>
+  <p>The pain is not in dispute, so this section is about what the platform is worth rather than what it fixes. It is worth different things to the two halves of the organisation, and both need to hold for this to be a platform investment rather than a productivity experiment.</p>
 
   <div class="grid">
     <div class="card">
-      <span class="tag">Capability A</span>
+      <span class="tag">For the people</span>
+      <h4>The work stops queueing</h4>
+      <p>Answers in minutes, in their own words, without opening a ticket. They build the view they need and change it just by asking, instead of specifying it to someone else and waiting. The repeating work runs itself and keeps running.</p>
+      <p class="hint">And the access model is a benefit here, not a restriction: because scopes follow their role, people can use this confidently without wondering whether they are allowed to be looking at something. That is what makes adoption stick rather than quietly reverting to asking a colleague.</p>
+    </div>
+    <div class="card">
+      <span class="tag">For the organisation</span>
+      <h4>Capacity back, and a foundation that compounds</h4>
+      <p>Engineering time goes back to product instead of ad-hoc reports — the largest number in this proposal. Decisions run on current data rather than last month's export. One audited path replaces copy-paste and shared logins, which is a control <em>improvement</em> on today, not a new risk.</p>
+      <p class="hint">And the identity and authorization work pays off for every future integration and every audit, whether or not the agent layer above it ever grows. That is the part worth funding even by someone sceptical about AI.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <h4>When each half arrives</h4>
+    <p>Being precise about this matters, because the roadmap below is the honest version and the two must agree. <strong>The read-side value lands in Phase 1–2.</strong> Everything that writes — actions inside systems, durable automations — <strong>lands in Phase 3</strong>, behind human approval gates. The read side alone removes the dev backlog as the only door into the platform, which is why we do not need to overclaim the rest.</p>
+  </div>
+
+  <h3>The two capabilities we demo</h3>
+  <p>Architecture doesn't sell itself. These two experiences are what make it tangible, and they are fundamental platform capabilities — not side projects. Note the phase label on each.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag">Capability A · Phase 1</span>
       <h4>Dashboards from a conversation</h4>
       <p>Anyone can ask a question of the data they are entitled to see, and get a living dashboard — not a CSV and a promise.</p>
       <ol class="steps">
@@ -741,7 +843,7 @@
       </ol>
     </div>
     <div class="card">
-      <span class="tag">Capability B</span>
+      <span class="tag">Capability B · Phase 3</span>
       <h4>Automations without a backlog</h4>
       <p>Anyone can describe a recurring job and get a durable, supervised automation — with the machinery hidden unless they ask.</p>
       <ol class="steps">
@@ -877,20 +979,22 @@
 
   <div class="callout">
     <h4>What I'm asking for</h4>
-    <p><strong>In this meeting</strong></p>
+    <p><strong>Today — in this room</strong></p>
     <ul>
-      <li><strong>Your input and your evaluation</strong> — of the reading of the problem as much as of the architecture.</li>
-      <li><strong>Sign-off on the architecture and the operating model:</strong> domain MCPs owned by owning teams, a shared identity and authorization foundation, and a thin gateway.</li>
+      <li><strong>Your input</strong> on the architecture and the model — on the reading of the problem as much as on the design.</li>
+      <li><strong>Agreement that this is the direction.</strong> Domain MCPs owned by owning teams, a shared identity and authorization foundation, and a thin gateway.</li>
     </ul>
-    <p style="margin-top:14px"><strong>Next</strong></p>
+    <p style="margin-top:14px"><strong>Next — we come back with the detail</strong></p>
     <ul>
-      <li><strong>We plan it properly</strong> — roadmap, sizing, sequencing, and the compliance review running alongside so governance and engineering land together.</li>
+      <li><strong>A detailed design, and then a roadmap</strong> with phases and owners, sized properly, with the compliance review running alongside so governance and engineering land together. Planning a roadmap before the model is agreed would be wasted work, which is why it comes second.</li>
     </ul>
-    <p style="margin-top:14px"><strong>Then</strong></p>
+    <p style="margin-top:14px"><strong>Then — it becomes how the teams build</strong></p>
     <ul>
-      <li><strong>Phased implementation</strong>, starting read-only.</li>
+      <li><strong>Each team owns the MCP for the domain it already owns</strong>, the same way it already owns that domain's API and its tests.</li>
+      <li><strong>Agent-accessible becomes part of normal delivery</strong> rather than a separate initiative that has to be justified and funded again every year.</li>
     </ul>
-    <p style="margin-top:14px">To be explicit about what this is <em>not</em>: I am not asking to staff a team or lock a roadmap today. <strong>Today we decide the model. Planning comes after.</strong></p>
+    <p style="margin-top:14px">This last part is the one worth being explicit about, because it is what agreeing to the direction actually commits us to. This is not a project that finishes and gets handed over to someone to operate. It is a change in what "done" means for a team that owns a domain — and that is a bigger ask than the gateway or the token exchange, so it should be decided deliberately rather than discovered later.</p>
+    <p style="margin-top:14px">To be explicit about what this is <em>not</em>: I am not asking to staff a team, commit a budget, or lock a date today. <strong>Today we agree the direction. The detail and the roadmap come next.</strong></p>
   </div>
 
   <h3>How we'll know it's working</h3>

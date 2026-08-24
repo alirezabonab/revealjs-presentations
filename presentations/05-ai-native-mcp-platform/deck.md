@@ -32,10 +32,10 @@ Open with the thesis, one sentence: every team that owns data, a service, or a s
 ║                                                                         ║
 ║                What "AI-native" means in practice:                      ║
 ║                                                                         ║
-║                                                                         ║    
 ║                                                                         ║
-║        An Employee turns ideas into data and action fast and safe,      ║
-║        without giving up control.                                       ║
+║        An employee turns any request into a result:                     ║
+║        a question, a report, an action, a job that runs every week.     ║
+║        Fast and safe, without giving up control.                        ║
 ║                                                                         ║
 ║        Every asset we own is available through one safe path.           ║
 ║        Your identity decides what you can see and do.                   ║
@@ -46,7 +46,7 @@ Open with the thesis, one sentence: every team that owns data, a service, or a s
 ```
 
 Notes:
-The organisations that win the next five years are the ones where an employee's intent travels to data and action with the least friction — without giving up control. That is what "AI-native" means in practice: not more chatbots, but every asset we own reachable through a governed interface, with identity — not habit — deciding who can do what.
+The organisations that win the next five years are the ones where an employee's request reaches what it needs with the least friction — without giving up control. Read the four examples out, because the range is the point: a question, a report, an action inside a system, and a job that keeps running every week. Not just asking things — doing them too. That is what "AI-native" means in practice: not more chatbots, but every asset we own reachable through a governed interface, with identity — not habit — deciding who can do what.
 
 
 ---
@@ -192,6 +192,17 @@ Put the last two slides side by side. The demand is real and it all queues behin
 │                     │  │                     │  │  customer support   │  │                     │
 │                     │  │                     │  │  banking back office│  │                     │
 └─────────────────────┘  └─────────────────────┘  └─────────────────────┘  └─────────────────────┘
+           ▲                        ▲                        ▲                        ▲
+           └────────────────────────┴───────────┬────────────┴────────────────────────┘
+                                                │
+┌───────────────────────────────────────────────┴────────────────────────────────────────────────┐
+│                                        KNOWLEDGE GRAPH                                         │
+│                      agent-skills  ·  markdown context, versioned in git                       │
+├────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  business capabilities  ·  products  ·  journeys  ·  systems  ·  governance                    │
+│  scoped Shared · Enklare · Entra      owned files, review dates, access matrix                 │
+│  the MCPs read it to turn a business request into the right calls                              │
+└────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 
 ╔════════════════════════════════════════════════════════════════════════════════════════════════╗
@@ -202,6 +213,8 @@ Put the last two slides side by side. The demand is real and it all queues behin
 
 Notes:
 We are not starting from zero — the raw material already exists in four estates. The Data Platform in GCP builds versioned records of every row, so "how did this change over time" is a first-class question, already built. Roughly 80 event-driven services own their domains (eventually consistent — the MCPs must say so honestly). The SaaS estate covers the highest-frequency requests: observability answers and communication actions. And Windmill is the durable execution plane the harness lacks: the harness plans, Windmill runs things durably and deterministically.
+
+The fifth block is the knowledge graph and skills work in `agent-skills`, which had its own session — do not re-sell it here, just place it in the architecture. One line is enough: that context library is what an MCP reads to turn a business request into the right calls, and it is governed the same way the rest of this is, with owned files, review dates and an access matrix. If someone asks for the detail, it is a separate deck. Keep the room on the MCP model.
 
 ---
 
@@ -279,35 +292,35 @@ The build plan in three parts. One: every owning team ships and maintains an MCP
 
 <!-- ## Slide (Section: governed path) -->
 ```text
-    ┌───────────────────────────────────────────────────────────────────────┐
-    │                           ONE GOVERNED PATH                           │
-    └───────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                          ONE GOVERNED PATH                                          │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 
-                            ┌─────────────────────────┐
-                            │           USER          │
-                            └────────────┬────────────┘
-                                         │  signs in once
-                                         ▼
-                            ┌─────────────────────────┐
-                            │         HARNESS         │
-                            │   Claude Code · Codex   │
-                            └────────────┬────────────┘
-                                         │  user token
-                                         ▼
-                            ╔═════════════════════════╗
-                            ║       MCP GATEWAY       ║
-                            ║   checks the user token ║
-                            ║   Auth mints a new one  ║
-                            ╚════════════╤════════════╝
-                                         │  new token, minted for that MCP
-        ┌─────────────────────┬──────────┴──────────┬─────────────────────┐
-        ▼                     ▼                     ▼                     ▼
-┌───────────────┐     ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
-│    DATA MCP   │     │  SERVICE MCPS │     │  SYSTEM MCPS  │     │  WINDMILL MCP │
-│  checks that  │     │  checks that  │     │  checks that  │     │  checks that  │
-│  new token    │     │  new token    │     │  new token    │     │  new token    │
-└───────────────┘     └───────────────┘     └───────────────┘     └───────────────┘
+                                      ┌─────────────────────────┐
+                                      │           USER          │
+                                      └────────────┬────────────┘
+                                                   │  signs in once
+                                                   ▼
+                                      ┌─────────────────────────┐
+                                      │         HARNESS         │
+                                      │   Claude Code · Codex   │
+                                      └────────────┬────────────┘
+                                                   │  user token
+                                                   ▼
+                                      ╔═════════════════════════╗
+                                      ║       MCP GATEWAY       ║
+                                      ║  checks the user token  ║
+                                      ║   Auth mints a new one  ║
+                                      ╚════════════╤════════════╝
+                                                   │  new token, minted for that MCP
+         ┌────────────────────┬────────────────────┼────────────────────┬────────────────────┐
+         ▼                    ▼                    ▼                    ▼                    ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│     DATA MCP    │  │   SERVICE MCPS  │  │   SYSTEM MCPS   │  │   WINDMILL MCP  │  │ KNOWLEDGE GRAPH │
+│  checks that    │  │  checks that    │  │  checks that    │  │  checks that    │  │  checks that    │
+│  new token      │  │  new token      │  │  new token      │  │  new token      │  │  new token      │
+└─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────────────┘
 
 
        The user token stops at the gateway.
@@ -316,6 +329,8 @@ The build plan in three parts. One: every owning team ships and maintains an MCP
 
 Notes:
 Walk the swap, not the boxes. The harness sends the user token to the gateway. The gateway checks it, then Auth mints a new short-lived token whose audience is exactly one domain MCP. The gateway sends that new token to the MCP. The original user token never leaves the gateway. The MCP checks the token it received — signature, expiry, scopes, and "was this minted for me?" A Data token is useless against Windmill. That is token exchange, not forwarding.
+
+The knowledge graph sits on the same row for a reason: it is reached the same way as everything else, through its own MCP behind the same gate. Context is not a special case that gets to bypass the model — if a scope does not let you see Entra lending context, the graph will not hand it to you either.
 
 ---
 
@@ -356,7 +371,7 @@ Tell it as two timescales, like the Atlassian plugin. Once: you Connect the gate
 ```text
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
-║                SECTION FOUR  -  WHAT PEOPLE GET               ║
+║                  SECTION FOUR  -  WHAT WE GET                 ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```
@@ -365,33 +380,41 @@ Tell it as two timescales, like the Atlassian plugin. Once: you Connect the gate
 
 <!-- ## Slide (Section: day one capabilities) -->
 ```text
-┌──────────────────────────────────────────────────────────────────────────┐
-│                           DAY ONE CAPABILITIES                           │
-└──────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                               WHERE THE VALUE LANDS                               │
+└───────────────────────────────────────────────────────────────────────────────────┘
 
 
-┌──────────────────────────────────┐    ┌──────────────────────────────────┐
-│  DASHBOARDS FROM A CONVERSATION  │    │  AUTOMATIONS WITHOUT A BACKLOG   │
-├──────────────────────────────────┤    ├──────────────────────────────────┤
-│  ask in plain language           │    │  describe the recurring job      │
-│     │                            │    │     │                            │
-│     ▼                            │    │     ▼                            │
-│  harness queries the             │    │  harness authors a Windmill      │
-│  Data Platform MCP, only         │    │  flow and deploys it             │
-│  within your own scopes          │    │  through the Windmill MCP        │
-│     │                            │    │     │                            │
-│     ▼                            │    │     ▼                            │
-│  live dashboard,                 │    │  approval gate, then             │
-│  iterate by asking               │    │  durable execution               │
-└──────────────────────────────────┘    └──────────────────────────────────┘
+┌───────────────────────────────────────┐   ┌───────────────────────────────────────┐
+│             FOR THE PEOPLE            │   │          FOR THE ORGANISATION         │
+├───────────────────────────────────────┤   ├───────────────────────────────────────┤
+│  answers in minutes, in their own     │   │  engineering time goes back to        │
+│  words, and without a ticket          │   │  product, not to ad-hoc reports       │
+│                                       │   │                                       │
+│  they build the view they need        │   │  decisions run on current data,       │
+│  and change it just by asking         │   │  not on last month's export           │
+│                                       │   │                                       │
+│  the repeating work runs itself       │   │  one audited path instead of          │
+│  and keeps running                    │   │  copy-paste and shared logins         │
+│                                       │   │                                       │
+│  they only ever see what their        │   │  the identity work pays off for       │
+│  own role allows                      │   │  every integration and audit          │
+└───────────────────────────────────────┘   └───────────────────────────────────────┘
 
 
-    The harness serves the long tail.
-    Windmill runs what must be durable.
+    reads land first, in Phase 1   ·   actions and automations, Phase 3
+
+    One platform. Two different reasons to want it.
 ```
 
 Notes:
-The two demos that make the platform real. Dashboards: ask a question in plain language and get a living dashboard built only from data you are allowed to see — the versioned records in the data platform make time-travel questions native. Automations: describe a recurring job; the harness writes and deploys a Windmill flow; anything with side effects waits for human approval; the user follows progress without ever seeing the machinery. Boundary: the harness serves the interactive long tail, Windmill runs everything that must be durable, scheduled, or regulated.
+No need to re-argue the pain here — they have accepted it by this point in the deck. This slide is only about what the thing is worth, and it is worth different things to the two halves of the room, so take the columns one at a time rather than reading across.
+
+For the people doing the work: they get answers in minutes, in their own words, without opening a ticket. They build the view they need and change it just by asking, instead of specifying it to someone else and waiting. The repeating work runs itself and keeps running. And the last one is a benefit, not a restriction — because access is scoped to their role, they can use this confidently without wondering whether they are allowed to be looking at something.
+
+For the organisation: engineering time goes back to product instead of being spent on ad-hoc reports, which is the single biggest number in this proposal. Decisions run on current data rather than last month's export. One audited path replaces copy-paste and shared logins — that is a control improvement on what happens today, not a new risk. And the identity and authorization work pays off for every future integration and every audit, whether or not the AI part ever grows.
+
+One honest note on timing, because it is on the slide: reads land in Phase 1, actions and automations in Phase 3. The people-side value starts arriving early; the automation value comes later.
 
 ---
 
@@ -444,32 +467,35 @@ These are concrete examples of what the platform enables. Instead of clicking th
 
 <!-- ## Slide (Section: governance) -->
 ```text
-┌───────────────────────────────────────────────────────────────┐
-│                      GOVERNANCE BY DESIGN                     │
-└───────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                             GOVERNANCE BY DESIGN                            │
+└─────────────────────────────────────────────────────────────────────────────┘
 
 
-    ISMS 1.4     the controlled Tier 2/3 path
-                approval gates on every write
+    THE RULE                     WHAT THE ARCHITECTURE DOES ABOUT IT
+    ─────────────────────────    ──────────────────────────────────────────
 
-    GDPR         data minimisation inside each MCP
-                 audit log at the gateway
+    ISMS 1.4                     every write waits for a human to approve
+    our own AI policy            this is the controlled Tier 2/3 path
 
-    DORA         one place to trace access
-                one place to cut it
+    GDPR                         each MCP returns only the fields needed
+    data minimisation            nothing extra reaches the model
 
-    EU AI ACT    internal productivity only
-                humans approve anything with consequence
+    DORA                         one place to see who accessed what
+    ICT risk and resilience      one place to switch that access off
+
+    EU AI ACT                    internal productivity only
+    Regulation 2024/1689         a human approves anything with consequence
 
 
-╔═══════════════════════════════════════════════════════════════╗
-║  NEVER through this platform:                                 ║
-║                                                               ║
-║  ✗  credit decisioning · scoring · customer risk              ║
-║  ✗  automated decisions with legal or financial effect        ║
-║  ✗  customer PII · KYC · AML data into model context          ║
-║  ✗  secrets in tool outputs                                   ║
-╚═══════════════════════════════════════════════════════════════╝
+╔═════════════════════════════════════════════════════════════════════════════╗
+║  NEVER through this platform                                                ║
+║                                                                             ║
+║  ✗  credit decisioning · scoring · customer risk assessment                 ║
+║  ✗  automated decisions with legal or financial effect on a customer        ║
+║  ✗  customer PII · KYC · AML data into model context                        ║
+║  ✗  secrets or credentials in tool outputs                                  ║
+╚═════════════════════════════════════════════════════════════════════════════╝
 ```
 
 Notes:
@@ -523,29 +549,34 @@ Sequencing is the risk control: each phase is earned by exiting the previous one
 
     ╔═══════════════════════════════════════════════════════════════╗
     ║                                                               ║
-    ║  THIS MEETING                                                 ║
-    ║  1   your input and evaluation                                ║
-    ║  2   sign-off on the architecture and the model               ║
+    ║  TODAY  -  IN THIS ROOM                                       ║
+    ║  1   your input on the architecture and the model             ║
+    ║  2   agreement that this is the direction                     ║
     ║                                                               ║
-    ║  NEXT                                                         ║
-    ║  3   plan it  -  roadmap and the details                      ║
+    ║  NEXT  -  WE COME BACK WITH THE DETAIL                        ║
+    ║  3   detailed design, then a roadmap with phases and owners   ║
     ║                                                               ║
-    ║  THEN                                                         ║
-    ║  4   phased implementation                                    ║
+    ║  THEN  -  IT BECOMES HOW DEV TEAMS BUILD                      ║
+    ║  4   each team owns the MCP for domain they own               ║
+    ║  5   agent-accessible becomes part of normal delivery         ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
 
 
-       Today we decide the model. Planning comes after.
+    Today we agree the direction. The detail and the roadmap come next.
 ```
 
 Notes:
-End on what this meeting is for. We are asking for your input, your evaluation, and sign-off on the architecture and the model. We are not staffing a team or locking a roadmap today. Next comes a proper plan with details. Implementation is phased after that, and it starts read-only.
+End on what this meeting is for, and be precise about it, because the wrong ask here loses the room. Today we want two things: your input on the architecture and the model, and agreement that this is the direction. That is it. We are not asking for a team, a budget, or a date, and we are not asking anyone to approve a plan that does not exist yet.
+
+What happens next is the detail: a proper design, and then a roadmap with phases and owners. We come back with that once the direction is agreed — planning a roadmap before the model is settled would be wasted work.
+
+Then land the part that matters most for the long run. This is not a project that finishes and gets handed over. It becomes how the teams build: owning a domain starts to include owning the MCP for that domain, the same way owning a service already includes owning its API and its tests. Agent-accessible becomes part of normal delivery rather than a separate initiative someone has to fund every year. If they agree to the direction today, that is what they are agreeing to.
 
 ---
 
 <!-- ## Slide (Section: architecture diagram) -->
-![Target architecture](./assets/package.png)
+![Target architecture](./assets/package.jpg)
 
 Notes:
 This is the full picture they are being asked to evaluate. Walk top to bottom: user signs in once, harness plans, gateway is the one door, Auth mints a short-lived token for one domain, each owning team’s MCP guards that domain. Nothing reaches a system except through its owning MCP. Stay on the rules at the bottom: every hop authenticated, every call audited.
