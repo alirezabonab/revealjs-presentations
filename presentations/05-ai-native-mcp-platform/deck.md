@@ -94,6 +94,8 @@ The organisations that win the next five years are the ones where an employee's 
 Notes:
 Be specific about who the platform serves today. Our services were built around the customer platform and the sales team — those two have integrated services and own their domain APIs. Finance, Compliance, Marketing, Customer Support, the banking back office and the other supporting functions have no integrated services at all. They run their day-to-day work in third-party SaaS tools, and there is no path from those tools into our core platform. So every time they need something from it, they come to product and dev: give me access to this data, build me this report, automate this job, reconcile these two systems, send this notification. Each one becomes a ticket, a context switch for an engineer, and a two-week wait for a ten-minute job. The dev backlog is currently the only door into the platform, and that is the bottleneck this proposal removes.
 
+If anyone asks how big this actually is, use the real figure and its caveat rather than an adjective. The two projects most exposed to inbound requests — DATA PLATFORM and AUTOMATION — took 384 issues in the last 90 days, roughly 128 a month, with another 96 through IT Support. Be straight about what that is: Jira is organised by product domain, so those totals include each team's own planned work too, and nothing in Jira attributes a ticket to the department that asked for it. So it is the pool this platform draws from, not a measured count of ad-hoc requests. If they want the precise number, the answer is that we add a label for inbound requests and have it within a quarter — and offering that is more credible than guessing at a percentage here.
+
 ---
 
 <!-- ## Slide (Section: harnesses) -->
@@ -279,7 +281,7 @@ Everyone signs in through Google Workspace — a single, strong identity for eve
 │  domain-owned          │   │  shared roles          │   │  one entry point       │
 │  clear tool contracts  │   │  scoped access         │   │  policy + limits       │
 │  safe by default       │   │  short-lived access    │   │  full audit trail      │
-│                        │   │                        │   │  routing only          │
+│                        │   │  machine identities    │   │  routing only          │
 └────────────────────────┘   └────────────────────────┘   └────────────────────────┘
 
 
@@ -287,6 +289,10 @@ Everyone signs in through Google Workspace — a single, strong identity for eve
 
 Notes:
 The build plan in three parts. One: every owning team ships and maintains an MCP for what they own — per domain, not per repo, so ~80 repositories become roughly 8-12 MCPs. Two: identity — our current Auth service and Google Workspace grow to support this model, including groups mapped to scopes, token exchange, and short-lived tokens. Three: a thin gateway — one endpoint, policy, rate limits, audit, and nothing clever inside. Division of labor: the harness orchestrates, the gateway routes, the MCP guards, Windmill executes.
+
+The last line under identity — machine identities — is worth pausing on if anyone asks, because it is what makes Phase 3 legitimate. A scheduled job at three in the morning has no human in the session. Today that means it runs on somebody's personal credentials or a shared service login, which is exactly the pattern we are trying to remove. Once the authorization layer exists, every automation gets its own scoped identity instead: narrow scopes, its own audit trail, and a named human owner. So "who ran this?" has a real answer, and offboarding a person no longer silently breaks or silently inherits their automations.
+
+State the guardrail in the same breath, because it is the obvious follow-up question: an agent identity can never exceed the scopes of the person who created it. It is delegation, not a new privilege class. Machine accounts are the classic way least privilege quietly erodes — broad scopes, no expiry, nobody watching — so they get the same short-lived tokens and the same review cycle as everything else. This belongs in Phase 3 with the write tools, not in the foundation.
 
 ---
 
@@ -378,43 +384,58 @@ Tell it as two timescales, like the Atlassian plugin. Once: you Connect the gate
 
 ---
 
-<!-- ## Slide (Section: day one capabilities) -->
+<!-- ## Slide (Section: organisation win) -->
 ```text
-┌───────────────────────────────────────────────────────────────────────────────────┐
-│                               WHERE THE VALUE LANDS                               │
-└───────────────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                      THE WIN FOR THE ORGANISATION                      │
+└────────────────────────────────────────────────────────────────────────┘
 
 
-┌───────────────────────────────────────┐   ┌───────────────────────────────────────┐
-│             FOR THE PEOPLE            │   │          FOR THE ORGANISATION         │
-├───────────────────────────────────────┤   ├───────────────────────────────────────┤
-│  answers in minutes, in their own     │   │  engineering time goes back to        │
-│  words, and without a ticket          │   │  product, not to ad-hoc reports       │
-│                                       │   │                                       │
-│  they build the view they need        │   │  decisions run on current data,       │
-│  and change it just by asking         │   │  not on last month's export           │
-│                                       │   │                                       │
-│  the repeating work runs itself       │   │  one audited path instead of          │
-│  and keeps running                    │   │  copy-paste and shared logins         │
-│                                       │   │                                       │
-│  they only ever see what their        │   │  the identity work pays off for       │
-│  own role allows                      │   │  every integration and audit          │
-└───────────────────────────────────────┘   └───────────────────────────────────────┘
+    1   NO MORE WAITING IN THE DEV QUEUE
+        five departments can get answers themselves
+
+    2   AUTHORIZATION FINALLY EXISTS
+        pays off for every integration and every audit, AI or not
+
+    3   SHADOW AI BECOMES AUDITED AI
+        less risk than today, not more
+
+    4   AGENTS AND AUTOMATIONS GET THEIR OWN IDENTITY
+        not a person's password, and not a shared service login
+
+    5   COMPLIANCE BECOMES ENFORCEABLE
+        one audit trail for DORA, minimisation in code for GDPR
+
+    6   WE FIND WHAT A NEW RULE AFFECTS
+        ask one question, instead of hunting through 80 repos
 
 
-    reads land first, in Phase 1   ·   actions and automations, Phase 3
+══════════════════════════════════════════════════════════════════════════
+    reading comes first, in Phase 1   ·   doing things, Phase 3
 
-    One platform. Two different reasons to want it.
+    Most of this is worth doing even if we never grow the AI part.
 ```
 
 Notes:
-No need to re-argue the pain here — they have accepted it by this point in the deck. This slide is only about what the thing is worth, and it is worth different things to the two halves of the room, so take the columns one at a time rather than reading across.
+No need to re-argue the pain here — they have accepted it by this point. This slide answers the only question left for a decision-maker: why is this worth doing at all. Take the six one at a time, and do not rush the last line.
 
-For the people doing the work: they get answers in minutes, in their own words, without opening a ticket. They build the view they need and change it just by asking, instead of specifying it to someone else and waiting. The repeating work runs itself and keeps running. And the last one is a benefit, not a restriction — because access is scoped to their role, they can use this confidently without wondering whether they are allowed to be looking at something.
+Items 1 and 6 are in plain language; 2, 3 and 5 keep the technical names because this room knows them. If anyone outside tech is in the room, gloss them as you go — the plain version of each is below.
 
-For the organisation: engineering time goes back to product instead of being spent on ad-hoc reports, which is the single biggest number in this proposal. Decisions run on current data rather than last month's export. One audited path replaces copy-paste and shared logins — that is a control improvement on what happens today, not a new risk. And the identity and authorization work pays off for every future integration and every audit, whether or not the AI part ever grows.
+One and two are the structural ones. Five departments can help themselves instead of queueing for the dev team. And authorization finally exists — in plain terms, we decide who can see and do what. We do not have that today, and it earns its cost through audits and integrations whether or not the AI part ever grows.
 
-One honest note on timing, because it is on the slide: reads land in Phase 1, actions and automations in Phase 3. The people-side value starts arriving early; the automation value comes later.
+Three and four are the risk ones, and they are the strongest cards in an FI-supervised firm. Shadow AI means the copy-paste into chat windows and the scripts on laptops that are happening now, invisibly — making that visible, scoped and revocable is a reduction in risk, not an addition. And agents and automations get their own identity: a job at three in the morning currently runs on somebody's personal password or a shared one, which is the exact pattern we are removing. If asked, state the guardrail immediately — an automation can never do more than the person who set it up. It is delegation, not a new kind of account.
+
+Five and six carry the compliance weight. Five names both regulations on the slide: the single audit trail is the DORA answer, and returning only the fields a job needs is GDPR data minimisation — enforced in code rather than asserted in a policy. Six is worth explaining slowly, because it sounds small and is not: when a new rule lands — a KKrL change, a new FFFS requirement, an observation from FI — somebody has to work out which systems, flows and fields it touches. Today that means going through eighty repositories and asking whoever remembers. With domain MCPs and the knowledge graph, you ask and get the list. For a firm that takes regulatory change as routine work, this may be the most valuable item on the slide.
+
+Then land the closing line, because it is the one that wins agreement from someone unconvinced about AI: most of this is worth doing even if we never grow the AI part. That separates the durable investment from the part they may still doubt. The phase line above it is there to keep us honest — reading comes first, and anything that changes something waits for Phase 3.
+
+Held back deliberately, for questions rather than assertion:
+- Audit and subject-access responses stop being projects. "Who accessed this customer's data in March" is an investigation today; with per-call audit at the gateway it is a query. We field these from FI, from auditors, and as GDPR Article 15 requests, so it is a recurring cost the platform removes as a side effect. Compliance will corroborate this if asked.
+- Incident resolution gets faster. Cross-system debugging — logs, services and data reachable in one place — is where these tools are strongest, and shorter incidents matter directly for our reporting obligations. The engineering example on the next slide shows it without naming it.
+- Each MCP makes the next one cheaper, because of the starter kit and the standards. Use this if the room is cost-focused: the investment curve bends down rather than repeating.
+- Vendor lock-in: MCP is an open standard and the harness is the most replaceable component in the architecture. This came off the slide to make room, and it is answered in full in the objections section of the written proposal.
+
+Two things not to claim, because we cannot back them yet: SaaS licence savings, and recruiting or retention benefits. Both are plausible and neither is evidenced, and putting an unbacked claim next to six defensible ones is where a sceptic will aim.
 
 ---
 
@@ -451,6 +472,8 @@ One honest note on timing, because it is on the slide: reads land in Phase 1, ac
 
 Notes:
 These are concrete examples of what the platform enables. Instead of clicking through 4 different dashboards or asking a data analyst to run a query, anyone in the organisation is just one sentence away from complex, cross-system insights. The platform handles the translation from their natural language into the underlying APIs and databases.
+
+This is the people-side slide, so read the four out and let the room find their own team in one of them — that recognition is what the previous slide cannot buy with any number. Two things to add while they are nodding. First, each of these crosses systems that no single dashboard joins today, which is why they are not solved by another report. Second, and worth saying plainly: you only ever see what your own role allows, so nobody has to wonder whether they are allowed to be looking at something. That is what makes people keep using it rather than quietly going back to asking a colleague.
 
 ---
 

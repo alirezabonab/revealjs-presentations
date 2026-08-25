@@ -817,7 +817,8 @@
     <div class="card">
       <span class="tag">For the organisation</span>
       <h4>Capacity back, and a foundation that compounds</h4>
-      <p>Engineering time goes back to product instead of ad-hoc reports — the largest number in this proposal. Decisions run on current data rather than last month's export. One audited path replaces copy-paste and shared logins, which is a control <em>improvement</em> on today, not a new risk.</p>
+      <p>Engineering time goes back to product instead of ad-hoc reports. Decisions run on current data rather than last month's export. One audited path replaces copy-paste and shared logins, which is a control <em>improvement</em> on today, not a new risk.</p>
+      <p class="hint" style="color:var(--warn)">Sizing, stated honestly: the two projects most exposed to inbound requests — <span class="mono">DATA PLATFORM</span> and <span class="mono">AUTOMATION</span> — took <strong>384 issues in the last 90 days</strong> (~128 a month), with a further 96 through IT Support. That is the pool this platform draws from, not a count of ad-hoc requests: Jira is organised by product domain, so those totals also include each team's own planned work, and there is no requester-department attribution to separate the two. Adding a label or component for inbound requests would make this measurable within a quarter, and it is the number worth having before anyone asks for a business case.</p>
       <p class="hint">And the identity and authorization work pays off for every future integration and every audit, whether or not the agent layer above it ever grows. That is the part worth funding even by someone sceptical about AI.</p>
     </div>
   </div>
@@ -825,6 +826,33 @@
   <div class="callout warn">
     <h4>When each half arrives</h4>
     <p>Being precise about this matters, because the roadmap below is the honest version and the two must agree. <strong>The read-side value lands in Phase 1–2.</strong> Everything that writes — actions inside systems, durable automations — <strong>lands in Phase 3</strong>, behind human approval gates. The read side alone removes the dev backlog as the only door into the platform, which is why we do not need to overclaim the rest.</p>
+  </div>
+
+  <h3>Three gains that are easy to miss — and all measurable</h3>
+  <p>These are second-order effects rather than headline features, which is exactly why they are worth writing down: they accrue whether or not anyone is excited about agents, and unlike the capacity argument above, each one can be measured.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h4>Regulatory change stops being archaeology</h4>
+      <p>Working out what a new KKrL amendment or FFFS requirement actually touches currently means hunting across ~80 repositories and the people who remember. With domain MCPs and the knowledge graph, <strong>"what does this rule touch?" becomes a question you ask.</strong></p>
+      <p class="hint">Measure: elapsed time from a regulatory change landing to a complete impact assessment. For a firm that absorbs regulatory change as routine work, this may be the highest-value item in this section.</p>
+    </div>
+    <div class="card">
+      <h4>Audit and subject-access stop being projects</h4>
+      <p>"Who accessed this customer's data in March?" is an investigation today. With the per-call audit log at the gateway it is a query — for FI, for auditors, and for GDPR Article 15 subject access requests.</p>
+      <p class="hint">Measure: hours spent per access-history request, times the number of requests a year. A recurring cost the platform removes as a side effect rather than as a feature.</p>
+    </div>
+    <div class="card">
+      <h4>Incidents resolve faster</h4>
+      <p>Cross-system debugging — logs, service state and data reachable through one governed path — is where these tools are strongest. Shorter incidents also matter directly for our reporting obligations.</p>
+      <p class="hint">Measure: mean time to resolution before and after, on incidents that span more than one system. This is the read-only Phase 1–2 value, available before anything writes.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Two things this proposal deliberately does not claim</h4>
+    <p><strong>SaaS licence savings.</strong> It is plausible that some tools exist only because nobody built the internal equivalent, and that a cheap long tail changes that calculation. We have not verified it, so we are not banking it.</p>
+    <p><strong>Recruiting and retention.</strong> Engineers generally prefer not to work in a ticket factory, and "AI-native" reads well externally. Neither is measurable here, so neither belongs in a business case.</p>
   </div>
 
   <h3>The two capabilities we demo</h3>
