@@ -82,7 +82,7 @@ The organisations that win the next five years are the ones where an employee's 
 │  • Customer Support         │ ──► │  • reconciliations          │
 │  • Banking Back Office      │     │  • notifications            │
 │                             │     │                             │
-│  all on third-party SaaS    │     │  all through product & DEV  │
+│  all on third-party SaaS    │     │  all through product & dev  │
 └─────────────────────────────┘     └─────────────────────────────┘
 
 
@@ -150,7 +150,7 @@ The point to close on: this is not a novelty chatbot, it is an orchestrator, and
 
 
 
-        So the value leaks the worst possible way:
+        So the value leaks in the worst possible way:
         copy-paste · ad-hoc credentials · scripts on laptops
 
 
@@ -214,7 +214,7 @@ Put the last two slides side by side. The demand is real and it all queues behin
 ```
 
 Notes:
-We are not starting from zero — the raw material already exists in four estates. The Data Platform in GCP builds versioned records of every row, so "how did this change over time" is a first-class question, already built. Roughly 80 event-driven services own their domains (eventually consistent — the MCPs must say so honestly). The SaaS estate covers the highest-frequency requests: observability answers and communication actions. And Windmill is the durable execution plane the harness lacks: the harness plans, Windmill runs things durably and deterministically.
+We are not starting from zero — the raw material already exists. Walk the four estates across the top first, then the block underneath. The Data Platform in GCP builds versioned records of every row, so "how did this change over time" is a first-class question, already built. Roughly 80 event-driven services own their domains (eventually consistent — the MCPs must say so honestly). The SaaS estate covers the highest-frequency requests: observability answers and communication actions. And Windmill is the durable execution plane the harness lacks: the harness plans, Windmill runs things durably and deterministically.
 
 The fifth block is the knowledge graph and skills work in `agent-skills`, which had its own session — do not re-sell it here, just place it in the architecture. One line is enough: that context library is what an MCP reads to turn a business request into the right calls, and it is governed the same way the rest of this is, with owned files, review dates and an access matrix. If someone asks for the detail, it is a separate deck. Keep the room on the MCP model.
 
@@ -285,6 +285,9 @@ Everyone signs in through Google Workspace — a single, strong identity for eve
 └────────────────────────┘   └────────────────────────┘   └────────────────────────┘
 
 
+════════════════════════════════════════════════════════════════════════════════════
+    Each layer does one job:
+    harness orchestrates · gateway routes · MCP guards · Windmill executes
 ```
 
 Notes:
@@ -411,7 +414,7 @@ Tell it as two timescales, like the Atlassian plugin. Once: you Connect the gate
 
 
 ══════════════════════════════════════════════════════════════════════════
-    reading comes first, in Phase 1   ·   doing things, Phase 3
+    reading comes first, in Phase 1   ·   actions and automations, Phase 3
 
     Most of this is worth doing even if we never grow the AI part.
 ```
@@ -463,8 +466,8 @@ Two things not to claim, because we cannot back them yet: SaaS licence savings, 
 
     CUSTOMER SERVICE
     ────────────────
-        "Give me a 3-bullet brief on this customer's sentiment
-        and open tickets."
+        "What are the top 5 complaint themes in support
+        tickets this month?"
 
 
     No dashboard hopping. No ticket. No waiting.
@@ -474,6 +477,8 @@ Notes:
 These are concrete examples of what the platform enables. Instead of clicking through 4 different dashboards or asking a data analyst to run a query, anyone in the organisation is just one sentence away from complex, cross-system insights. The platform handles the translation from their natural language into the underlying APIs and databases.
 
 This is the people-side slide, so read the four out and let the room find their own team in one of them — that recognition is what the previous slide cannot buy with any number. Two things to add while they are nodding. First, each of these crosses systems that no single dashboard joins today, which is why they are not solved by another report. Second, and worth saying plainly: you only ever see what your own role allows, so nobody has to wonder whether they are allowed to be looking at something. That is what makes people keep using it rather than quietly going back to asking a colleague.
+
+Two deliberate choices in these four examples, in case anyone probes. The customer service one asks about themes across tickets rather than about one named customer, because a brief on an individual customer would be customer PII in model context — which the governance slide rules out a few minutes later. Keeping the example aggregate means the hard boundary stays absolute and we never have to defend an exception. And the sales one is commercial prioritisation, not creditworthiness: ranking who to call is not a credit or risk assessment, so it sits outside Annex III §5. Say that plainly if asked rather than letting the question hang.
 
 ---
 
@@ -580,7 +585,7 @@ Sequencing is the risk control: each phase is earned by exiting the previous one
     ║  3   detailed design, then a roadmap with phases and owners   ║
     ║                                                               ║
     ║  THEN  -  IT BECOMES HOW DEV TEAMS BUILD                      ║
-    ║  4   each team owns the MCP for domain they own               ║
+    ║  4   each team owns the MCP for the domain they own           ║
     ║  5   agent-accessible becomes part of normal delivery         ║
     ║                                                               ║
     ╚═══════════════════════════════════════════════════════════════╝
