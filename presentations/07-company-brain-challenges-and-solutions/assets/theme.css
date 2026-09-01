@@ -1,0 +1,5 @@
+/* This deck intentionally reuses the presentation engine's global visual system.
+
+   Deck 06 keeps its local overrides minimal, so this deck does the same. The
+   ASCII stages use the engine's self-hosted JetBrains Mono font and shared
+   high-contrast palette. */
