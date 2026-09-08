@@ -1,0 +1,7 @@
+/* This deck intentionally reuses the presentation engine's global visual system.
+
+   It follows 06-product-development-process: the same Reveal settings, the
+   same monochrome ASCII stages, and no local colour or font overrides. The
+   ASCII stages use the engine's self-hosted JetBrains Mono font, which covers
+   every box-drawing glyph at the same advance width, so nothing here needs to
+   pin a font stack. */

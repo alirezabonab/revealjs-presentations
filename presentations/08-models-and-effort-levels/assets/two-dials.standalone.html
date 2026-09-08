@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Dials and a Mode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ground:#FAFBFB; --surface:#FFFFFF; --sunk:#F0F3F4;
+  --ink:#0B1215; --ink-2:#48565C; --ink-3:#85939A; --line:#E0E6E8; --line-2:#C5CED2;
+  --teal:#0089A7; --teal-soft:#E0F1F5; --teal-deep:#036A85;
+  --mag:#C02A62; --mag-soft:#FBE4EC;
+  --gold:#8A6B1F; --gold-soft:#F7ECD3;
+  --green:#2E7D4F; --green-soft:#E3F2E8;
+  --sans:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  --s:1;
+  --vw:min(1vw,1.78vh);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A0E10; --surface:#12181B; --sunk:#171E22;
+    --ink:#EEF2F3; --ink-2:#AAB6BB; --ink-3:#6E7B81; --line:#1F282C; --line-2:#334046;
+    --teal:#25A5C2; --teal-soft:#0C2A33; --teal-deep:#7CCCE0;
+    --mag:#E2588A; --mag-soft:#37121F;
+    --gold:#CFA84F; --gold-soft:#2C2310;
+    --green:#5BBF85; --green-soft:#10281A;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A0E10; --surface:#12181B; --sunk:#171E22;
+  --ink:#EEF2F3; --ink-2:#AAB6BB; --ink-3:#6E7B81; --line:#1F282C; --line-2:#334046;
+  --teal:#25A5C2; --teal-soft:#0C2A33; --teal-deep:#7CCCE0;
+  --mag:#E2588A; --mag-soft:#37121F;
+  --gold:#CFA84F; --gold-soft:#2C2310;
+  --green:#5BBF85; --green-soft:#10281A;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:calc(clamp(13px,calc(1.15*var(--vw)),21px)*var(--s));line-height:1.4;-webkit-font-smoothing:antialiased;overflow:hidden}
+body.room{--s:1.2}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:4px}
+a{color:var(--teal-deep)}
+
+/* chrome */
+.top{position:fixed;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,3vw,44px);z-index:30;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.top .brand{font-family:var(--sans);font-weight:700;font-size:14px;color:var(--ink)}
+.bottom{position:fixed;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,3vw,44px);z-index:30;font-family:var(--mono);font-size:12px;color:var(--ink-3);pointer-events:none}
+.bottom>*{pointer-events:auto}
+.dots{display:flex;gap:7px;align-items:center}
+.dots button{width:7px;height:7px;border-radius:50%;border:0;background:var(--line-2);padding:0;cursor:pointer}
+.dots button.apx{border-radius:1px;width:6px;height:6px;opacity:.7}
+.dots button.on{background:var(--ink);width:22px;border-radius:4px;opacity:1}
+.hb{display:flex;gap:6px}
+.hb button{font-family:var(--mono);font-size:12px;padding:6px 10px;border:1px solid var(--line-2);border-radius:6px;background:var(--surface);color:var(--ink-2);cursor:pointer;line-height:1}
+.hb button.on{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+
+/* scenes */
+.scene{position:fixed;inset:52px 0 56px;display:none;padding:clamp(10px,2.4vh,36px) clamp(18px,4vw,64px);overflow:auto}
+.scene.on{display:block}
+.frame{max-width:1480px;margin:0 auto;min-height:100%;display:grid;grid-template-rows:auto 1fr;gap:clamp(10px,2vh,26px)}
+.eyebrow{font-family:var(--mono);font-size:.68em;letter-spacing:.12em;text-transform:uppercase;color:var(--mag);margin:0 0 .5em;font-weight:500}
+.eyebrow.apx{color:var(--ink-3)}
+h2{font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:0 0 .3em;font-size:calc(clamp(22px,calc(3.7*var(--vw)),58px)*var(--s));text-wrap:balance;max-width:19em}
+.sub{font-size:1.08em;color:var(--ink-2);margin:0;max-width:36em;line-height:1.35}
+.sub b{color:var(--ink);font-weight:600}
+.muted{color:var(--ink-3)} .mono{font-family:var(--mono);font-variant-numeric:tabular-nums} .small{font-size:.78em}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,2vw,32px);align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px);align-items:start}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,24px);align-items:stretch}
+@media (max-width:1000px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,1.5vw,26px)}
+.lab{font-family:var(--mono);font-size:.66em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .55em}
+.pv{font-family:var(--mono);font-size:.6em;vertical-align:.4em;cursor:help;margin-left:.15em}
+.pv-m{color:var(--teal)} .pv-v{color:var(--ink-3)} .pv-c{color:var(--gold)}
+.vendor{font-family:var(--mono);font-size:.68em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .5em;display:flex;align-items:center;gap:.5em}
+.vendor::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.vendor.c::before{background:var(--teal)} .vendor.o::before{background:var(--ink)}
+
+/* s1 */
+.belief{font-weight:800;letter-spacing:-.035em;line-height:.98;font-size:calc(clamp(30px,calc(6*var(--vw)),100px)*var(--s));margin:0 0 .28em;text-wrap:balance}
+.belief.a{color:var(--mag)} .belief.b{color:var(--teal-deep)}
+
+/* s2 */
+.ps{font-family:var(--mono);font-size:.82em;line-height:1.75;background:var(--sunk);border-radius:12px;padding:1em 1.2em;margin:0 0 .8em}
+.ps .k{color:var(--ink-3);display:inline-block;width:11ch}
+.diff{font-family:var(--mono);font-size:.8em;line-height:1.6;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9em 0;overflow:auto}
+.diff div{padding:0 1.2em;white-space:pre}
+.diff .del{background:var(--mag-soft);color:var(--mag)} .diff .add{background:var(--green-soft);color:var(--green)}
+.diff .ctx{color:var(--ink-3)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:var(--mono);font-size:.78em;padding:.55em .9em;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);color:var(--ink-2);cursor:pointer;line-height:1}
+.chip:hover{border-color:var(--ink-3);color:var(--ink)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:var(--ground);font-weight:500}
+.chip.on.eff{background:var(--gold);border-color:var(--gold);color:#fff}
+.ladder{margin:0 0 1.1em}
+
+/* s3 grid */
+.rgwrap{max-width:1180px;display:flex;flex-direction:column;min-height:0}
+.rg{display:grid;grid-template-columns:minmax(150px,auto) repeat(5,minmax(0,1fr));grid-template-rows:auto repeat(4,minmax(0,1fr)) auto;gap:7px;align-items:stretch;flex:1;min-height:0}
+.rg .h{text-align:center;padding:0 0 .35em}
+.rg .h .e{font-family:var(--mono);font-size:.7em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.rg .h .f{display:block;font-family:var(--mono);font-size:.66em;color:var(--ink-3);margin-top:.15em}
+.rg .h.max .e{color:var(--mag)}
+.rg .r{padding:.3em 1em .3em 0;display:flex;flex-direction:column;justify-content:center}
+.rg .r b{font-size:.98em;letter-spacing:-.01em}
+.rg .r .m{font-family:var(--mono);font-size:.7em;color:var(--ink-3);line-height:1.5;margin-top:.15em}
+.rg .c{position:relative;background:var(--green-soft);border-radius:10px;padding:.22em .35em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.06em;border:2px solid transparent;cursor:help;min-height:0;overflow:hidden}
+.rg .c .ok{color:var(--green);font-weight:700;font-size:1.05em;line-height:1}
+.rg .c .cost{font-family:var(--mono);font-size:.72em;color:var(--ink-2);line-height:1.32;text-align:center;font-variant-numeric:tabular-nums}
+.rg .c .cost.un{color:var(--ink-3)}
+.rg .h .x{display:block;font-family:var(--mono);font-size:.66em;color:var(--mag);font-weight:600;line-height:1.25;margin-top:.3em;overflow-wrap:break-word}
+.rg .c.mine{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.rg .x10{grid-column:1;font-family:var(--mono);font-size:.68em;color:var(--ink-3);padding:.4em 0 0}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--ground);font-family:var(--mono);font-size:12px;padding:8px 10px;border-radius:6px;white-space:pre-line;max-width:34em;line-height:1.45;opacity:0;transition:opacity .1s;z-index:50;transform:translate(-50%,-110%)}
+.tip.on{opacity:1}
+#s3 .frame{height:100%;gap:clamp(6px,1.1vh,16px)}
+#s3{padding-top:clamp(8px,1.6vh,24px);padding-bottom:clamp(8px,1.6vh,24px)}
+#s3 .eyebrow{margin-bottom:.3em}
+#s3 h2{max-width:none;margin-bottom:.18em}
+.gridnote{font-size:.95em;color:var(--ink-2);margin:.5em 0 0;max-width:44em;line-height:1.3}
+.gridkey{font-family:var(--mono);font-size:.66em;color:var(--ink-3);margin:.35em 0 0;line-height:1.45}
+
+.ticks{display:flex;justify-content:space-between;gap:6px;font-family:var(--mono);font-size:.68em;color:var(--ink-3);margin-top:.3em}
+.ticks span{flex:1;text-align:center}
+.ticks span:first-child{text-align:left}
+.ticks span:last-child{text-align:right}
+#effDial{width:100%;height:32px;margin:0;accent-color:var(--mag);cursor:pointer}
+/* harness flow */
+.flowfig{margin:0 0 .45em}
+#sm1 .flowfig{align-self:center;width:100%}
+.flowfig svg{width:100%;height:auto;display:block;overflow:visible}
+.flowfig .pt{font-family:var(--sans);font-weight:700;letter-spacing:-.01em;fill:var(--ink)}
+.flowfig .pc{font-family:var(--sans);fill:var(--ink-2)}
+.flowfig .lbl{font-family:var(--mono);letter-spacing:.14em;fill:var(--ink-3)}
+.flowfig .loop{fill:none;stroke:var(--ink-3);stroke-width:2;stroke-dasharray:6 6;opacity:.75}
+.flowfig .fan{stroke:var(--ink-3);stroke-width:1.5;opacity:.6}
+.flowfig .osc{fill:none;stroke:var(--ink-3);stroke-width:2;opacity:.6}
+.mgrid{display:grid;grid-template-columns:minmax(180px,auto) minmax(0,1fr) minmax(0,1fr);gap:0 clamp(16px,2.6vw,48px)}
+.mgrid .h{font-family:var(--mono);font-size:.66em;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);padding:0 0 .45em}
+.mgrid .t,.mgrid .v{padding:.4em 0;border-top:1px solid var(--line)}
+.mgrid .t b{display:block;font-size:1.05em;letter-spacing:-.01em;line-height:1.2}
+.mgrid .t span{font-family:var(--mono);font-size:.68em;color:var(--ink-3)}
+.mgrid .v{font-size:1.02em;line-height:1.3;color:var(--ink)}
+.mgrid .v.off{color:var(--ink-3)}
+.mgrid .np{border-top:0}
+.mgrid .split{grid-column:1/-1;border-top:2px solid var(--teal);padding:.4em 0 .05em;
+  font-family:var(--mono);font-size:.66em;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+#s6 .card{padding:clamp(11px,1.15vw,20px)}
+#s6 .punch{margin-top:.6em}
+#s6 .flowfig,#s6 h2{margin-bottom:.3em}
+#s3 h2{max-width:none}
+#sm3 .punch{margin-top:.6em}
+#sm3 .flowfig{margin-bottom:.25em}
+
+#sm3 .punchsrc{margin-top:.35em}
+.vq{display:grid;grid-template-columns:auto 1fr;gap:.5em 1em;font-size:.92em;align-items:baseline}
+.vq .vendor{margin:0}
+.vq p{margin:0;color:var(--ink-2);line-height:1.35}
+.strat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,26px);align-items:stretch}
+@media (max-width:1000px){.strat{grid-template-columns:1fr}}
+.strat .card{display:flex;flex-direction:column;gap:.4em;border-radius:14px;padding:clamp(14px,1.4vw,24px)}
+.strat .when{font-family:var(--mono);font-size:.64em;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.strat .t{font-weight:700;font-size:1.42em;letter-spacing:-.025em;line-height:1.05}
+.strat p{margin:0;font-size:.95em;color:var(--ink-2);line-height:1.35}
+.strat .evid{font-family:var(--mono);font-size:.66em;color:var(--ink-3);line-height:1.45;margin-top:auto;padding-top:.6em}
+.whoax{margin:0 0 .7em}
+.whoax svg{width:100%;height:auto;display:block;overflow:visible}
+.whoax .t{font-family:var(--mono);font-size:13px;letter-spacing:.06em;fill:var(--ink-2)}
+.whoax .h{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;fill:var(--gold)}
+#sm4 .punch{margin-top:.9em}
+#sm4 .flowfig{margin-bottom:.35em}
+.effwrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(16px,2.4vw,44px);align-items:start}
+@media (max-width:1000px){.effwrap{grid-template-columns:1fr}}
+.effnow{font-weight:800;letter-spacing:-.03em;line-height:1;font-size:calc(clamp(30px,calc(4*var(--vw)),64px)*var(--s));color:var(--mag);margin:0 0 .1em}
+.effcap{font-family:var(--mono);font-size:.68em;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .7em}
+#effDial{width:100%;height:34px;margin:0;accent-color:var(--mag);cursor:pointer}
+.ticks{display:flex;gap:6px;font-family:var(--mono);font-size:.68em;color:var(--ink-3);margin-top:.3em}
+.ticks span{flex:1;text-align:center}
+.ticks span:first-child{text-align:left}.ticks span:last-child{text-align:right}
+.ticks span.on{color:var(--mag);font-weight:700}
+.punch{font-weight:700;letter-spacing:-.025em;line-height:1.12;text-wrap:balance;margin:1em 0 0;
+  font-size:calc(clamp(16px,calc(1.85*var(--vw)),30px)*var(--s))}
+.punch em{font-style:normal;color:var(--mag)}
+.punchsrc{font-family:var(--mono);font-size:.68em;color:var(--ink-3);margin:.9em 0 0;line-height:1.5;max-width:34em}
+
+/* s4 crossing */
+.headline{font-weight:700;letter-spacing:-.025em;line-height:1.05;font-size:calc(clamp(18px,calc(2.5*var(--vw)),40px)*var(--s));margin:0 0 .4em;text-wrap:balance}
+.headline .hot{color:var(--mag)}
+.fig svg{width:100%;height:auto;display:block;overflow:visible}
+.fig .ax text{font-family:var(--mono);font-size:12.5px;fill:var(--ink-2)}
+.fig .ax line{stroke:var(--line-2)} .fig .gl{stroke:var(--line);stroke-width:1}
+.fig .tok{fill:var(--teal)} .fig .rev{fill:var(--teal);opacity:.3}
+.fig .tok.over{fill:var(--mag)} .fig .rev.over{fill:var(--mag);opacity:.3}
+.fig .rule{stroke:var(--ink);stroke-width:2.5}
+.fig .rl{font-family:var(--mono);font-size:12.5px;font-weight:700;fill:var(--ink)}
+.fig .cl{font-family:var(--mono);font-size:12.5px;font-weight:700;fill:var(--mag)}
+.figcap{font-family:var(--mono);font-size:.7em;color:var(--ink-3);margin:.3em 0 0}
+.ctls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7em 1.6em;margin:.4em 0 0}
+@media (max-width:700px){.ctls{grid-template-columns:1fr}}
+.ctl .lab{margin-bottom:.25em}
+.ctl .row{display:flex;align-items:center;gap:.7em}
+.ctl input[type=range]{flex:1;height:30px;accent-color:var(--mag);margin:0;cursor:pointer}
+.ctl output{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:700;min-width:6ch;text-align:right;font-size:.95em}
+.presets{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:.8em 0 0}
+.pb{font-family:var(--mono);font-size:.76em;padding:.6em 1em;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);color:var(--ink-2);cursor:pointer;line-height:1.2}
+.pb.on{background:var(--mag);border-color:var(--mag);color:#fff}
+.pb.ghost{border-style:dashed}
+.more{display:none}
+.more.on{display:grid}
+.working{font-family:var(--mono);font-size:.7em;color:var(--ink-3);margin:.8em 0 0;line-height:1.5}
+
+/* s5 quotes */
+.q{border-radius:14px;padding:clamp(16px,1.8vw,30px);background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:.9em;min-height:100%}
+.q blockquote{margin:0;font-weight:600;font-size:calc(clamp(17px,calc(2.1*var(--vw)),34px)*var(--s));letter-spacing:-.02em;line-height:1.15;text-wrap:balance}
+.q blockquote em{color:var(--mag);font-style:normal}
+.q .src{font-family:var(--mono);font-size:.7em;color:var(--ink-3);line-height:1.5;margin-top:auto}
+.defaults{display:flex;gap:clamp(12px,2vw,28px);flex-wrap:wrap;margin-top:.3em}
+.def{flex:1;min-width:150px;background:var(--sunk);border-radius:12px;padding:.9em 1.1em}
+.def .k{font-family:var(--mono);font-size:.68em;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .25em}
+.def .v{font-family:var(--mono);font-weight:700;font-size:1.5em;letter-spacing:-.02em;color:var(--mag);margin:0}
+
+/* s6 curves */
+.curve .shape{font-family:var(--mono);font-size:.64em;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .15em}
+.curve .shape.flat{color:var(--ink-3)} .curve .shape.trade{color:var(--teal)} .curve .shape.steep{color:var(--mag)}
+.curve .work{font-weight:700;font-size:1.18em;letter-spacing:-.02em;line-height:1.1;margin:0 0 .1em}
+.curve .src{font-family:var(--mono);font-size:.62em;color:var(--ink-3);margin:0 0 .4em;line-height:1.4}
+.curve .verdict{font-weight:700;font-size:.92em;line-height:1.18;margin:.35em 0 .1em}
+.curve .detail{font-size:.78em;color:var(--ink-2);line-height:1.28;margin:0}
+.curve .cln{fill:none;stroke:var(--teal);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.curve .cd{fill:var(--teal);stroke:var(--surface);stroke-width:2.5}
+.curve .cw{stroke:var(--teal);stroke-width:2;opacity:.6}
+.curve .cax text{font-family:var(--mono);font-size:11px;fill:var(--ink-2)}
+.curve .zlab{font-family:var(--mono);font-size:9.5px;fill:var(--ink-3);letter-spacing:.04em} .curve .cax line{stroke:var(--line)}
+.curve .z{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:2 3}
+.curve .un{fill:var(--ink-3);opacity:.09} .curve .une{stroke:var(--ink-3);stroke-width:2;stroke-dasharray:4 4;opacity:.6}
+.curve .ul{font-family:var(--mono);font-size:10px;fill:var(--ink-3);letter-spacing:.06em}
+
+/* s7 the map */
+.map{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:clamp(14px,2vw,36px);align-items:start}
+@media (max-width:1000px){.map{grid-template-columns:1fr}}
+.plot svg{width:100%;height:auto;display:block;overflow:visible}
+.plot .axl{font-family:var(--mono);font-size:15px;fill:var(--ink-2)}
+.plot .axt{font-family:var(--mono);font-size:12px;letter-spacing:.12em;fill:var(--ink-3)}
+.plot .gl{stroke:var(--line);stroke-width:1}
+.plot .lab{font-family:var(--sans);font-size:17px;font-weight:600;fill:var(--ink-2);text-transform:none;letter-spacing:0}
+.plot .lab.on{fill:var(--ink)}
+.plot .hand{stroke:var(--gold);stroke-width:2;stroke-dasharray:5 4;fill:none}
+.plot .hit{cursor:pointer}
+.dt{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:clamp(14px,1.5vw,24px);display:flex;flex-direction:column;gap:.5em;min-height:100%}
+.dt .no{font-family:var(--mono);font-size:.66em;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.dt .no b{color:var(--ink)}
+.dt h3{font-weight:700;font-size:1.35em;letter-spacing:-.025em;line-height:1.08;margin:0}
+.dt .ps2{font-family:var(--mono);font-size:.74em;line-height:1.6;color:var(--ink-2);background:var(--sunk);border-radius:9px;padding:.6em .8em}
+.dt .ps2 span{color:var(--ink-3);display:inline-block;width:9ch}
+.dt .cfg2{display:grid;grid-template-columns:auto 1fr;gap:.3em .8em;font-family:var(--mono);font-size:.85em;align-items:baseline}
+.dt .cfg2 .vn{font-size:.78em;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.dt .cfg2 b{font-weight:700}
+.dt .alth{font-family:var(--mono);font-size:.64em;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:.3em 0 0}
+.dt .alt2{font-size:.85em;line-height:1.35;color:var(--ink-2);padding:.35em 0;border-top:1px solid var(--line)}
+.dt .alt2 i{font-style:normal;font-family:var(--mono);font-size:.85em;color:var(--ink);display:block}
+.dt .alt2 b{color:var(--mag);font-weight:600}
+.maphint{font-family:var(--mono);font-size:.66em;color:var(--ink-3);margin:.6em 0 0}
+
+/* s8 twist / s9 */
+/* s10 ultra */
+.ucard2{display:flex;flex-direction:column;gap:.35em;min-height:100%}
+
+.ucard2 .nm{font-weight:700;font-size:1.5em;letter-spacing:-.025em;line-height:1}
+.ucard2 .kind{font-family:var(--mono);font-size:.64em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.ucard2 svg{width:100%;max-width:330px;height:auto;display:block;margin:.2em 0}
+.ucard2 .box{fill:none;stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:5 4}
+.ucard2 .boxs{fill:none;stroke:var(--ink-2);stroke-width:2}
+.ucard2 .big{fill:var(--teal)} .ucard2 .bigo{fill:none;stroke:var(--teal);stroke-width:2.5}
+.ucard2 .sub{fill:var(--mag)}
+.ucard2 .ln{stroke:var(--ink-3);stroke-width:1.5}
+.ucard2 .tx{font-family:var(--mono);font-size:11px;fill:var(--ink-3);letter-spacing:.06em}
+.ucard2 p{margin:0;font-size:.87em;line-height:1.3;color:var(--ink-2)}
+.ucard2 .code2{font-family:var(--mono);font-size:.78em;background:var(--sunk);border-radius:8px;padding:.45em .7em;color:var(--ink);display:inline-block}
+.ucard2 .src{font-family:var(--mono);font-size:.6em;color:var(--ink-3);line-height:1.4;margin-top:auto;padding-top:.35em}
+.fit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,26px);margin-top:.45em}
+.fit p{font-size:.85em;line-height:1.3}
+@media (max-width:1000px){.fit{grid-template-columns:1fr}}
+.fit .k{font-family:var(--mono);font-size:.64em;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .2em}
+.fit .k.y{color:var(--teal)} .fit .k.n{color:var(--mag)} .fit .k.x{color:var(--ink-3)}
+.fit p{margin:0;font-size:.88em;line-height:1.35;color:var(--ink-2)}
+
+/* s11 orchestrators */
+.orch{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:0 clamp(16px,2.4vw,44px)}
+.orch .h{font-family:var(--mono);font-size:.64em;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:0 0 .5em}
+.orch .w{padding:.7em 0;border-top:1px solid var(--line)}
+.orch .w b{display:block;font-size:1.06em;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+.orch .w span{display:block;font-size:.84em;color:var(--ink-2);line-height:1.3;margin-top:.15em}
+.orch .m{padding:.7em 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:.86em;line-height:1.55;display:flex;flex-direction:column;justify-content:center}
+.orch .m i{font-style:normal;color:var(--ink-3);font-size:.8em;letter-spacing:.06em;text-transform:uppercase;margin-right:.5em}
+
+/* s12 callback */
+
+/* s13 the rule */
+.rule3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:clamp(8px,1.2vw,20px);align-items:stretch}
+@media (max-width:1000px){.rule3{grid-template-columns:1fr}.rule3 .ar{display:none}}
+.rule3 .st{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1em 1.1em;display:flex;flex-direction:column;gap:.6em}
+.rule3 .qn{font-weight:700;font-size:1.16em;letter-spacing:-.02em;line-height:1.15}
+.rule3 .qn i{font-style:normal;font-family:var(--mono);color:var(--mag);font-size:.8em;margin-right:.45em}
+.rule3 .ans{display:grid;grid-template-columns:auto 1fr;gap:.35em .7em;font-size:.86em;align-items:baseline}
+.rule3 .ans b{font-family:var(--mono);font-size:.85em;font-weight:600;color:var(--ink);white-space:nowrap}
+.rule3 .ans span{color:var(--ink-2);line-height:1.3}
+.rule3 .ar{align-self:center;font-family:var(--mono);font-size:1.5em;color:var(--ink-3)}
+
+.twist2{display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.4vh,18px)}
+.sidenote{font-family:var(--mono);font-size:.68em;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0}
+.bq{border-left:3px solid var(--teal);padding:0 0 0 clamp(14px,1.6vw,26px);margin:0 0 clamp(12px,2vh,26px)}
+.bq.o{border-left-color:var(--ink-3)}
+.bq:last-child{margin-bottom:0}
+.bq q{display:block;font-weight:600;letter-spacing:-.02em;line-height:1.16;text-wrap:balance;max-width:32em;
+  font-size:calc(clamp(20px,calc(2.5*var(--vw)),44px)*var(--s));quotes:'\201C' '\201D'}
+.bq q em{font-style:normal;color:var(--mag)}
+.bq cite{display:block;font-family:var(--mono);font-size:.68em;font-style:normal;color:var(--ink-3);margin-top:.5em}
+#s8 .punch{margin:0}
+#s13 .punchsrc{max-width:none}
+
+
+/* s10 ultra */
+.ucard2{display:flex;flex-direction:column;gap:.35em;min-height:100%}
+#s10 .card{padding:clamp(11px,1.1vw,18px)}
+.ucard2 .nm{font-weight:700;font-size:1.5em;letter-spacing:-.025em;line-height:1}
+.ucard2 .kind{font-family:var(--mono);font-size:.64em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.ucard2 svg{width:100%;max-width:330px;height:auto;display:block;margin:.2em 0}
+.ucard2 .box{fill:none;stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:5 4}
+.ucard2 .boxs{fill:none;stroke:var(--ink-2);stroke-width:2}
+.ucard2 .big{fill:var(--teal)} .ucard2 .bigo{fill:none;stroke:var(--teal);stroke-width:2.5}
+.ucard2 .sub{fill:var(--mag)}
+.ucard2 .ln{stroke:var(--ink-3);stroke-width:1.5}
+.ucard2 .tx{font-family:var(--mono);font-size:11px;fill:var(--ink-3);letter-spacing:.06em}
+.ucard2 p{margin:0;font-size:.87em;line-height:1.3;color:var(--ink-2)}
+.ucard2 .code2{font-family:var(--mono);font-size:.78em;background:var(--sunk);border-radius:8px;padding:.45em .7em;color:var(--ink);display:inline-block}
+.ucard2 .src{font-family:var(--mono);font-size:.6em;color:var(--ink-3);line-height:1.4;margin-top:auto;padding-top:.35em}
+.fit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.6vw,26px);margin-top:.45em}
+.fit p{font-size:.85em;line-height:1.3}
+@media (max-width:1000px){.fit{grid-template-columns:1fr}}
+.fit .k{font-family:var(--mono);font-size:.64em;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .2em}
+.fit .k.y{color:var(--teal)} .fit .k.n{color:var(--mag)} .fit .k.x{color:var(--ink-3)}
+.fit p{margin:0;font-size:.88em;line-height:1.35;color:var(--ink-2)}
+
+/* s11 orchestrators */
+.orch{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:0 clamp(16px,2.4vw,44px)}
+.orch .h{font-family:var(--mono);font-size:.64em;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:0 0 .5em}
+.orch .w{padding:.7em 0;border-top:1px solid var(--line)}
+.orch .w b{display:block;font-size:1.06em;font-weight:700;letter-spacing:-.015em;line-height:1.2}
+.orch .w span{display:block;font-size:.84em;color:var(--ink-2);line-height:1.3;margin-top:.15em}
+.orch .m{padding:.7em 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:.86em;line-height:1.55;display:flex;flex-direction:column;justify-content:center}
+.orch .m i{font-style:normal;color:var(--ink-3);font-size:.8em;letter-spacing:.06em;text-transform:uppercase;margin-right:.5em}
+
+/* s12 callback */
+
+/* s13 the rule */
+.rule3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:clamp(8px,1.2vw,20px);align-items:stretch}
+@media (max-width:1000px){.rule3{grid-template-columns:1fr}.rule3 .ar{display:none}}
+.rule3 .st{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1em 1.1em;display:flex;flex-direction:column;gap:.6em}
+.rule3 .qn{font-weight:700;font-size:1.16em;letter-spacing:-.02em;line-height:1.15}
+.rule3 .qn i{font-style:normal;font-family:var(--mono);color:var(--mag);font-size:.8em;margin-right:.45em}
+.rule3 .ans{display:grid;grid-template-columns:auto 1fr;gap:.35em .7em;font-size:.86em;align-items:baseline}
+.rule3 .ans b{font-family:var(--mono);font-size:.85em;font-weight:600;color:var(--ink);white-space:nowrap}
+.rule3 .ans span{color:var(--ink-2);line-height:1.3}
+.rule3 .ar{align-self:center;font-family:var(--mono);font-size:1.5em;color:var(--ink-3)}
+
+.side{display:flex;flex-direction:column;gap:.35em;min-height:100%}
+.sidehead{font-family:var(--mono);font-size:.66em;letter-spacing:.12em;text-transform:uppercase;margin:0 0 .2em}
+.sidehead.earn{color:var(--teal)} .sidehead.not{color:var(--mag)}
+.qq{border-left:3px solid var(--line-2);padding:0 0 0 .8em;margin:.15em 0 .4em}
+.qq q{display:block;font-weight:600;font-size:1.02em;line-height:1.25;letter-spacing:-.01em;quotes:'\201C' '\201D'}
+.qq q em{font-style:normal;color:var(--mag)}
+.qq cite{display:block;font-family:var(--mono);font-size:.66em;font-style:normal;color:var(--ink-3);margin-top:.25em}
+#s13 .punchsrc{max-width:none}
+#s11 .punch{margin-top:.7em}
+#s11 .punchsrc{margin-top:.4em;max-width:none}
+#s8 .bignum{margin-top:.15em} #s8 .punch{margin-top:.9em}
+
+.twist{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(16px,2.4vw,40px);align-items:start}
+@media (max-width:1000px){.twist{grid-template-columns:1fr}}
+.bignum{font-family:var(--mono);font-weight:700;font-size:calc(clamp(28px,calc(4.6*var(--vw)),80px)*var(--s));letter-spacing:-.05em;line-height:1;color:var(--mag)}
+.bignum.t{color:var(--teal)}
+.bigcap{font-size:.86em;color:var(--ink-2);margin:.3em 0 0;line-height:1.3}
+.cfgrow{display:flex;gap:1em;flex-wrap:wrap;margin:.6em 0 .2em}
+.cfgrow .card{flex:1;min-width:200px;padding:.8em 1em}
+.cfgrow .v{font-family:var(--mono);font-weight:700;font-size:1.05em;line-height:1.3}
+.schem{display:block;width:100%;max-width:340px;height:auto;margin:0 0 .5em}
+.schem circle.o{fill:var(--teal)} .schem circle.w{fill:var(--mag)} .schem circle.s{fill:var(--ink-2)}
+.schem line{stroke:var(--ink-3);stroke-width:1.5}
+.schem text{font-family:var(--mono);font-size:10px;fill:var(--ink-3)}
+
+/* s10 s11 cards */
+.ucard{display:flex;flex-direction:column;gap:.6em}
+.ucard .t{font-weight:700;font-size:1.25em;letter-spacing:-.02em;line-height:1.1}
+.ucard .t small{font-family:var(--mono);font-weight:500;font-size:.62em;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.25em}
+.ucard p{margin:0;font-size:.9em;line-height:1.4}
+.ucard .code{font-family:var(--mono);font-size:.8em;background:var(--sunk);border-radius:8px;padding:.5em .8em;display:inline-block}
+.ucard .src{font-family:var(--mono);font-size:.66em;color:var(--ink-3);line-height:1.45;margin-top:auto}
+.buys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1em;margin:.4em 0 0}
+@media (max-width:1000px){.buys{grid-template-columns:1fr}}
+.buy .k{font-weight:700;font-size:.98em;margin:0 0 .2em}
+.buy p{margin:0;font-size:.86em;color:var(--ink-2);line-height:1.35}
+.ocard .day{background:var(--sunk);border-radius:10px;padding:.7em .9em;font-size:.84em;margin-top:auto}
+.ocard .day .lab{margin-bottom:.3em}
+
+/* s12 s13 */
+.verdict{font-weight:800;letter-spacing:-.03em;line-height:1.02;font-size:calc(clamp(24px,calc(3.6*var(--vw)),60px)*var(--s));margin:0 0 .5em;text-wrap:balance}
+.verdict .hot{color:var(--mag)} .verdict .ok{color:var(--teal-deep)}
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:clamp(10px,1.4vw,22px);align-items:stretch}
+@media (max-width:1000px){.flow{grid-template-columns:1fr}}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1em 1.1em;display:flex;flex-direction:column;gap:.5em}
+.step .qn{font-weight:700;font-size:1.05em;letter-spacing:-.015em;line-height:1.15}
+.step .qn .n{font-family:var(--mono);color:var(--mag);font-size:.8em;margin-right:.4em}
+.step .opt{display:grid;grid-template-columns:auto 1fr;gap:.4em .7em;font-size:.84em;align-items:baseline}
+.step .opt b{font-family:var(--mono);font-weight:600;color:var(--ink-2);font-size:.9em}
+.step .opt span{color:var(--ink-2)}
+.arrow{align-self:center;font-family:var(--mono);color:var(--ink-3);font-size:1.4em}
+.foot{font-family:var(--mono);font-size:.7em;color:var(--ink-3);margin-top:1em;line-height:1.5}
+
+/* appendix */
+table{border-collapse:collapse;width:100%;font-size:.84em}
+th,td{text-align:left;padding:.55em .8em;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-weight:500;font-size:.7em;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+ul.plain{list-style:none;padding:0;margin:0}
+ul.plain li{padding:.7em 0;border-top:1px solid var(--line);font-size:1em;line-height:1.35}
+.fill{border-bottom:3px dashed var(--mag);color:var(--mag);font-family:var(--mono);font-size:.85em;padding:0 .3em}
+
+/* notes */
+.notes{display:none;position:fixed;left:0;right:0;bottom:56px;max-height:36vh;overflow:auto;background:var(--surface);border-top:3px solid var(--mag);padding:16px clamp(18px,4vw,64px);z-index:25;box-shadow:0 -12px 34px rgba(0,0,0,.14);font-size:15px;line-height:1.5;color:var(--ink-2)}
+body.notes-on .scene.on .notes{display:block}
+.notes h5{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mag);margin:0 0 .5em}
+.notes p{margin:0 0 .5em;max-width:60em} .notes .t{color:var(--ink-3)}
+kbd{font-family:var(--mono);font-size:.85em;background:var(--sunk);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:5px;padding:.05em .5em}
+@media (prefers-reduced-motion:no-preference){.chip,.pb,.dots button,.rung .head{transition:all .12s ease}}
+</style>
+
+<div class="top"><span class="brand">Two dials</span><span class="mono muted">AI Guild · Product &amp; Development</span><span id="counter">1 / 15</span></div>
+<div class="tip" id="tip"></div>
+
+<!-- 1 -->
+<section class="scene on" id="s1"><div class="frame">
+  <div><p class="eyebrow">Two beliefs</p></div>
+  <div>
+    <p class="belief a">"Max effort means quality."</p>
+    <p class="belief b">"A cheaper model means savings."</p>
+    <p class="sub" style="margin-top:1.1em">Both are wrong often enough to cost us real money. Everything that follows is arithmetic you can check.</p>
+    <p class="small muted mono" style="margin-top:2em"><kbd>→</kbd> next &nbsp; <kbd>N</kbd> notes &nbsp; <kbd>R</kbd> room type &nbsp; <kbd>F</kbd> fullscreen</p>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 20 s · about fifteen minutes total</span></h5><p>Hands up for the first one. Count them out loud. Then: who has picked the cheap model to save budget and spent the afternoon fixing what it produced. Do not explain either yet.</p></div>
+</div></section>
+
+<!-- 2 -->
+<section class="scene" id="s2"><div class="frame">
+  <div><p class="eyebrow">Before any evidence</p><h2>What do you run?</h2></div>
+  <div class="grid2">
+    <div>
+      <div class="ps"><span class="k">Task</span>Rename MAX_RETRY → MAX_RETRIES across one service<br><span class="k">Scope</span>about 30 call sites, 6 files<br><span class="k">Constraint</span>behaviour must not change<br><span class="k">Verified by</span>the build fails on any missed site</div>
+      <div class="diff"><div class="ctx">  # config.py</div><div class="del">- MAX_RETRY = 3</div><div class="add">+ MAX_RETRIES = 3</div><div class="ctx">  RETRY_DELAY = 2.0</div><div class="ctx">  # client.py</div><div class="del">- for attempt in range(MAX_RETRY):</div><div class="add">+ for attempt in range(MAX_RETRIES):</div></div>
+    </div>
+    <div>
+      <div class="ladder"><p class="vendor c">Claude</p><div class="chips" id="pmC"></div></div>
+      <div class="ladder"><p class="vendor o">OpenAI</p><div class="chips" id="pmO"></div></div>
+      <p class="lab" style="margin-top:.6em">Effort</p><div class="chips" id="pe"></div>
+    </div>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 90 s</span></h5><p>Show of hands on effort: low, medium, high, xhigh, max. Count the max hands out loud. Anyone with a laptop picks on screen, and it is outlined in gold on the next slide.</p><p>This is a trap and it is deliberate. The compiler verifies it, so effort cannot buy correctness. People pick high or max because the service is in the payments path.</p></div>
+</div></section>
+
+<!-- 3 -->
+<section class="scene" id="s3"><div class="frame">
+  <div><p class="eyebrow">The rename, resolved</p><h2>Every cell passes. The compiler was doing the checking.</h2></div>
+  <div class="rgwrap">
+    <div class="rg" id="grid"></div>
+    <p class="gridnote">Every cell is green. Only the bill changes: ten times down a column, and more across a row.</p><p class="gridkey">list price at 400k in / 60k out × measured effort cost ratios<span class="pv pv-m" title="Anthropic: low 0.58×, medium 0.78×, high 1×, measured on work where extra effort changed the result very little; applied here as an estimate">●</span> · xhigh and max unpublished, shown as more than high · gold outline is your pick</p>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 60 s</span></h5><p>Belief one dies here without a sentence. Point at the gold outline. Then read one row left to right: same green, cost climbing. Then the top-left to bottom-left: ten times. Then the max column: still green, and a diff nobody asked for.</p><p>If asked: the cost gradient is an estimate from Anthropic's measured flat-curve ratios, and the footnote says so. xhigh and max are shown as more than high because nobody has published their cost on this shape.</p></div>
+</div></section>
+
+<!-- H1 moves -->
+<section class="scene" id="sm1"><div class="frame">
+  <div><p class="eyebrow">What a harness does with a request</p><h2>Every answer is the same five moves, combined.</h2></div>
+  <div class="flowfig" id="flow1"></div>
+  <div class="notes"><h5>Notes <span class="t">· 45 s</span></h5><p>Land the frame, not the detail. Claude Code, Codex, an API loop: the harness differs, the moves do not. Every request you have ever typed was answered by some mix of these five, looping until it was done.</p><p>Then the turn: the two dials decide how deep each move goes and which moves are available at all. The next three scenes take them one at a time.</p></div>
+</div></section>
+
+<!-- H2 effort -->
+<section class="scene" id="sm2"><div class="frame">
+  <div><p class="eyebrow">Dial two</p><h2>Effort is how deep it reads and how long it reasons.</h2></div>
+  <div>
+    <div class="flowfig" id="flow2"></div>
+    <div class="effwrap">
+      <div>
+        <p class="effnow" id="effOut"></p>
+        <p class="effcap">drag to compare</p>
+        <input type="range" id="effDial" min="0" max="4" step="1" value="3" aria-label="Effort level">
+        <div class="ticks" id="effTicks"></div>
+      </div>
+      <div>
+        <p class="punch">More effort buys more reading and longer thinking.<br><em>It does not buy a more correct answer.</em></p>
+        <p class="punchsrc">both vendors describe it that way in their own effort documentation<span class="pv pv-v" title="Anthropic: effort &quot;scales thinking and tool-call depth&quot;. OpenAI: &quot;lower effort favors speed and lower token usage, while at higher effort the model thinks more completely.&quot;">◐</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 60 s</span></h5><p>Drag it. Only the first two moves grow; the other three never light up. Effort is a depth control on reading and reasoning. It does not unlock acting or orchestrating.</p><p>On a flat task, that extra reading and reasoning is exactly what produced the RETRY_DELAY rename two scenes ago.</p><p>If asked for the wording: Anthropic says effort "scales thinking and tool-call depth"; OpenAI says "lower effort favors speed and lower token usage, while at higher effort the model thinks more completely".</p></div>
+</div></section>
+
+<!-- H3 model -->
+<section class="scene" id="sm3"><div class="frame">
+  <div><p class="eyebrow">Dial one</p><h2>The model decides whether it can act and orchestrate at all.</h2></div>
+  <div>
+    <div class="flowfig" id="flow3"></div>
+    <div class="mgrid">
+      <div class="h" style="color:var(--ink-3)">tier</div><div class="h">agentic work</div><div class="h">orchestrate</div>
+
+      <div class="t"><b>Frontier</b><span>Fable 5.1 · Astra</span></div>
+      <div class="v">Hours-long autonomous runs</div>
+      <div class="v">Runs teams of agents for hours</div>
+
+      <div class="t"><b>Workhorse</b><span>Opus 5 · Sol</span></div>
+      <div class="v">Multi-file features and refactors</div>
+      <div class="v">Coordinates subagent teams</div>
+
+      <div class="split">orchestrators above &nbsp;·&nbsp; workers below</div>
+
+      <div class="t np"><b>Balanced</b><span>Sonnet 5 · Terra</span></div>
+      <div class="v np">Bounded agentic tasks</div>
+      <div class="v np off">Usually the worker</div>
+
+      <div class="t"><b>Small</b><span>Haiku 4.5 · Luna</span></div>
+      <div class="v">Short, checkable loops</div>
+      <div class="v off">Worker only</div>
+    </div>
+    <p class="punch">No amount of effort moves a row up this table.</p>
+    <p class="punchsrc">phrases from each vendor's own model guidance<span class="pv pv-v" title="Anthropic model guidance for Fable 5.1, Opus 5, Sonnet 5 and Haiku 4.5; Codex documentation and launch coverage for Sol and Astra">◐</span></p>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 60 s</span></h5><p>Read it bottom to top. Effort cannot turn Haiku into an orchestrator; the model dial is about which moves exist at all. That is why rung six on the ladder names one tier for the orchestrator and a different tier for the workers.</p><p>The line between Workhorse and Balanced is the one that matters: above it the vendors describe coordinating other agents, below it they describe being coordinated. That is why rung six names one tier for the orchestrator and another for the workers.</p></div>
+</div></section>
+
+<!-- H4 verify -->
+<section class="scene" id="sm4"><div class="frame">
+  <div><p class="eyebrow">Both dials</p><h2>Together they decide how the work gets checked.</h2></div>
+  <div>
+    <div class="flowfig" id="flow4"></div>
+    <div class="whoax" id="whoax"></div>
+    <div class="strat">
+      <div class="card">
+        <p class="when">low effort · any model</p>
+        <p class="t">Trust the checker</p>
+        <p>The compiler or the test suite decides. Re-run only what failed, one notch up.</p>
+        <p class="evid">93% at $0.70 a task, against 91.7% at $1.39<span class="pv pv-m" title="Anthropic coding runs, failed cheap attempts counted in the cost">●</span></p>
+      </div>
+      <div class="card">
+        <p class="when">xhigh · the workhorse</p>
+        <p class="t">Self-check</p>
+        <p>It runs the tests and re-reads its own diff before finishing, rather than leaving stubs.</p>
+        <p class="evid">higher effort buys verification behaviour<span class="pv pv-v" title="Anthropic: Opus 5 completes tasks rather than leaving stubs; higher effort buys excellent verification behaviour">◐</span></p>
+      </div>
+      <div class="card">
+        <p class="when">frontier · or an ultra mode</p>
+        <p class="t">Independent verifiers</p>
+        <p>Fresh-context subagents check the work, and outperform self-critique.</p>
+        <p class="evid">ultracode runs understand, change and verify as separate workflows<span class="pv pv-v" title="Claude Code documentation">◐</span></p>
+      </div>
+    </div>
+    <p class="punch">Max is not a fourth way of checking.</p>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 60 s</span></h5><p>Read the axis first, then the three cards under it. Left to right, the checking moves out of your hands and into other agents'. The first is cheapest and only works with a checker. The second is what xhigh on the workhorse gives you for free. The third is what the frontier tier and the ultra modes are actually for.</p><p>Then the closing line, and say the rest out loud: max does not add a check, it only makes the model think longer and change more than you asked for. The room already saw that on the rename grid. The curve shapes that explain why come three scenes later.</p></div>
+</div></section>
+
+<section class="scene" id="s6"><div class="frame">
+  <div><p class="eyebrow">When depth pays</p><h2>On some work, thinking harder does not make the answer better.</h2></div>
+  <div><div class="grid3" id="curves"></div></div>
+  <div class="notes"><h5>Notes <span class="t">· 45 s</span></h5><p>Walk one chart at a time. Research: up once, then flat. Coding: the first step buys most of it. Open-ended: a straight line to max.</p><p>Then land it out loud, because it is not on the slide: tell which shape you are on before you touch the dial. How important the task feels is not one of the shapes.</p><p>Say the caveat out loud rather than printing it: three different kinds of work on three different tests, so the heights do not compare between charts. Read the shape of each line, not its height. Every gap between adjacent points is a published figure, re-anchored so low sits at zero.</p></div>
+</div></section>
+
+<!-- 4 -->
+<section class="scene" id="s4"><div class="frame">
+  <div><p class="eyebrow">The cheap model</p><p class="headline" id="xHead"></p></div>
+  <div>
+    <div class="grid2">
+      <div><p class="vendor c">Haiku 4.5 against Opus 5 · ×5</p><div class="fig" id="xC"></div></div>
+      <div><p class="vendor o">Luna against Sol · ×5</p><div class="fig" id="xO"></div></div>
+    </div>
+    <div class="grid2" style="margin-top:.6em;align-items:end">
+      <div class="ctls">
+        <div class="ctl"><p class="lab">Attempts the cheap model took</p><div class="row"><input type="range" id="cAtt" min="1" max="12" step="1" value="3"><output id="cAttO"></output></div></div>
+        <div class="ctl"><p class="lab">Minutes reading one failed attempt</p><div class="row"><input type="range" id="rev" min="0" max="10" step="0.25" value="2"><output id="revO"></output></div></div>
+        <div class="ctl more" id="more1"><p class="lab">Attempts the flagship took</p><div class="row"><input type="range" id="oAtt" min="1" max="4" step="1" value="1"><output id="oAttO"></output></div></div>
+        <div class="ctl more" id="more2"><p class="lab">Your hourly rate, kr</p><div class="row"><input type="range" id="rate" min="0" max="2000" step="50" value="900"><output id="rateO"></output></div></div>
+      </div>
+      <div>
+        <div class="presets"><button class="pb" data-p="tokens">Tokens only</button><button class="pb on" data-p="two">Two minutes of reading</button><button class="pb ghost" id="moreBtn">more</button></div>
+        <p class="working" id="working"></p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 90 s · the centrepiece</span></h5><p>Press "Tokens only". The cheap model wins until attempt six on both sides. Belief two looks right. Then ask someone: how long does it take you to read a wrong answer and know it's wrong? Drag to their number. The bars go over the line at two.</p><p>Both flagships are exactly five times their small model, so the figures are the same shape. Attempts are theirs, prices are list, arithmetic is on screen. No probability anywhere. If someone says "give the flagship a retry too", open "more" and do it.</p></div>
+</div></section>
+
+<!-- 5 -->
+<!-- 6 -->
+<section class="scene" id="s7"><div class="frame">
+  <div><p class="eyebrow">The right setup</p><h2>Six real tasks. Where each one sits on the two dials.</h2></div>
+  <div class="map">
+    <div>
+      <div class="plot" id="plot"></div>
+      <p class="maphint">Click any task. Harder work sits further up and further right. Two of them break that pattern.</p>
+    </div>
+    <div class="dt" id="detail"></div>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 90 s</span></h5><p>Let the shape land before you click anything. Most tasks sit on a diagonal: harder work, bigger model, more effort. Then point at the two that break it.</p><p>Top left is the research task: the strongest model at the cheapest effort. That is the "cheap effort on a strong model, not a cheap model" lesson, visible as a position.</p><p>The dashed line is orchestration: the workhorse at xhigh hands the work down to cheap workers. Same dial position as the refactor, completely different scale of work.</p><p>Open two: the rename, where everything above it also works at up to ten times the price, and the refactor, where the frontier tier at max passes too at about twice the cost for the same pass rate.</p></div>
+</div></section>
+
+<section class="scene" id="s8"><div class="frame">
+  <div><p class="eyebrow">The twist</p><h2>Max lets the model decide how to solve the problem.</h2></div>
+  <div class="twist2">
+    <p class="sidenote">the side effect</p>
+    <div class="bq"><q>max may show diminishing returns and is <em>prone to overthinking</em></q><cite>Anthropic, about its own highest setting. OpenAI says the same about the setting just below its own.</cite></div>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 45 s</span></h5><p>One idea. You reach for max when you cannot describe the path, only the goal, and you are handing the approach over rather than the task. The flaky test the room saw a moment ago is exactly that: no reproduction, no obvious place to start.</p><p>Then the cost of that freedom, in the vendor's own words. Given room to explore, it will sometimes explore past the point of usefulness. On the other five tasks the room saw, the path was already clear, so there was nothing to hand over and nothing to gain.</p><p>Keep these in your mouth, not on the slide: 15% of coding attempts in one measured set ran into the output cap and none were solved, so a long run fails late rather than gently. And what actually protects you is something that can check the answer, not a higher setting.</p></div>
+</div></section>
+
+<section class="scene" id="s10"><div class="frame">
+  <div><p class="eyebrow">Ultra, in both harnesses</p><h2>Same idea from two sides. Neither is a quality setting.</h2></div>
+  <div>
+    <div class="grid2">
+      <div class="card ucard2">
+        <p class="vendor c">Claude Code</p>
+        <p class="kind">a setting in the tool</p><p class="nm">ultracode</p>
+        <svg viewBox="0 0 330 120" aria-hidden="true">
+          <rect class="box" x="4" y="16" width="322" height="92" rx="12"/>
+          <text class="tx" x="14" y="32">THE TOOL</text>
+          <line class="ln" x1="70" y1="70" x2="180" y2="46"/><line class="ln" x1="70" y1="70" x2="180" y2="70"/><line class="ln" x1="70" y1="70" x2="180" y2="94"/>
+          <circle class="big" cx="60" cy="70" r="17"/>
+          <circle class="sub" cx="190" cy="46" r="9"/><circle class="sub" cx="190" cy="70" r="9"/><circle class="sub" cx="190" cy="94" r="9"/>
+          <text class="tx" x="214" y="66">separate agents,</text><text class="tx" x="214" y="82">run by the tool</text>
+        </svg>
+        <p>Turns effort to xhigh and has Claude plan a workflow for every task, then run it across separate agents that check each other.</p>
+        <p><span class="code2">/effort ultracode</span></p>
+        <p class="src">Claude Code documentation. Any model that supports xhigh. Its own advice: drop back to /effort high for routine work.</p>
+      </div>
+      <div class="card ucard2">
+        <p class="vendor o">GPT-5.6 Sol in Codex</p>
+        <p class="kind">an effort level above max</p><p class="nm">ultra</p>
+        <svg viewBox="0 0 330 120" aria-hidden="true">
+          <circle class="bigo" cx="106" cy="62" r="44"/>
+          <text class="tx" x="14" y="32">THE MODEL</text>
+          <circle class="sub" cx="88" cy="48" r="9"/><circle class="sub" cx="126" cy="54" r="9"/><circle class="sub" cx="102" cy="80" r="9"/>
+          <text class="tx" x="168" y="58">sub-agents, inside</text><text class="tx" x="168" y="74">its own reasoning</text>
+        </svg>
+        <p>Splits the problem into sub-agents inside the model itself, then combines what they find. Stacks on top of Codex's own agents.</p>
+        <p><span class="code2">model_reasoning_effort = "ultra"</span></p>
+        <p class="src">Codex documentation citing OpenAI's June 2026 Sol announcement. OpenAI's own reasoning guide stops at max, so treat this as Sol-in-Codex only.</p>
+      </div>
+    </div>
+    <div class="fit">
+      <div><p class="k y">when it pays</p><p>Use it when the work is too big for one context, breaks into independent pieces, and each piece can be checked on its own. That ran <b>55% cheaper</b> than the big model working alone.<span class="pv pv-m" title="measured at every effort setting on work exceeding one context window">●</span></p></div>
+      <div><p class="k n">when it loses</p><p>It loses when the steps depend on each other and the whole job fits in one context. You pay for a plan, a handoff and a merge that one model does for free, and <b>the single model won every time it was measured</b>.<span class="pv pv-m" title="Anthropic orchestration measurements">●</span></p></div>
+      <div><p class="k x">when it is wasted</p><p>It is wasted on one file, on a prompt you have not thought through, and on ordinary daily coding. If one engineer could finish it in an afternoon, one model can too.</p></div>
+    </div>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 90 s</span></h5><p>The two pictures are the whole point. On the left the extra agents sit outside the model, run by the tool. On the right they sit inside the model. Same idea, different boundary.</p><p>Be precise, because the room will be: in Claude Code "ultra" is a tool setting, not a model effort level. On Sol in Codex it is a real effort value above max.</p><p>Both multiply cost. Read the three lines at the bottom as the test for whether to reach for either.</p></div>
+</div></section>
+
+<section class="scene" id="s11"><div class="frame">
+  <div><p class="eyebrow">Ultra, in practice</p><h2>Ultra is for asks you cannot break down yourself.</h2></div>
+  <div>
+    <div class="orch">
+      <div class="h">you ask for this</div><div class="h">run it on</div>
+      <div class="w"><b>"Replace this deprecated call everywhere it appears."</b><span>It plans the change, gives each module to its own worker, and lets the compiler decide pass or fail. The failures run again.</span></div>
+      <div class="m"><span><i>Claude</i>Opus 5 · ultracode</span><span><i>OpenAI</i>Sol · ultra</span></div>
+      <div class="w"><b>"Check every endpoint for a missing permission check."</b><span>It searches in parallel, then has other agents argue against each finding, so the wrong ones never reach you.</span></div>
+      <div class="m"><span><i>Claude</i>Opus 5 · ultracode</span><span><i>OpenAI</i>Sol · ultra</span></div>
+      <div class="w"><b>"Build this from the spec and keep going until it passes."</b><span>It works for hours, checks its own output against the spec as it goes, and backs every claim of progress with a tool result.</span></div>
+      <div class="m"><span><i>Claude</i>Fable 5.1 · ultracode</span><span><i>OpenAI</i>Astra · max</span></div>
+      <div class="w"><b>"Move this service onto the new framework."</b><span>It writes notes as it works and reads them back days later, instead of losing what came before when the context fills up.</span></div>
+      <div class="m"><span><i>Claude</i>Fable 5.1 · ultracode</span><span><i>OpenAI</i>Astra · max</span></div>
+    </div>
+    <p class="punch">If it fits in one context, one model does it cheaper.</p>
+    <p class="punchsrc">ultra is documented on Sol in Codex; on Astra the top setting is max<span class="pv pv-c" title="Codex documentation citing OpenAI's June 2026 Sol announcement; Astra's official model page lists low through max">○</span></p>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 40 s</span></h5><p>Read the left column only, in quotes, as if you were typing it. None of the four says how many agents, which files, or what order. That is what makes them ultra asks: you hand over the plan, not just the task.</p><p>The room should recognise at least one from their own week. Ask which.</p><p>The closing line is the caveat that covers all four, and it is measured: on a single chain of steps that fits in one context, the same model working alone at lower effort won every time.</p></div>
+</div></section>
+
+<section class="scene" id="s13"><div class="frame">
+  <div><p class="eyebrow">The rule</p><h2>Three questions, before you touch either dial.</h2></div>
+  <div>
+    <div class="rule3">
+      <div class="st"><p class="qn"><i>1</i>Can something check the answer for you?</p>
+        <div class="ans"><b>yes</b><span>Start low and run the failures again. Half the cost, same pass rate.</span><b>no</b><span>You cannot tell which runs to repeat, so pick for the shape and stay there.</span></div></div>
+      <div class="ar">→</div>
+      <div class="st"><p class="qn"><i>2</i>What shape is the work?</p>
+        <div class="ans"><b>flat</b><span>Thinking harder changes nothing. Go low.</span><b>tradeoff</b><span>Each step buys less than the one before. Go xhigh on the workhorse.</span><b>steep</b><span>Every step buys the same again. This is what max is for.</span></div></div>
+      <div class="ar">→</div>
+      <div class="st"><p class="qn"><i>3</i>Is it too big for one context, in independent pieces?</p>
+        <div class="ans"><b>yes</b><span>Split it. One model plans, cheap workers do the pieces, failures run again.</span><b>no</b><span>One model. Splitting costs more than it saves.</span></div></div>
+    </div>
+    <p class="punch">How important the task feels is not one of the three questions.</p>
+    <p class="punchsrc">and none of it changes the boundaries: no customer, credit, KYC or AML data and no credentials in any tool, at any setting · nothing here is approved for credit decisioning, scoring or risk assessment · a new model or vendor reached through an API is a DORA third-party arrangement · Fable 5.1 needs 30-day vendor-side retention</p>
+  </div>
+  <div class="notes"><h5>Notes <span class="t">· 45 s</span></h5><p>Read it left to right once, then land the line under it. That sentence is the correction the whole session exists to make.</p><p>Then open the floor. Every figure in the deck carries a source on hover, and the written notes in the repository list them all if anyone wants to check one.</p></div>
+</div></section>
+
+<!-- B -->
+<div class="bottom"><span class="mono" id="hint">← →</span><div class="dots" id="dots"></div><div class="hb"><button id="fsBtn" title="Fullscreen (F)">Full</button><button id="notesBtn" aria-pressed="false">Notes</button><button id="roomBtn" aria-pressed="false">Room</button></div></div>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var NS="http://www.w3.org/2000/svg";
+function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e}
+function ce(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+
+/* ---------- data: list prices, reference mix 400k in / 60k out ---------- */
+var C=[{id:"haiku",name:"Haiku 4.5",pin:1,pout:5},{id:"sonnet",name:"Sonnet 5",pin:2,pout:10},{id:"opus",name:"Opus 5",pin:5,pout:25},{id:"fable",name:"Fable 5.1",pin:10,pout:50}];
+var O=[{id:"luna",name:"GPT-5.6 Luna",short:"Luna",pin:1,pout:6},{id:"terra",name:"GPT-5.6 Terra",short:"Terra",pin:2.5,pout:15},{id:"sol",name:"GPT-5.6 Sol",short:"Sol",pin:5,pout:30},{id:"astra",name:"GPT-6 Astra",short:"Astra",pin:10,pout:50}];
+var EFF=["low","medium","high","xhigh","max"];
+var MIX={inK:400,outK:60};
+function usd(m){return (MIX.inK/1000)*m.pin+(MIX.outK/1000)*m.pout}
+var ST={pick:{},cAtt:3,oAtt:1,rev:2,rate:900,fx:10.5,open:{0:true}};
+var KEY="two-dials-v4";
+try{var sv=JSON.parse(localStorage.getItem(KEY)||"{}");for(var k in sv)if(k in ST)ST[k]=sv[k]}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}}
+function sek(m){return usd(m)*ST.fx}
+function kr(v){return (Math.round(v*100)/100).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" kr"}
+function krS(v){return Math.round(v).toLocaleString("en-US")+" kr"}
+function money(v){return "$"+(Math.round(v*100)/100).toFixed(2)}
+
+/* ---------- 2 commit ---------- */
+function renderCommit(){
+  var mc=$("#pmC"),mo=$("#pmO"),pe=$("#pe");mc.innerHTML="";mo.innerHTML="";pe.innerHTML="";
+  C.forEach(function(m){var b=ce("button","chip"+(ST.pick.v==="c"&&ST.pick.m===m.id?" on":""),m.name);b.type="button";b.onclick=function(){ST.pick.v="c";ST.pick.m=m.id;save();renderCommit();renderGrid()};mc.appendChild(b)});
+  O.forEach(function(m){var b=ce("button","chip"+(ST.pick.v==="o"&&ST.pick.m===m.id?" on":""),m.short);b.type="button";b.onclick=function(){ST.pick.v="o";ST.pick.m=m.id;save();renderCommit();renderGrid()};mo.appendChild(b)});
+  EFF.forEach(function(e){var b=ce("button","chip eff"+(ST.pick.e===e?" on":""),e);b.type="button";b.onclick=function(){ST.pick.e=e;save();renderCommit();renderGrid()};pe.appendChild(b)});
+}
+
+/* ---------- 3 grid: one matrix, tiers × effort, both vendors per cell ---------- */
+var tip=$("#tip");
+function showTip(e,txt){tip.textContent=txt;tip.style.left=e.clientX+"px";tip.style.top=e.clientY+"px";tip.classList.add("on")}
+function hideTip(){tip.classList.remove("on")}
+var TIERS=[{name:"Frontier",c:C[3],o:O[3]},{name:"Workhorse",c:C[2],o:O[2]},{name:"Balanced",c:C[1],o:O[1]},{name:"Small",c:C[0],o:O[0]}];
+var EFFX={low:0.58,medium:0.78,high:1,xhigh:null,max:null};
+function tierOf(v,id){for(var i=0;i<TIERS.length;i++){if((v==="c"&&TIERS[i].c.id===id)||(v==="o"&&TIERS[i].o.id===id))return i}return -1}
+function est(m,e){var f=EFFX[e];return f==null?("> "+money(usd(m))):money(usd(m)*f)}
+function renderGrid(){
+  var host=$("#grid");host.innerHTML="";
+  host.appendChild(ce("div","h",""));
+  EFF.forEach(function(e){var h=ce("div","h"+(e==="max"?" max":""));var f=EFFX[e];h.innerHTML='<span class="e">'+e+'</span><span class="f">'+(f==null?"cost not published":"× "+f)+'</span>'+(e==="max"?'<span class="x">+ renamed one more thing</span>':'');host.appendChild(h)});
+  var mineT=tierOf(ST.pick.v,ST.pick.m);
+  TIERS.forEach(function(t,ti){
+    var r=ce("div","r");r.innerHTML="<b>"+t.name+"</b><span class='m'>"+t.c.name+" · "+money(usd(t.c))+"<br>"+(t.o.short||t.o.name)+" · "+money(usd(t.o))+"</span>";host.appendChild(r);
+    EFF.forEach(function(e){
+      var un=EFFX[e]==null, mine=(ti===mineT&&ST.pick.e===e);
+      var c=ce("div","c"+(mine?" mine":""));
+      c.innerHTML='<span class="ok">✓</span><span class="cost'+(un?" un":"")+'">'+t.c.name+" "+est(t.c,e)+"<br>"+(t.o.short||t.o.name)+" "+est(t.o,e)+'</span>';
+      var txt="Build passes. "+t.name+" · "+e+"\n"+t.c.name+" "+est(t.c,e)+" · "+(t.o.short||t.o.name)+" "+est(t.o,e)+" per attempt\n"+
+        (un?"Cost at this effort is not published; it is more than at high.":"Estimate: list price × "+EFFX[e]+", the measured cost ratio at this effort on a flat-curve task.")+
+        (e==="max"?"\nAlso renamed the adjacent RETRY_DELAY \u201cfor consistency\u201d: the vendor\u2019s documented over-effort symptom. Still passes.":"")+
+        (mine?"\nThis is your pick.":"");
+      c.addEventListener("pointerenter",function(ev){showTip(ev,txt)});c.addEventListener("pointermove",function(ev){showTip(ev,txt)});c.addEventListener("pointerleave",hideTip);
+      host.appendChild(c);
+    });
+  });
+  var x=ce("div","x10","×10 bottom to top");host.appendChild(x);
+}
+
+/* ---------- 4 crossing, two figures ---------- */
+function costCheap(small,n){return n*sek(small)+Math.max(0,n-1)*ST.rev*(ST.rate/60)}
+function costFlag(fl){return ST.oAtt*sek(fl)+Math.max(0,ST.oAtt-1)*ST.rev*(ST.rate/60)}
+function crossAt(small,fl){var r=costFlag(fl);for(var n=1;n<=12;n++)if(costCheap(small,n)>r+1e-9)return n;return null}
+function drawCross(host,small,fl){
+  host.innerHTML="";
+  var rule=costFlag(fl),cross=crossAt(small,fl);
+  var N=Math.max(4,Math.min(12,Math.max((cross||12)+2,ST.cAtt+1)));
+  var maxV=cross?rule*3:Math.max(rule*1.15,costCheap(small,N));
+  var W=560,H=300,L=64,R=14,T=38,B=54;
+  var svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"Cost to finish with "+small.name+" at one to "+N+" attempts against "+fl.name});
+  var slot=(W-L-R)/N,bw=Math.min(40,slot*.62),x=function(i){return L+slot*(i-.5)},y=function(v){return T+(H-T-B)*(1-Math.min(v,maxV)/maxV)},y0=y(0);
+  var g=el("g",{class:"ax"});
+  [0,.5,1].forEach(function(p){var v=maxV*p;g.appendChild(el("line",{class:"gl",x1:L,x2:W-R,y1:y(v),y2:y(v)}));var t=el("text",{x:L-8,y:y(v)+4,"text-anchor":"end"});t.textContent=Math.round(v)+" kr";g.appendChild(t)});
+  g.appendChild(el("line",{x1:L,x2:W-R,y1:y0,y2:y0}));svg.appendChild(g);
+  for(var i=1;i<=N;i++){
+    var tok=i*sek(small),rev=Math.max(0,i-1)*ST.rev*(ST.rate/60),tot=tok+rev,over=tot>rule+1e-9,clip=tot>maxV,cx=x(i)-bw/2,cls=over?" over":"";
+    svg.appendChild(el("rect",{class:"tok"+cls,x:cx,y:y(tok),width:bw,height:Math.max(0,y0-y(tok)),rx:2}));
+    if(rev>.005){var rh=Math.max(0,y(tok)-y(tot)-2);if(rh>0)svg.appendChild(el("rect",{class:"rev"+cls,x:cx,y:y(tot),width:bw,height:rh,rx:2}))}
+    if(clip){svg.appendChild(el("path",{class:"tok"+cls,d:"M"+cx+" "+(T+7)+" l"+(bw/4)+" -7 l"+(bw/4)+" 7 l"+(bw/4)+" -7 l"+(bw/4)+" 7 z"}));var vl=el("text",{x:x(i),y:T-9,"text-anchor":"middle"});vl.setAttribute("font-family","var(--mono)");vl.setAttribute("font-size","12");vl.setAttribute("font-weight","700");vl.setAttribute("fill","var(--mag)");vl.textContent=Math.round(tot)+" kr";svg.appendChild(vl)}
+    var lab=el("text",{x:x(i),y:y0+20,"text-anchor":"middle"});lab.setAttribute("font-family","var(--mono)");lab.setAttribute("font-size","13");lab.setAttribute("font-weight",i===ST.cAtt?"700":"400");lab.setAttribute("fill",(cross&&i>=cross)?"var(--mag)":"var(--ink-2)");lab.textContent=i;svg.appendChild(lab);
+    if(i===ST.cAtt){var yl=el("text",{x:x(i),y:y0+36,"text-anchor":"middle"});yl.setAttribute("font-family","var(--mono)");yl.setAttribute("font-size","10");yl.setAttribute("fill","var(--gold)");yl.setAttribute("letter-spacing",".08em");yl.textContent="YOURS";svg.appendChild(yl)}
+  }
+  svg.appendChild(el("line",{class:"rule",x1:L,x2:W-R,y1:y(rule),y2:y(rule)}));
+  var rl=el("text",{class:"rl",x:L+8,y:y(rule)-9});rl.textContent=fl.short||fl.name;rl.textContent+=" finishing it · "+krS(rule);svg.appendChild(rl);
+  if(cross&&cross<=N){var cl=el("text",{class:"cl",x:x(cross),y:T-22,"text-anchor":"middle"});cl.textContent="costs more from here";svg.appendChild(cl);svg.appendChild(el("line",{x1:x(cross),x2:x(cross),y1:T-17,y2:T-4,stroke:"var(--mag)","stroke-width":"2"}))}
+  host.appendChild(svg);
+  var cap=ce("p","figcap",(small.short||small.name)+" "+money(usd(small))+" · "+(fl.short||fl.name)+" "+money(usd(fl))+" per attempt, list");host.appendChild(cap);
+  return cross;
+}
+function renderCross(){
+  var a=drawCross($("#xC"),C[0],C[2]),b=drawCross($("#xO"),O[0],O[2]);
+  var h=$("#xHead");
+  function ph(c){return c===null?"never in twelve":(c===1?"at the first attempt":"from attempt "+c)}
+  if(a===null&&b===null)h.innerHTML="Even at twelve attempts, the small model still costs less on both sides.";
+  else if(a===b)h.innerHTML="Cheaper per attempt. <span class='hot'>"+(a===1?"At the first attempt":"From attempt "+a)+", the cheap model costs more</span>, on both sides.";
+  else h.innerHTML="Cheaper per attempt. <span class='hot'>"+ph(a).replace(/^./,function(c){return c.toUpperCase()})+" on Claude, "+ph(b)+" on OpenAI, the cheap model costs more.</span>";
+  $("#cAttO").textContent=ST.cAtt;$("#oAttO").textContent=ST.oAtt;$("#revO").textContent=(ST.rev%1?ST.rev.toFixed(2):ST.rev)+" min";$("#rateO").textContent=ST.rate+" kr/h";
+  var fails=Math.max(0,ST.cAtt-1);
+  $("#working").innerHTML="each side: attempts × price + failed attempts × minutes × rate ÷ 60 · yours: "+ST.cAtt+" attempts, "+fails+" × "+ST.rev+" min × "+ST.rate+" kr/h · flagship "+ST.oAtt+" attempt"+(ST.oAtt>1?"s":"")+" · list price, uncached, "+ST.fx+" kr/$ · no probability multiplied in";
+}
+var PRESETS={tokens:{rev:0,oAtt:1,cAtt:3},two:{rev:2,oAtt:1,cAtt:3}};
+["cAtt","oAtt","rev","rate"].forEach(function(id){var i=document.getElementById(id);i.value=ST[id];i.addEventListener("input",function(){ST[id]=parseFloat(i.value);save();[].forEach.call(document.querySelectorAll(".pb[data-p]"),function(b){b.classList.remove("on")});renderCross()})});
+[].forEach.call(document.querySelectorAll(".pb[data-p]"),function(b){b.onclick=function(){var p=PRESETS[b.dataset.p];for(var k in p){ST[k]=p[k];var i=document.getElementById(k);if(i)i.value=p[k]}save();[].forEach.call(document.querySelectorAll(".pb[data-p]"),function(x){x.classList.remove("on")});b.classList.add("on");renderCross()}});
+$("#moreBtn").onclick=function(){var on=$("#more1").classList.toggle("on");$("#more2").classList.toggle("on",on);this.textContent=on?"less":"more"};
+
+/* ---------- 6 curves ---------- */
+var LV=EFF;
+var CURVES=[
+ {shape:"flat",tag:"flat",work:"Research and summarising",src:"Claude Fable 5 · four benchmarks",
+  pts:[{e:"low",v:0},{e:"medium",v:2,lo:1,hi:3},{e:"high",v:2,lo:1,hi:3}],
+  verdict:"The gains stop after medium.",
+  detail:"Low to medium gained 1 to 3 points. Medium to high gained nothing at all, and cost more. Low was also the fastest."},
+ {shape:"trade",tag:"tradeoff",work:"Multi-file coding",src:"Claude Opus 5 · long-horizon coding",
+  pts:[{e:"low",v:0},{e:"medium",v:6},{e:"high",v:8}],
+  verdict:"The first step up buys the most.",
+  detail:"Low to medium gained about 6 points and doubled the cost. Medium to high gained about 2 more and doubled it again."},
+ {shape:"steep",tag:"steep",work:"Open-ended research",src:"multi-subtopic research · rubric points",
+  pts:[{e:"low",v:0},{e:"medium",v:2.4},{e:"high",v:4.8},{e:"xhigh",v:7.2},{e:"max",v:9.6}],slope:true,
+  verdict:"Every step gains the same.",
+  detail:"About 2.4 points for each step up, all the way to max. This is the one shape where the top of the dial is worth its price."}
+];
+(function(){
+  var host=$("#curves");
+  CURVES.forEach(function(c,ci){
+    var d=ce("div","card curve");
+    d.appendChild(ce("p","shape "+c.shape,c.tag));
+    d.appendChild(ce("p","work",c.work));
+    d.appendChild(ce("p","src",c.src));
+    var W=320,H=190,L=44,R=14,T=18,B=38,lo=0,hi=11;
+    var svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"img",
+      "aria-label":c.work+", "+c.tag+". "+c.src+". Points gained over low effort."});
+    var x=function(i){return L+(W-L-R)*(i/(LV.length-1))},
+        y=function(v){return T+(H-T-B)*(1-(v-lo)/(hi-lo))};
+    var g=el("g",{class:"cax"});
+    [0,4,8].forEach(function(v){
+      g.appendChild(el("line",{x1:L,x2:W-R,y1:y(v),y2:y(v)}));
+      var t=el("text",{x:L-6,y:y(v)+3.5,"text-anchor":"end"});
+      t.textContent=(v?"+":"")+v;g.appendChild(t);
+    });
+    var at=el("text",{x:L-40,y:11});at.setAttribute("font-family","var(--mono)");at.setAttribute("font-size","9.5");
+    at.setAttribute("fill","var(--ink-3)");at.setAttribute("letter-spacing",".08em");
+    at.textContent="POINTS GAINED OVER LOW";g.appendChild(at);
+    var meas=c.pts.map(function(p){return LV.indexOf(p.e)}),last=Math.max.apply(null,meas);
+    if(!c.slope&&last<LV.length-1){
+      svg.appendChild(el("rect",{class:"un",x:x(last),y:T,width:(W-R)-x(last),height:H-T-B}));
+      svg.appendChild(el("line",{class:"une",x1:x(last),x2:x(last),y1:T,y2:y(lo)}));
+      var ul=el("text",{class:"ul",x:(x(last)+W-R)/2,y:T+13,"text-anchor":"middle"});
+      ul.textContent="not measured";svg.appendChild(ul);
+    }
+    svg.appendChild(g);
+    LV.forEach(function(e,i){
+      var t=el("text",{x:x(i),y:H-B+17,"text-anchor":"middle"});
+      t.setAttribute("font-family","var(--mono)");t.setAttribute("font-size","10.5");
+      t.setAttribute("fill",meas.indexOf(i)>=0?"var(--ink-2)":"var(--ink-3)");
+      t.textContent=e==="medium"?"med":e;svg.appendChild(t);
+    });
+    var ser=el("g");
+    ser.appendChild(el("path",{class:"cln",
+      d:c.pts.map(function(p,k){return (k?"L":"M")+x(LV.indexOf(p.e))+" "+y(p.v)}).join(" "),
+      "stroke-dasharray":c.slope?"6 5":"none"}));
+    c.pts.forEach(function(p){
+      var i=LV.indexOf(p.e);
+      if(p.lo!=null)ser.appendChild(el("line",{class:"cw",x1:x(i),x2:x(i),y1:y(p.lo),y2:y(p.hi)}));
+      ser.appendChild(el("circle",{class:"cd",cx:x(i),cy:y(p.v),r:4.5}));
+    });
+    svg.appendChild(ser);
+    d.appendChild(svg);
+    d.appendChild(ce("p","verdict",c.verdict));
+    d.appendChild(ce("p","detail",c.detail));
+    host.appendChild(d);
+  });
+})();
+
+/* ---------- 7 the map: six tasks on the two dials ---------- */
+var TIERS4=["Small","Balanced","Workhorse","Frontier"];
+var TASKS=[
+ {n:1,name:"Rename a constant",shape:"flat",ex:0,ey:0,lp:"above",
+  ps:[["Size","about 30 call sites, 6 files"],["Checked by","the build, which fails if you miss one"]],
+  c:"Haiku 4.5 · low",o:"Luna · low",
+  alts:[["any setting above this","also gets it right, and costs up to <b>ten times as much</b>. The build was always going to catch a miss."],
+        ["max","may rename the constant next to it too, for tidiness. <b>Now you have a diff to read.</b>"]]},
+ {n:2,name:"Bug with a stack trace",shape:"trade",ex:1,ey:2,lp:"above",
+  ps:[["What you have","one traceback, pointing at one function"],["Checked by","the tests you already have"]],
+  c:"Opus 5 · medium",o:"Sol · medium",
+  alts:[["a small model at low","might miss it once. <b>Running it again at high is still cheaper</b> than starting there."],
+        ["max","spends a long time on a one-function fix. On work far longer than this, medium scored about 2 points lower for <b>half the cost</b>."]]},
+ {n:3,name:"Refactor across six files",shape:"trade",ex:3,ey:2,dx:-38,dy:20,lp:"above",
+  ps:[["Size","one type, written three ways, in six files"],["Must not change","how any of it behaves"]],
+  c:"Opus 5 · xhigh",o:"Sol · xhigh",
+  alts:[["medium","stops early and leaves you <b>TODO: migrate remaining call sites</b>."],
+        ["the biggest model at max","gets it right too, at about <b>twice the price, and no more often</b>."]]},
+ {n:4,name:"Flaky test, cannot reproduce",shape:"steep",ex:4,ey:2,lp:"below",
+  ps:[["What you have","CI logs. It fails one run in twenty"],["Why the top","every step up scored about 2.4 higher"]],
+  c:"Opus 5 · max  or  Fable 5.1 · high",o:"Sol · max  or  Astra · high",
+  alts:[["low","hands you a fix that <b>looks right and misses the race</b>."],
+        ["why this one is different","it is the only task on this map where the top of the dial earns its price. Expect a long wait."]]},
+ {n:5,name:"Find the themes in 30 documents",shape:"flat",ex:0,ey:3,lp:"below",
+  ps:[["Size","30 documents, one summary"],["Checked by","you, reading the result"]],
+  c:"Fable 5.1 · low",o:"Astra · low",
+  alts:[["a cheaper model at low","works. But <b>the bigger model at low scored higher and cost about 10% less</b> per task."],
+        ["high","scored <b>no better than medium</b> on four benchmarks, and cost more."]]},
+ {n:6,name:"The same fix in 40 modules",shape:"bulk",ex:3,ey:2,dx:46,dy:-40,lp:"above",pair:{ex:0,ey:1},
+  ps:[["Size","40 modules, more than fits in one context"],["Checked by","the compiler, one module at a time"]],
+  c:"Opus 5 · xhigh  →  Sonnet 5 · low",o:"Sol  →  Luna",
+  alts:[["one big model, working alone","finishes it too, and costs more. <b>Splitting the work ran 55% cheaper.</b>"],
+        ["if the 40 were one chain","do not split it. <b>One model at lower effort won every time it was measured.</b>"]]}
+];
+var SHADE={flat:"var(--ink-3)",trade:"var(--teal)",steep:"var(--mag)",bulk:"var(--gold)"};
+var sel=0;
+function renderMap(){
+  var host=$("#plot");host.innerHTML="";
+  var W=820,H=400,L=150,R=34,T=42,B=58;
+  var svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"img",
+    "aria-label":"Six tasks placed by model tier and effort level"});
+  var px=function(i){return L+(W-L-R)*(i/(EFF.length-1))},
+      py=function(j){return (H-B)-((H-B-T)*(j/(TIERS4.length-1)))};
+  TIERS4.forEach(function(t,j){
+    svg.appendChild(el("line",{class:"gl",x1:L-14,x2:W-R+10,y1:py(j),y2:py(j)}));
+    var a=el("text",{class:"axl",x:L-26,y:py(j)+4,"text-anchor":"end"});a.textContent=t;svg.appendChild(a);
+  });
+  EFF.forEach(function(e,i){
+    var a=el("text",{class:"axl",x:px(i),y:H-B+24,"text-anchor":"middle"});a.textContent=e;svg.appendChild(a);
+  });
+  var yt=el("text",{class:"axt",x:L-26,y:T-18,"text-anchor":"end"});yt.textContent="MODEL";svg.appendChild(yt);
+  var xt=el("text",{class:"axt",x:W-R,y:H-B+46,"text-anchor":"end"});xt.textContent="EFFORT";svg.appendChild(xt);
+
+  TASKS.forEach(function(t,k){
+    var on=k===sel, cx=px(t.ex)+(t.dx||0), cy=py(t.ey)+(t.dy||0), col=SHADE[t.shape];
+    var g=el("g",{class:"hit"});
+    if(t.pair){
+      var qx=px(t.pair.ex),qy=py(t.pair.ey);
+      g.appendChild(el("path",{class:"hand",d:"M"+cx+" "+cy+" Q "+((cx+qx)/2)+" "+(cy+70)+" "+qx+" "+qy,
+        opacity:on?"1":".45"}));
+      g.appendChild(el("circle",{cx:qx,cy:qy,r:7,fill:col,opacity:on?"1":".5"}));
+      var wl=el("text",{class:"lab",x:qx,y:qy+26,"text-anchor":"middle",opacity:on?"1":".55"});
+      wl.setAttribute("font-size","14");wl.textContent="workers";g.appendChild(wl);
+    }
+    g.appendChild(el("circle",{cx:cx,cy:cy,r:on?15:9,fill:col,opacity:on?"1":".55"}));
+    if(on)g.appendChild(el("circle",{cx:cx,cy:cy,r:22,fill:"none",stroke:col,"stroke-width":"2","stroke-opacity":".45"}));
+    var num=el("text",{x:cx,y:cy+(on?5:4),"text-anchor":"middle",fill:"var(--ground)"});
+    num.setAttribute("font-family","var(--mono)");num.setAttribute("font-size",on?"14":"11");
+    num.setAttribute("font-weight","700");num.textContent=t.n;g.appendChild(num);
+    var ly=t.lp==="above"?cy-(on?34:22):cy+(on?42:30);
+    var anch=t.ex===0?"start":(t.ex===EFF.length-1?"end":"middle");
+    var lx=t.ex===0?cx-12:(t.ex===EFF.length-1?cx+12:cx);
+    var lb=el("text",{class:"lab"+(on?" on":""),x:lx,y:ly,"text-anchor":anch});
+    lb.textContent=t.name;g.appendChild(lb);
+    g.addEventListener("click",function(){sel=k;renderMap();renderDetail()});
+    svg.appendChild(g);
+  });
+  host.appendChild(svg);
+}
+function renderDetail(){
+  var t=TASKS[sel],h=$("#detail");
+  h.innerHTML='<p class="no">task <b>'+t.n+'</b> of 6 &nbsp;·&nbsp; <span style="color:'+SHADE[t.shape]+'">'+
+    (t.shape==="trade"?"tradeoff":(t.shape==="bulk"?"bulk work":t.shape))+'</span></p>'+
+    '<h3>'+t.name+'</h3>'+
+    '<div class="ps2">'+t.ps.map(function(r){return "<span>"+r[0]+"</span>"+r[1]}).join("<br>")+'</div>'+
+    '<div class="cfg2"><span class="vn">Claude</span><b>'+t.c+'</b><span class="vn">OpenAI</span><b>'+t.o+'</b></div>'+
+    '<p class="alth">also works, but</p>'+
+    t.alts.map(function(a){return '<div class="alt2"><i>'+a[0]+'</i>'+a[1]+'</div>'}).join("");
+}
+
+/* ---------- 12 callback ---------- */
+/* ---------- harness flow diagram, reused across four scenes ---------- */
+var MOVES=[
+ {t:"Read",c:["gather context: files,","docs, tool results"]},
+ {t:"Reason",c:["think it through, before","and between actions"]},
+ {t:"Agentic work",c:["edit, run, call tools,","loop until done"]},
+ {t:"Orchestrate",c:["divide the work across","subagents or workers"]},
+ {t:"Verify",c:["tests, a second read,","an independent check"]}
+];
+var TONE={mag:["var(--mag)","var(--mag-soft)"],cool:["var(--teal)","var(--teal-soft)"],gold:["var(--gold)","var(--gold-soft)"]};
+function tri(x,y,d){
+  if(d===2)return "M"+x+" "+y+" l-7 12 l14 0 z";
+  return "M"+x+" "+y+" l"+(-12*d)+" -7 l0 14 z";
+}
+function drawFlow(host,o){
+  if(!host)return;
+  o=o||{};var hi=o.hi||[],tone=TONE[o.tone||"mag"],full=!!o.full,meter=(o.meter==null?null:o.meter);
+  host.innerHTML="";
+  var W=1320,pw=190,gap=42,x0=110,step=pw+gap;
+  var ph=full?106:68, cy=full?146:62, H=full?330:124, py=cy-ph/2, pb=py+ph;
+  var cx=function(i){return x0+i*step+pw/2};
+  var svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"img",
+    "aria-label":"A request passes through Read, Reason, Agentic work, Orchestrate and Verify, looping until done, and an answer comes out."});
+  for(var i=0;i<4;i++){
+    var xa=x0+i*step+pw, xb=xa+gap;
+    svg.appendChild(el("line",{x1:xa+6,x2:xb-14,y1:cy,y2:cy,stroke:"var(--line-2)","stroke-width":"2"}));
+    svg.appendChild(el("path",{d:tri(xb-6,cy,1),fill:"var(--line-2)"}));
+  }
+  var rq=el("text",{class:"lbl",x:52,y:cy+5,"text-anchor":"middle"});
+  rq.setAttribute("font-size",full?"15":"12.5");rq.textContent="REQUEST";svg.appendChild(rq);
+  svg.appendChild(el("line",{x1:88,x2:x0-14,y1:cy,y2:cy,stroke:"var(--line-2)","stroke-width":"2"}));
+  svg.appendChild(el("path",{d:tri(x0-6,cy,1),fill:"var(--line-2)"}));
+  var lastR=x0+4*step+pw;
+  svg.appendChild(el("line",{x1:lastR+6,x2:W-88,y1:cy,y2:cy,stroke:"var(--line-2)","stroke-width":"2"}));
+  svg.appendChild(el("path",{d:tri(W-76,cy,1),fill:"var(--line-2)"}));
+  var an=el("text",{class:"lbl",x:W-40,y:cy+5,"text-anchor":"middle"});
+  an.setAttribute("font-size",full?"15":"12.5");an.textContent="ANSWER";svg.appendChild(an);
+  if(full){
+    svg.appendChild(el("path",{class:"osc",d:"M"+cx(0)+" "+(py-10)+" C "+cx(0)+" "+(py-52)+", "+cx(1)+" "+(py-52)+", "+cx(1)+" "+(py-10)}));
+    var os=el("text",{class:"lbl",x:(cx(0)+cx(1))/2,y:py-58,"text-anchor":"middle"});
+    os.setAttribute("font-size","13");os.textContent="BACK AND FORTH";svg.appendChild(os);
+    [-90,-30,30,90].forEach(function(dx){
+      svg.appendChild(el("line",{class:"fan",x1:cx(3),y1:pb,x2:cx(3)+dx,y2:pb+26}));
+      svg.appendChild(el("circle",{cx:cx(3)+dx,cy:pb+33,r:7,fill:"var(--ink-3)","fill-opacity":".45"}));
+    });
+    var ly=pb+112;
+    svg.appendChild(el("path",{class:"loop",d:"M"+cx(4)+" "+pb+" C "+cx(4)+" "+ly+", "+cx(0)+" "+ly+", "+cx(0)+" "+(pb+16)}));
+    svg.appendChild(el("path",{d:tri(cx(0),pb+4,2),fill:"var(--ink-3)"}));
+    var lt=el("text",{class:"lbl",x:(cx(0)+cx(4))/2,y:pb+102,"text-anchor":"middle"});
+    lt.setAttribute("font-size","15");lt.textContent="UNTIL IT IS DONE";svg.appendChild(lt);
+  }
+  MOVES.forEach(function(m,i){
+    var on=hi.indexOf(i)>=0, dim=hi.length&&!on;
+    var g=el("g",dim?{opacity:".34"}:{});
+    g.appendChild(el("rect",{x:x0+i*step,y:py,width:pw,height:ph,rx:16,
+      fill:on?tone[1]:"var(--surface)",stroke:on?tone[0]:"var(--line)","stroke-width":on?"2.5":"1.5"}));
+    var t=el("text",{class:"pt",x:cx(i),y:full?(py+40):(cy+7),"text-anchor":"middle"});
+    t.setAttribute("font-size",full?"27":"22");t.textContent=m.t;g.appendChild(t);
+    if(full){
+      m.c.forEach(function(part,k){
+        var line=el("text",{class:"pc",x:cx(i),y:py+68+k*21,"text-anchor":"middle"});
+        line.setAttribute("font-size","15.5");line.textContent=part;g.appendChild(line);
+      });
+    }
+    if(meter!=null&&i<2){
+      for(var k=0;k<5;k++){
+        var bw=(pw-52)/5-5;
+        g.appendChild(el("rect",{x:x0+i*step+26+k*(bw+5),y:pb-17,width:bw,height:8,rx:3,
+          fill:k<=meter?tone[0]:"var(--line)"}));
+      }
+    }
+    svg.appendChild(g);
+  });
+  host.appendChild(svg);
+}
+function drawWho(){
+  var host=$("#whoax");if(!host)return;host.innerHTML="";
+  var W=1320,H=56,svg=el("svg",{viewBox:"0 0 "+W+" "+H,role:"img",
+    "aria-label":"Who does the checking, running from your tooling through the model to other agents"});
+  var h=el("text",{class:"h",x:0,y:12});h.textContent="WHO DOES THE CHECKING";svg.appendChild(h);
+  svg.appendChild(el("line",{x1:0,x2:W-18,y1:30,y2:30,stroke:"var(--gold)","stroke-width":"2","stroke-opacity":".5"}));
+  svg.appendChild(el("path",{d:tri(W-4,30,1),fill:"var(--gold)","fill-opacity":".5"}));
+  [["your tooling",W/6],["the model",W/2],["other agents",W*5/6]].forEach(function(p){
+    svg.appendChild(el("circle",{cx:p[1],cy:30,r:5,fill:"var(--gold)"}));
+    var t=el("text",{class:"t",x:p[1],y:52,"text-anchor":"middle"});t.textContent=p[0];svg.appendChild(t);
+  });
+  host.appendChild(svg);
+}
+
+/* ---------- effort depth, scene 5 ---------- */
+var effDial=$("#effDial");
+function renderEffort(){
+  if(!effDial)return;
+  var i=+effDial.value;
+  $("#effOut").textContent=EFF[i];
+  $("#effTicks").innerHTML=EFF.map(function(e,k){return "<span"+(k===i?' class="on"':"")+">"+e+"</span>"}).join("");
+  drawFlow($("#flow2"),{hi:[0,1],tone:"mag",meter:i});
+}
+if(effDial)effDial.addEventListener("input",renderEffort);
+
+drawFlow($("#flow1"),{full:true});
+drawFlow($("#flow3"),{hi:[2,3],tone:"cool"});
+drawFlow($("#flow4"),{hi:[4],tone:"gold"});
+renderEffort();drawWho();
+
+/* ---------- navigation ---------- */
+var scenes=[].slice.call(document.querySelectorAll(".scene")),MAIN=scenes.length,cur=0,dots=$("#dots");
+scenes.forEach(function(_,i){var b=ce("button");b.setAttribute("aria-label","Scene "+(i+1));b.onclick=function(){go(i)};dots.appendChild(b)});
+function go(n){n=Math.max(0,Math.min(scenes.length-1,n));scenes[cur].classList.remove("on");cur=n;scenes[cur].classList.add("on");scenes[cur].scrollTop=0;hideTip();
+  [].forEach.call(dots.children,function(d,i){d.classList.toggle("on",i===cur)});
+  $("#counter").textContent=(cur+1)+" / "+scenes.length;
+  try{history.replaceState(null,"","#/"+(cur+1))}catch(e){}}
+function fromHash(){var m=/#\/(\d+)/.exec(location.hash);go(m?parseInt(m[1],10)-1:0)}
+window.addEventListener("hashchange",fromHash);
+var notesBtn=$("#notesBtn"),roomBtn=$("#roomBtn");
+function tn(){var on=document.body.classList.toggle("notes-on");notesBtn.classList.toggle("on",on);notesBtn.setAttribute("aria-pressed",on)}
+function tr(){var on=document.body.classList.toggle("room");roomBtn.classList.toggle("on",on);roomBtn.setAttribute("aria-pressed",on);renderCross()}
+notesBtn.onclick=tn;roomBtn.onclick=tr;
+function tf(){
+  var el2=document.documentElement;
+  if(document.fullscreenElement){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); return }
+  var req=el2.requestFullscreen||el2.webkitRequestFullscreen;
+  if(req)Promise.resolve(req.call(el2)).catch(function(){});
+}
+var fsBtn=$("#fsBtn");if(fsBtn)fsBtn.onclick=tf;
+document.addEventListener("keydown",function(e){var t=e.target,tag=t.tagName;if(tag==="INPUT"||tag==="TEXTAREA"||t.isContentEditable)return;if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown"){e.preventDefault();go(cur+1)}else if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();go(cur-1)}
+  else if(e.key==="Home")go(0);else if(e.key==="End")go(scenes.length-1);else if(e.key==="n"||e.key==="N")tn();else if(e.key==="r"||e.key==="R")tr();else if(e.key==="f"||e.key==="F")tf()});
+
+renderCommit();renderGrid();renderCross();renderMap();renderDetail();fromHash();
+})();
+</script>
+
+</html>
