@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Which model, how much effort?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one instrument panel (two dials, a mode switch, a readout) above one map of every model at every effort.
+   Boldness lives in the dials only. Ultramarine means "you are here" and nothing else. */
+:root{color-scheme:light;
+ --paper:#F2F3F0;--surface:#FFFFFF;--ink:#1D2125;--muted:#646B71;--line:#D9DCD8;--line-2:#BFC4C1;--soft:#E9EBE8;
+ --knob:#23282D;--knob-mark:#F2F3F0;--shadow:rgba(23,28,33,.24);--strip:#F8F9F7;
+ --signal:#2E44D6;
+ --good-bg:#BEE0CB;--good-fg:#15472F;--over-bg:#E7EEE8;--over-fg:#4C5F52;--under-line:#C99B71;--under-fg:#7B4E29;--off-fg:#8A9096;
+ --sans:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --paper:#111315;--surface:#181B1E;--ink:#ECEEEB;--muted:#9CA3A8;--line:#2B3034;--line-2:#3D4449;--soft:#1F2326;
+ --knob:#DEE1DD;--knob-mark:#16191B;--shadow:rgba(0,0,0,.55);--signal:#94A3FF;--strip:#15181B;
+ --good-bg:#2E5C44;--good-fg:#D8EEDF;--over-bg:#222A25;--over-fg:#B4C6B9;--under-line:#8C6A4C;--under-fg:#E0BB95;--off-fg:#737B80}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --paper:#111315;--surface:#181B1E;--ink:#ECEEEB;--muted:#9CA3A8;--line:#2B3034;--line-2:#3D4449;--soft:#1F2326;
+ --knob:#DEE1DD;--knob-mark:#16191B;--shadow:rgba(0,0,0,.55);--signal:#94A3FF;--strip:#15181B;
+ --good-bg:#2E5C44;--good-fg:#D8EEDF;--over-bg:#222A25;--over-fg:#B4C6B9;--under-line:#8C6A4C;--under-fg:#E0BB95;--off-fg:#737B80}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer;background:none;border:0;padding:0}select{background:none}
+a{color:var(--ink);text-underline-offset:3px;text-decoration-color:var(--line-2)}a:hover{text-decoration-color:var(--ink)}
+:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.app{max-width:1120px;min-height:100svh;margin:auto;padding-block:24px 32px;padding-inline:clamp(16px,4vw,40px);display:flex;flex-direction:column}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:center;gap:24px;min-height:48px}
+.brand{margin:0;font-size:13px;color:var(--muted)}
+.views{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--soft)}
+.view{padding:7px 16px;border-radius:999px;color:var(--muted);font-size:14px;white-space:nowrap;transition:color .15s,background .15s}
+.view:hover{color:var(--ink)}
+.view[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 1px 2px var(--shadow)}
+.page-title{font-size:40px;line-height:1.08;letter-spacing:-.035em;font-weight:600;margin:clamp(28px,5vh,52px) 0 clamp(18px,3vh,28px);text-wrap:balance}
+main{flex:1;min-width:0}
+.app.is-quiz main{display:flex;flex-direction:column;justify-content:center}.app.is-quiz #guidedPanel{width:100%}
+
+/* questions */
+.quiz{max-width:640px;margin:56px auto 72px}
+.progress{display:flex;align-items:center;gap:14px;margin:0 0 22px;color:var(--muted);font-size:13px}
+.steps{display:flex;gap:6px}.steps i{width:28px;height:3px;border-radius:2px;background:var(--line)}.steps .on{background:var(--ink)}
+.quiz h1{font-size:36px;line-height:1.12;letter-spacing:-.035em;font-weight:600;margin:0 0 28px;max-width:15em;text-wrap:balance}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qopt{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;text-align:left;padding:18px 20px;border-radius:14px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);font-size:16px;line-height:1.4;transition:box-shadow .15s,transform .15s}
+.qopt:hover{box-shadow:inset 0 0 0 1.5px var(--ink);transform:translateX(3px)}
+.qopt[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--signal)}
+.qopt kbd{flex:none;display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:7px;background:var(--soft);color:var(--muted);font:500 13px var(--sans);box-shadow:inset 0 -1px 0 var(--line-2)}
+.qopt:hover kbd,.qopt[aria-pressed="true"] kbd{background:var(--ink);color:var(--surface);box-shadow:none}
+.qnav{display:flex;align-items:center;margin-top:22px;min-height:24px}
+.text-button{padding:4px 0;color:var(--muted);text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:5px}.text-button:hover{color:var(--ink);text-decoration-color:var(--ink)}
+
+/* task line */
+.context{display:flex;align-items:center;gap:24px;justify-content:space-between;margin-bottom:18px;min-width:0}
+.context label{display:flex;align-items:baseline;gap:14px;min-width:0;flex:1;color:var(--muted)}
+.context label>span{font-size:13px;white-space:nowrap}
+.context select{max-width:100%;min-width:0;flex:1;color:var(--ink);border:0;padding:6px 26px 6px 0;font-size:19px;font-weight:500;letter-spacing:-.01em;text-overflow:ellipsis}
+.context .text-button{flex:none}.context p{margin:0;font-size:19px;font-weight:500;letter-spacing:-.01em}
+
+/* the instrument */
+.instrument{display:grid;grid-template-columns:minmax(0,1fr);background:var(--surface);overflow:hidden;border-radius:22px;box-shadow:0 0 0 1px var(--line),0 18px 40px -28px var(--shadow)}
+.deck{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;align-items:center;gap:14px 28px;padding:16px 32px 18px;background:var(--strip);border-top:1px solid var(--line)}
+.unit{display:flex;align-items:center;gap:14px;min-width:0}
+.dial{flex:none;width:76px;height:76px;overflow:hidden;border-radius:50%;touch-action:none;cursor:grab;-webkit-tap-highlight-color:transparent}
+.dial.dragging{cursor:grabbing}
+.dial svg{display:block;width:166.7%;height:auto;margin:-21% -33.3% -17.8%}
+.dial:focus-visible{outline:none}
+.dial:focus-visible .collar{stroke:var(--signal);stroke-width:2}
+.collar{fill:none;stroke:transparent;stroke-width:2}
+.knob{fill:var(--surface);stroke:var(--line-2);stroke-width:2}
+.knob-wrap{filter:drop-shadow(0 1px 1.5px var(--shadow))}
+.ptr{transform-box:view-box;transform-origin:0 0;transition:transform .62s cubic-bezier(.28,1.42,.5,1)}
+.ptr line{stroke:var(--ink);stroke-width:7;stroke-linecap:round}
+.dial.dragging .ptr{transition:transform .14s ease-out}
+.dial.still .ptr{transition:none}
+.tick{stroke:var(--line-2);stroke-width:4;stroke-linecap:round;transition:stroke .2s,stroke-width .2s}
+.tick.gh{stroke:var(--signal);opacity:.5;stroke-width:6}
+.tick.on{stroke:var(--signal);opacity:1;stroke-width:8}
+.tick.na{opacity:.3;stroke-dasharray:1 3}
+.g-arc{display:none}
+.d-label{display:none}
+.d-label.on{fill:var(--ink);font-weight:600}
+.d-label.na{opacity:.4}
+.dial.off{cursor:default}
+.dial.off .knob{fill:var(--soft)}.dial.off .ptr{opacity:0}.dial.off .tick,.dial.off .d-label{opacity:.35}
+.read{display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-width:0;max-width:100%}
+.read select,.read .val{font-size:16px;font-weight:600;letter-spacing:-.01em;line-height:1.3;color:var(--ink);border:0;padding:0 22px 0 0;margin-left:-1px;max-width:100%;text-overflow:ellipsis}
+.read .val{padding:0;margin:0}
+.read .sub{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
+.mode{display:flex;justify-content:flex-end;align-items:center;gap:12px}
+.mode .lab{font-size:13px;color:var(--muted)}
+.switch{display:inline-flex;padding:3px;border-radius:999px;background:var(--soft)}
+.switch button{padding:6px 14px;border-radius:999px;font-size:14px;color:var(--muted);transition:background .18s,color .18s}
+.switch button[aria-checked="true"]{background:var(--knob);color:var(--knob-mark);font-weight:500}
+
+/* readout */
+.readout{padding:26px 32px 22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 40px;align-items:start;min-width:0}
+.r-main{display:contents}
+.r-main>*{grid-column:1;min-width:0}
+.r-cost{grid-column:2;grid-row:1/span 8;text-align:right}
+.r-state{display:flex;align-items:center;gap:10px;margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.r-state .sw{width:12px;height:12px}
+.r-price{margin:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.r-num{font-size:52px;font-weight:600;letter-spacing:-.045em;line-height:1}
+.r-unit{font-size:13px;color:var(--muted)}
+.r-meta{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.r-text{margin:14px 0 0;font-size:16px;line-height:1.45;text-wrap:pretty;max-width:40em}
+.r-note{margin:10px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.r-note.warn{color:var(--under-fg)}
+.r-preview{margin:0 0 10px;font-size:12.5px;color:var(--signal)}
+.detail{padding-top:12px}
+.detail summary{cursor:pointer;color:var(--muted);font-size:13px;width:fit-content}
+.detail summary:hover{color:var(--ink)}
+.detail p{margin:8px 0 0;font-size:14px;color:var(--ink)}
+
+/* tasks that fit (explore) */
+.matches{margin:22px 0 0}
+.matches p{margin:0 0 8px;color:var(--muted);font-size:13px}
+.task-list{display:flex;flex-wrap:wrap;gap:6px}
+.task{padding:6px 12px;border-radius:999px;font-size:14px;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .15s,background .15s}
+.task:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.task[aria-pressed="true"]{background:var(--ink);color:var(--surface);box-shadow:none}
+
+/* the map */
+.map-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:36px 0 6px}
+.map-head h2{margin:0;font-size:18px;font-weight:600;letter-spacing:-.015em}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:0;margin:0;font-size:13px;color:var(--muted)}
+.legend li{display:flex;align-items:center;gap:7px}
+.sw{width:9px;height:9px;border-radius:2px;display:inline-block;flex:none;border:1px solid transparent}.sw.st-under{border-color:var(--under-line)}.sw.st-off{border-color:var(--line-2)}
+.matrix-wrap{overflow-x:auto;max-width:100%;padding:3px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.matrix{width:100%;min-width:620px;border-collapse:separate;border-spacing:4px 4px;table-layout:fixed}
+.matrix .model-col{width:228px}.matrix th{font-weight:400}
+.matrix thead th{height:36px;text-align:center;font-size:13px;color:var(--muted);transition:color .2s}
+.matrix thead th.on{color:var(--signal);font-weight:600}
+.matrix thead th:first-child{text-align:left;position:sticky;left:0;background:var(--paper);z-index:2}
+.rh{text-align:left;padding:0 16px 0 0;position:sticky;left:0;background:var(--paper);z-index:2}
+.model-label{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;padding-left:12px}
+.model-label::before{content:"";position:absolute;left:0;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:transparent;transition:background .2s,height .2s,margin .2s}
+.selected-row .model-label::before{background:var(--signal);height:16px;margin-top:-8px;border-radius:2px}
+.model-name{white-space:nowrap}.vendor{font-size:12.5px;color:var(--muted)}
+.selected-row .model-name{font-weight:600}
+.model-row.tier-start th,.model-row.tier-start td{border-top:10px solid var(--paper)}
+.tier-tag{display:block;font-size:11.5px;color:var(--muted);margin:0 0 2px 12px}
+.cell{display:block;width:100%;height:34px;padding:0 2px;border-radius:5px;font:500 13px/1 var(--sans);border:1px solid transparent;transition:box-shadow .12s,background-color .3s,color .3s,border-color .3s}
+.st-good{background:var(--good-bg);color:var(--good-fg)}.st-over{background:var(--over-bg);color:var(--over-fg)}
+.st-under{background:transparent;color:var(--under-fg);border-color:var(--under-line)}.st-off,.st-na{background:transparent;color:var(--off-fg)}
+.cell.st-off{border-color:var(--line)}
+.cell:hover:not(:disabled){box-shadow:inset 0 0 0 1.5px var(--ink)}
+.cell.sel,.cell.sel:hover{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--signal)}
+.cell:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+.span{text-align:left;padding-left:14px}.span .pv{display:inline-block;position:sticky;left:246px}.span .effort-note{color:inherit;margin-left:12px;font-weight:400;opacity:.8}.cell.na{cursor:default}
+.matrix.pre .cell{background:var(--soft)!important;color:transparent!important;border-color:transparent!important;transition:none!important}
+.matrix.wave .cell{transition:background-color .45s var(--d),color .45s var(--d),border-color .45s var(--d),box-shadow .12s}
+
+/* footer */
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
+.rules{font-size:13px;color:var(--muted);margin:0;max-width:80em;line-height:1.6}
+.foot details{margin-top:10px}.foot summary{cursor:pointer;color:var(--muted);font-size:13px;width:fit-content}.foot summary:hover{color:var(--ink)}
+.method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px;font-size:13px;color:var(--muted);margin-top:18px;line-height:1.65}.method p{margin:0}.method b{font-weight:600;color:var(--ink)}
+
+@media(max-width:900px){
+ .deck{grid-template-columns:repeat(2,minmax(0,1fr));padding:16px 22px 18px}
+ .mode{grid-column:1/-1;justify-content:flex-start}
+ .readout{padding:22px 22px 18px}
+ .method{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+ .top{flex-wrap:wrap;gap:12px}
+ .quiz{margin:32px auto 40px}.qopt{padding:15px 16px}
+ .context{flex-wrap:wrap;gap:6px}.context label{flex-basis:100%;flex-direction:column;align-items:flex-start;gap:0}.context select{width:100%}.context .text-button{margin-left:auto}
+ .deck{grid-template-columns:minmax(0,1fr);gap:14px;padding:16px 18px 18px}
+ .readout{grid-template-columns:minmax(0,1fr);padding:20px 18px 16px}
+ .r-cost{grid-column:1;grid-row:auto;text-align:left;margin:12px 0 2px;order:1}.r-price{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
+ .r-preview{order:-1}.r-state{order:0}.r-main>*:not(.r-state):not(.r-preview){order:2}
+ .dial{width:64px;height:64px}
+ .mode{flex-wrap:wrap;gap:8px 12px}
+ .matrix .model-col{width:178px}.matrix{min-width:540px}.span .pv{left:194px}.span .effort-note{display:none}
+ .map-head{margin-top:28px}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+<div class="app">
+  <header class="top">
+    <p class="brand">AI Guild / E2E Group</p>
+    <nav class="views" role="tablist" aria-label="Choose a view">
+      <button class="view" id="guidedBtn" type="button" role="tab" aria-selected="true" aria-controls="guidedPanel" tabindex="0">Find a model</button>
+      <button class="view" id="exploreBtn" type="button" role="tab" aria-selected="false" aria-controls="explorePanel" tabindex="-1">Explore models</button>
+    </nav>
+  </header>
+  <h1 class="page-title" id="pageTitle">Choose your starting point.</h1>
+  <main>
+    <section id="guidedPanel" role="tabpanel" aria-labelledby="guidedBtn">
+      <div class="quiz" id="quiz"></div>
+    </section>
+    <section id="explorePanel" role="tabpanel" aria-labelledby="exploreBtn" hidden></section>
+    <section id="result" aria-label="Model and effort" hidden>
+      <div class="context">
+        <p id="compareTask" hidden></p>
+        <label for="taskSelect"><span id="taskLabel">Your task</span><select id="taskSelect"></select></label>
+        <button class="text-button" type="button" id="restartBtn">Change answers</button>
+      </div>
+
+      <div class="instrument">
+        <div class="readout" id="verdict" aria-live="polite" aria-atomic="true"></div>
+        <div class="deck">
+          <div class="unit">
+            <div class="dial" id="modelDial" role="slider" tabindex="0" aria-label="Model"></div>
+            <div class="read">
+              <label class="sr-only" for="modelSelect">Model</label>
+              <select id="modelSelect"></select>
+              <p class="sub" id="modelSub"></p>
+            </div>
+          </div>
+          <div class="unit">
+            <div class="dial" id="effortDial" role="slider" tabindex="0" aria-label="Reasoning effort"></div>
+            <div class="read">
+              <p class="val" id="effortValue">Medium</p>
+              <p class="sub">Reasoning effort</p>
+            </div>
+          </div>
+          <div class="mode">
+            <span class="lab" id="modeLabel">Agents</span>
+            <div class="switch" role="radiogroup" aria-labelledby="modeLabel">
+              <button type="button" role="radio" id="fanOff" aria-checked="true">One agent</button>
+              <button type="button" role="radio" id="fanOn" aria-checked="false">Multiple agents</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="matches" id="matches" hidden>
+        <p id="matchesLabel">These tasks fit the selected setting.</p>
+        <div class="task-list" id="taskList" aria-labelledby="matchesLabel"></div>
+        <p id="emptyMatches" hidden>No task fits this setting. Change the model, effort, or use of multiple agents.</p>
+      </div>
+
+      <div class="map-head">
+        <h2>Every model at every effort</h2>
+        <ul class="legend" aria-label="Fit key">
+          <li><i class="sw st-good" aria-hidden="true"></i>This setting fits.</li>
+          <li><i class="sw st-over" aria-hidden="true"></i>This setting uses more than the task needs.</li>
+          <li><i class="sw st-under" aria-hidden="true"></i>This setting may need another attempt.</li>
+          <li><i class="sw st-off" aria-hidden="true"></i>This model does not fit.</li>
+        </ul>
+      </div>
+      <div class="matrix-wrap" id="gridwrap" tabindex="-1" aria-label="Scroll the matrix horizontally on a small screen">
+        <table class="matrix" id="grid" role="grid" aria-label="Every model at every effort level">
+          <caption class="sr-only" id="matrixCaption"></caption>
+          <colgroup><col class="model-col"><col span="5"></colgroup>
+          <thead><tr role="row" id="headRow"><th scope="col" role="columnheader">Model</th><th scope="col" role="columnheader">Low</th><th scope="col" role="columnheader">Medium</th><th scope="col" role="columnheader">High</th><th scope="col" role="columnheader">Extra high</th><th scope="col" role="columnheader">Maximum</th></tr></thead>
+          <tbody id="gridBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer class="foot">
+    <p class="rules">Do not send customer personal data (PII), credit data, know-your-customer (KYC) data, anti-money-laundering (AML) data, or credentials to any model (ISMS 1.4). No model here is approved for credit decisions, scoring, or risk assessment (EU AI Act, Annex III §5).</p>
+    <details>
+      <summary>See prices, sources, and limits.</summary>
+      <div class="method">
+        <p><b>Prices are estimates.</b> The calculation uses vendor list prices per million tokens on 2 October 2026. One attempt uses 400k input tokens and 60k output tokens across its turns. Low effort uses the list price × 0.58. Medium uses × 0.78. Anthropic measured these cost ratios on tasks where extra effort made little difference. The map applies them to every vendor as an estimate. Prices exclude extra attempts by other agents. No ratio is published for extra high or maximum effort. These levels show the high-effort price with a + sign.</p>
+        <p><b>Fit is an estimate.</b> The task examples were measured on Opus 5, Sonnet 5, and Fable 5. The map judges each model by its capability group. We assigned these groups from vendor descriptions. We did not measure the differences between vendors. Try your task on two models before you rely on the map.</p>
+        <p><b>Effort settings differ.</b> Extra high means xhigh. Maximum means max. Haiku 4.5 and Grok 4.3 have no effort setting. Grok 4.7 stops at xhigh. GPT-6 Luna and GPT-5.6 Terra also offer none. Opus 5.5 defaults to medium. Sonnet 5.5’s effort levels have changed. Test these models at several effort levels. Composer 2.5’s five levels come from Cursor’s release coverage, not its documentation.</p>
+        <p><b>Multiple agents share the work.</b> In Claude Code, ultracode uses multiple agents. In Codex, GPT-6.1 Sol offers ultra, an effort level above max. On Grok 4.20 multi-agent, the effort setting controls the number of agents. The map allows multiple agents only for models in the Workhorse and Frontier groups.</p>
+        <p><b>Some rates differ.</b> Grok doubles its rate for requests above 200k tokens. The map uses the base rate. Composer 2.5 Fast costs $3 for input and $15 for output per million tokens. Opus 5.5 fast mode costs $8 for input and $40 for output per million tokens. Cursor also offers models from other vendors. Teams and Enterprise add $0.25 per million tokens. GPT-5.6 Terra is an older generation that is still sold.</p>
+        <p><b>Get approval before use.</b> Fable 5.1 requires the vendor to retain data for 30 days. The CTO and Compliance must approve its use first. If you use a new vendor through its API, DORA treats this as an information and communication technology (ICT) third-party arrangement. See the vendor sources: <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic pricing</a>, <a href="https://developers.openai.com/api/docs/pricing">OpenAI pricing</a>, <a href="https://docs.x.ai/docs/models">xAI models and prices</a>, and <a href="https://cursor.com/docs/models">Cursor models and prices</a>.</p>
+      </div>
+    </details>
+  </footer>
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+function ce(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+var REDUCED=window.matchMedia("(prefers-reduced-motion: reduce)");
+/* ---------- lineup, list prices per million tokens on 2 Oct 2026 ---------- */
+var EFF=["low","medium","high","xhigh","max"];
+var EFFLABEL=["Low","Medium","High","Extra high","Maximum"];
+var EFFX=[0.58,0.78,1,null,null];
+var TIER=["Small","Balanced","Workhorse","Frontier"];
+var ALL=EFF.slice();
+var MODELS=[
+ {id:"fable51",v:"Claude",name:"Fable 5.1",t:3,pin:10,pout:50,eff:ALL,note:"Fable 5.1 requires the vendor to retain data for 30 days. Get approval from the CTO and Compliance before you send company data.",warn:true},
+ {id:"astra",v:"OpenAI",name:"GPT-6 Astra",t:3,pin:10,pout:50,eff:ALL,note:"OpenAI’s most capable model."},
+ {id:"opus55",v:"Claude",name:"Opus 5.5",t:2,pin:4,pout:20,eff:ALL,note:"Opus 5.5 defaults to medium, so set effort yourself."},
+ {id:"sol61",v:"OpenAI",name:"GPT-6.1 Sol",t:2,pin:2,pout:10,eff:ALL,note:"In Codex, GPT-6.1 Sol also has ultra, an effort above max that fans out sub-agents."},
+ {id:"grok47",v:"xAI",name:"Grok 4.7",t:2,pin:2,pout:6,eff:["low","medium","high","xhigh"],note:"xAI’s most capable model. Its effort stops at xhigh."},
+ {id:"sonnet55",v:"Claude",name:"Sonnet 5.5",t:1,pin:2,pout:10,eff:ALL,note:"Sonnet 5.5’s effort levels were recalibrated. Anthropic suggests medium for agentic coding."},
+ {id:"terra",v:"OpenAI",name:"GPT-5.6 Terra",t:1,pin:2,pout:12,eff:ALL,note:"The previous generation, still on OpenAI’s price list."},
+ {id:"composer",v:"Cursor",name:"Composer 2.5",t:1,pin:0.5,pout:2.5,eff:ALL,code:true,note:"Cursor’s own coding model. The Fast variant costs $3 / $15."},
+ {id:"haiku",v:"Claude",name:"Haiku 4.5",t:0,pin:1,pout:5,eff:null,note:"Haiku 4.5 has no effort setting."},
+ {id:"luna",v:"OpenAI",name:"GPT-6 Luna",t:0,pin:0.1,pout:0.5,eff:ALL,note:"Luna also has an effort level called none."},
+ {id:"grok43",v:"xAI",name:"Grok 4.3",t:0,pin:1.25,pout:2.5,eff:null,note:"Grok 4.3 has no effort setting."}
+];
+function mById(id){for(var i=0;i<MODELS.length;i++)if(MODELS[i].id===id)return MODELS[i];return MODELS[2]}
+function attempt(m){return 0.4*m.pin+0.06*m.pout}
+function price(m,e){if(!m.eff)return {v:attempt(m),plus:false};var f=EFFX[e];return f==null?{v:attempt(m),plus:true}:{v:attempt(m)*f,plus:false}}
+function fmt(p){return "$"+p.v.toFixed(2)+(p.plus?"+":"")}
+function lp(n){return "$"+(n%1?n.toFixed(2):n)}
+
+/* ---------- task shapes, from examples/code-tasks.md and examples/orchestration-tasks.md ---------- */
+var CARDS=[
+ {id:"rename",grp:"code",title:"Rename a key across a service.",desc:"About thirty call sites. The build catches anything missed.",
+  shape:{check:"tool",size:"some",brief:"clear",act:"act"},rec:{t:1,e:0,fan:false},band:{tmin:0,t:[0,1],e:[0,0],fan:"no"},
+  why:"Mechanical and checkable. The compiler does the checking, not the model, so effort buys nothing here.",
+  higher:"It still passes, slower. At high a frontier model may also rename RETRY_DELAY “for consistency”.",
+  lower:"There is nothing below low.",done:"The build passes. A search for the old name finds no matches.",
+  msg:{overT:"Every cell on this row is green. A bigger model buys the same green at a higher price.",overE:"Extra effort is paid for in time and in changes you did not ask for.",fanOn:"Thirty call sites fit one context. There is nothing to hand off."}},
+ {id:"tests",grp:"code",title:"Write unit tests for a pure function.",desc:"It exists, it has a docstring, it has no tests.",
+  shape:{check:"human",size:"one",brief:"clear",act:"act"},rec:{t:1,e:1,fan:false},band:{tmin:0,t:[1,2],e:[1,2],fan:"no"},
+  why:"Bounded, and the contract is written down. Measured on Sonnet 5, medium was about where Sonnet 4.6 had been at high.",
+  higher:"The Workhorse tier at high writes more edge cases: whitespace, uppercase units, an empty string. Worth it under something that matters.",
+  lower:"Balanced at low tends to write happy-path tests only. Raise effort. Adding “be thorough” to the prompt is the wrong fix.",
+  done:"All tests pass. If you deliberately break the function, at least one test fails.",
+  msg:{underT:"Small tier covers the happy path and stops.",underE:"Happy-path tests only. You saved tokens and bought a second attempt.",overT:"Frontier writes the same tests for five times the price.",overE:"Past high you get the same edge cases and a longer wait.",fanOn:"One function. Nothing to split."}},
+ {id:"trace",grp:"code",title:"Fix a bug with a clear stack trace.",desc:"The traceback points at one function. A test suite exists.",
+  shape:{check:"tool",size:"one",brief:"clear",act:"act"},rec:{t:2,e:1,fan:false},band:{tmin:0,t:[2,2],e:[0,2],fan:"no"},
+  why:"Measured on Opus 5, low and medium were unusually strong for the tier, and a clear trace does not need xhigh. On long-horizon coding medium gave up about 2 points for half the cost, and this is not long-horizon.",
+  higher:"Fine, slower. Save it for the re-run if medium’s fix does not pass.",
+  lower:"The Workhorse tier at low often gets this too. With tests to catch a miss, it is a fair first attempt.",
+  done:"The test that failed now passes. No other test has changed.",
+  msg:{underT:"It can fix it. Expect to re-run more often, and the tests will tell you.",overT:"Frontier finds the same KeyError. You pay double for it.",overE:"Above high you are paying for deliberation over a one-line fix.",fanOn:"One function. Nothing to split."}},
+ {id:"refactor",grp:"code",title:"Refactor code across six files.",desc:"One value type, implemented three ways in six files. Make it one module. Behaviour must not change.",
+  shape:{check:"tool",size:"some",brief:"some",act:"act"},rec:{t:2,e:3,fan:false},band:{tmin:1,t:[2,3],e:[2,3],fan:"no"},
+  why:"Multi-file work is where the Workhorse tier earns its price, and xhigh is Claude Code’s default for exactly this shape. Give it the whole specification up front and let it run.",
+  higher:"Max can overthink. You will watch it deliberate over naming. Try it only if xhigh left stubs or missed a file.",
+  lower:"High often works. Medium starts leaving TODO: migrate remaining call sites.",
+  done:"All tests pass. The changes affect only the six files you named and the new module.",
+  msg:{off:"Small tier does not carry a long agentic loop.",underT:"It will leave stubs and a TODO. The suite will catch some of it.",underE:"Medium starts leaving TODO: migrate remaining call sites.",overE:"Max can overthink. You will watch it deliberate over naming.",fanOn:"This fits one context. Orchestration pays for a plan, a handoff and a merge that one model gets for free."}},
+ {id:"flaky",grp:"code",title:"Fix an intermittent test failure that you cannot reproduce.",desc:"Fails one run in twenty. You have CI logs and nothing else.",
+  shape:{check:"hard",size:"one",brief:"vague",act:"act"},rec:{t:2,e:4,fan:false},alt:{t:3,e:2},band:{tmin:2,t:[2,3],e:[2,4],eByTier:{2:[4,4],3:[2,4]},fan:"ok"},
+  why:"Reasoning-ceiling work. Every step of effort buys something. Frontier at high may beat Workhorse at max (measured as Fable 5.1 against Opus 5), and a 10 to 15 minute single turn is normal.",
+  higher:"Frontier at max, and only if the high run came back with a hypothesis it could not confirm.",
+  lower:"You get a plausible fix that does not address the race. This is the one task where cheap attempts waste more than they save.",
+  done:"The test passes 200 times in a row. Ask the model to write a loop that runs the test.",
+  msg:{off:"Below Workhorse you get a plausible fix that misses the race.",underE:"A plausible fix that misses the race. Cheap attempts waste more than they save here."}},
+ {id:"legacy",grp:"code",title:"Plan a migration from an older framework.",desc:"40,000 lines nobody on the team wrote. Plan the move off a deprecated framework.",
+  shape:{check:"human",size:"big",brief:"vague",act:"act"},rec:{t:3,e:3,fan:false},band:{tmin:2,t:[3,3],e:[3,3],fan:"ok"},
+  why:"Long-horizon and ambiguous, and it benefits from delegating to subagents. Fable 5.1’s gap over Opus 5 is widest at the top of the difficulty range. Give it the why, not just the what.",
+  higher:"Max, if xhigh under-explores. Unlikely.",
+  lower:"Frontier at low is still very capable and much faster. Use it to scope the work before the deep run.",
+  done:"The plan names specific files and risks. Check three claims against the code.",
+  msg:{off:"A 40,000-line service is past what Small or Balanced tiers hold together.",underT:"Workhorse drafts a plan. Measured on Opus 5 against Fable 5.1, the gap is widest on exactly this kind of work.",underE:"A fast scoping pass. Good for sizing the job, not for the plan.",overE:"Max, only if xhigh under-explores. It rarely does here."}},
+ {id:"review",grp:"code",title:"Review a pull request.",desc:"A 400-line pull request. A fast pass when it opens, a thorough pass before merge.",
+  shape:{check:"human",size:"some",brief:"clear",act:"answer"},rec:{t:2,e:0,fan:false},second:{e:2},band:{tmin:1,t:[2,2],e:[0,2],fan:"no"},
+  why:"Measured on Opus 5, bug-finding stayed accurate at low effort, so the cheap pass is real signal. The high pass before merge catches what the fast one skims.",
+  higher:"Above high you pay for a longer review comment, not for more findings.",
+  lower:"Nothing below low. If the PR is small, skip the fast pass and go straight to high.",
+  done:"Each finding identifies a line of code and explains how it can fail. Discard findings that lack either detail.",
+  note:"Get approval before you use a general AI tool to review authentication, cryptography, or secrets handling.",
+  msg:{off:"Small tier skims a 400-line diff.",underT:"Balanced reviews, but its low pass is noisier. The point of the Workhorse tier here is signal at low.",overT:"Frontier finds the same bugs for twice the price.",overE:"A longer comment, not more findings.",fanOn:"One diff, one reader. Nothing to split."}},
+ {id:"knowledge",grp:"know",title:"Summarise a document or answer a question.",desc:"One document or one question. You will read the answer.",
+  shape:{check:"human",size:"one",brief:"clear",act:"answer"},rec:{t:1,e:0,fan:false},alt:{t:3,e:0},band:{tmin:0,t:[1,3],e:[0,1],fan:"no"},
+  why:"Flat curve. Low to medium gained 1 to 3 points; medium to high gained nothing and cost more. Low was also the fastest. If it has to be right, Fable 5.1 at low beat Sonnet 5 on deep research for about 10% less per task.",
+  higher:"High bought nothing over medium on four benchmarks. You pay in time.",
+  lower:"Haiku answered at a tenth of the price and got a third wrong.",
+  done:"Check three claims against the source.",
+  msg:{underT:"A tenth of the price, a third wrong.",overE:"On a flat curve, effort above medium bought nothing measurable. Low was fastest too.",fanOn:"One question. Nothing to split."}},
+ {id:"research",grp:"know",title:"Research a topic with no clear scope.",desc:"Nobody can check the answer quickly, and it has to be right.",
+  shape:{check:"hard",size:"big",brief:"vague",act:"act"},rec:{t:3,e:3,fan:false},band:{tmin:2,t:[3,3],e:[2,4],fan:"ok"},
+  why:"Steep curve. On multi-subtopic research each effort step bought about 2.4 rubric points. Fable 5 at low already beat Sonnet 5 here for about 10% less per task, so the frontier model is the saving.",
+  higher:"Max is measurable here. If you can say what the extra level bought, pay for it.",
+  lower:"Each step down costs about 2.4 points. Low is a scoping pass, not the answer.",
+  done:"Each claim has a source that you can open.",
+  msg:{off:"Below Workhorse the answer is wide and shallow.",underT:"Opus 5 covers it. Fable 5 at low beat Sonnet 5 here and cost less, so the step up often pays.",underE:"Each step down costs about 2.4 points on this shape."}},
+ {id:"synthesis",grp:"know",title:"Find common themes in thirty documents.",desc:"Bulk reading, then one synthesis step.",
+  shape:{check:"human",size:"big",brief:"clear",act:"fan"},rec:{t:2,e:2,fan:true},workers:{t:1,e:0},band:{tmin:2,t:[2,3],e:[0,2],eByTier:{2:[2,2],3:[0,0]},fan:"need"},
+  why:"Knowledge work has a flat curve, so the readers run cheap: the Balanced tier at low on each document. One stronger model writes the synthesis: Workhorse at high, or Frontier at low.",
+  higher:"Nothing measured above high for the synthesis step.",
+  lower:"Frontier at low is a fair synthesiser. Measured, Fable 5.1 at low beat Sonnet 5 on deep research for less.",
+  done:"Each theme names the documents that support it.",
+  note:"Remove customer data from each document before you send it to an agent (ISMS 1.4).",
+  msg:{off:"Small and Balanced tiers read for a synthesiser. They do not write the synthesis.",fanOff:"Thirty documents will not fit one context. Hand the reading to workers.",overE:"Nothing measured above high for a synthesis step."}},
+ {id:"bulk",grp:"scale",title:"Make forty independent fixes.",desc:"Fix every use of a deprecated API across forty modules. Each one compiles and has tests.",
+  shape:{check:"tool",size:"big",brief:"clear",act:"fan"},rec:{t:2,e:3,fan:true},workers:{t:1,e:0},band:{tmin:2,t:[2,3],e:[3,3],fan:"need"},
+  why:"Larger than one context, and each piece is checkable, so cheap attempts are safe. On this shape orchestration cost 55% less than the frontier model working alone, at every effort setting.",
+  higher:"Frontier orchestrating works. You pay for a planner you did not need.",
+  lower:"A planner at high starts missing modules in its review. Re-run worker failures at Balanced high, then Workhorse.",
+  done:"Every module compiles and its tests pass. Each agent returns its result in one message. If an agent fails, it reports an error.",
+  msg:{off:"Small and Balanced tiers do the pieces. They do not plan forty of them.",fanOff:"Alone, this exceeds one context. Turn fan-out on and let cheap workers do the pieces.",overT:"Frontier plans it fine. You pay for a planner you did not need.",underE:"A planner at high starts missing modules in its review.",overE:"Max on the planner buys deliberation, not coverage."}},
+ {id:"build",grp:"scale",title:"Build from a specification over several hours.",desc:"Fresh-context verifiers check the work against the spec on a cadence.",
+  shape:{check:"tool",size:"big",brief:"some",act:"fan"},rec:{t:3,e:3,fan:true},band:{tmin:2,t:[3,3],e:[3,3],fan:"need"},
+  why:"Separate verifiers outperform self-critique, and Fable 5.1 sustains long-running communication with subagents reliably. Give it a plain .md file to write what it has learned.",
+  higher:"Max, only if xhigh verifiers keep passing work the spec rejects.",
+  lower:"Below xhigh the build drifts from the spec between verifier runs.",
+  done:"The model checks each progress claim against tool results before it reports progress. Allow 15 minutes for one turn. Stream the output and check progress without waiting for the turn to finish.",
+  msg:{off:"An hours-long build needs a model that sustains it.",underT:"Workhorse runs it. Measured, Fable 5.1 held the thread with verifiers over hours more reliably.",fanOff:"Without verifier subagents it grades its own work. Self-critique loses to a fresh reader.",underE:"The build drifts from the spec between verifier runs."}},
+ {id:"ultra",grp:"scale",title:"Let the model divide a large task.",desc:"Substantive, splittable, and you would rather not design the split.",
+  shape:{check:"human",size:"big",brief:"vague",act:"fan"},rec:{t:2,e:3,fan:true},band:{tmin:2,t:[2,3],e:[3,4],fan:"need"},
+  why:"In Claude Code, the word ultracode runs the session at xhigh and fans out subagents that verify each other’s work. On GPT-6.1 Sol in Codex, ultra is an effort value above max that spawns sub-agents inside the model. On Grok 4.20 multi-agent, the effort setting itself decides how many agents work the request. Same idea, three boundaries.",
+  higher:"There is nothing above it on any side.",
+  lower:"Turn fan-out off and you have an ordinary xhigh session. Fine for a single-file edit, which none of these modes is for.",
+  done:"Reset the effort setting after this task. The picker saves your setting.",
+  note:"In Claude Code, multiple agents do not add a sixth effort level. Set a cost limit when the budget is limited.",
+  msg:{off:"Neither mode runs on the Small or Balanced tier.",fanOff:"Without fan-out this is just xhigh. The mode is the point.",underE:"The mode runs at xhigh. Below it you are not in the mode."}}
+];
+
+/* ---------- questions ---------- */
+var QS=[
+ {k:"check",q:"How will you check the result?",o:[["tool","The build or tests will check the result."],["human","I will read the result and check it."],["hard","I cannot check it quickly."]]},
+ {k:"size",q:"How large is the task?",o:[["one","It is one file or one answer."],["some","It is several files or documents."],["big","One model cannot read all the material at once."]]},
+ {k:"brief",q:"How clear are the instructions?",o:[["clear","I can describe the exact change."],["some","The goal is clear, but the approach is open."],["vague","The model must work out the approach."]]},
+ {k:"act",q:"What must the model do?",o:[["answer","It must give an answer."],["act","It must make changes and check them."],["fan","It must divide the work between multiple agents."]]}
+];
+var STATUS={good:"This setting fits the task.",over:"This setting uses more than the task needs.",under:"This setting may need another attempt.",off:"This model does not fit the task.",na:"This effort level is not available."};
+
+/* ---------- fit rules ---------- */
+function judge(c,t,e,fan){
+ var b=c.band,eb=(b.eByTier&&b.eByTier[t])||b.e;
+ if(t<b.tmin)return {s:"off",n:"Choose a more capable model for this task."};
+ if(t<b.t[0])return {s:"under",n:"Choose a more capable model to reduce the risk of another attempt."};
+ if(e<eb[0])return {s:"under",n:"Increase effort before you try a more capable model."};
+ if(b.fan==="need"&&!fan)return {s:"under",n:"Turn on multiple agents to divide the work or check the result."};
+ if(b.fan==="no"&&fan)return {s:"over",n:"One agent can do this task. Turn off multiple agents."};
+ if(t>b.t[1])return {s:"over",n:"A less capable model can do this task. Compare prices in the matrix."};
+ if(e>eb[1])return {s:"over",n:"Lower effort is a suitable starting point for this task."};
+ return {s:"good",n:"Use this setting for a first attempt, then check the result."};
+}
+function fit(c,m,e,fan){
+ if(m.eff&&m.eff.indexOf(EFF[e])<0)return {s:"na",n:m.name+" does not offer "+EFFLABEL[e].toLowerCase()+" effort."};
+ if(m.code&&c.grp==="know")return {s:"off",n:"Choose a general-purpose model for reading or research. Composer is for code."};
+ return judge(c,m.t,m.eff?e:0,fan&&m.t>=2);
+}
+function card(id){return CARDS.filter(function(c){return c.id===id})[0]||CARDS[3]}
+function offered(m,e){return !m.eff||m.eff.indexOf(EFF[e])>=0}
+function clampEffort(m,e){if(!m.eff)return e;while(e>0&&!offered(m,e))e--;return e}
+
+
+/* ---------- state ---------- */
+var KEY="model-effort-map-v4";
+var ST={mode:"guided",ready:false,sel:"refactor",m:"opus55",e:3,fan:false,answers:{}};
+var QZ={i:0,ans:{}},preview=null,INTRO=false;
+try{
+ var saved=JSON.parse(localStorage.getItem(KEY)||"{}");
+ if(CARDS.some(function(c){return c.id===saved.sel}))ST.sel=saved.sel;
+ if(MODELS.some(function(m){return m.id===saved.m}))ST.m=saved.m;
+ if(Number.isInteger(saved.e)&&saved.e>=0&&saved.e<5)ST.e=saved.e;
+ if(typeof saved.fan==="boolean")ST.fan=saved.fan;
+ if(saved.mode==="explore"||saved.mode==="guided")ST.mode=saved.mode;
+ if(typeof saved.ready==="boolean")ST.ready=saved.ready;
+ if(saved.answers&&typeof saved.answers==="object")QS.forEach(function(q){if(q.o.some(function(o){return o[0]===saved.answers[q.k]}))ST.answers[q.k]=saved.answers[q.k]});
+}catch(x){}
+ST.e=clampEffort(mById(ST.m),ST.e);
+QZ.ans=Object.assign({},ST.answers);
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(x){}}
+function setHash(){try{history.replaceState(null,"",ST.ready||ST.mode==="explore"?"#"+ST.sel:location.pathname+location.search)}catch(x){}}
+function maxEffort(m){return m.eff?Math.max.apply(null,m.eff.map(function(v){return EFF.indexOf(v)})):4}
+
+/* ---------- dials ---------- */
+var NS="http://www.w3.org/2000/svg",SWEEP=[-135,135],VB={x:-150,y:-128,w:300,h:250};
+function sv(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function polar(r,deg){var a=(deg-90)*Math.PI/180;return [r*Math.cos(a),r*Math.sin(a)]}
+function arcPath(r,a0,a1){var p0=polar(r,a0),p1=polar(r,a1);return "M"+p0[0].toFixed(2)+" "+p0[1].toFixed(2)+" A"+r+" "+r+" 0 "+((a1-a0)>180?1:0)+" 1 "+p1[0].toFixed(2)+" "+p1[1].toFixed(2)}
+function anchorFor(a){var x=Math.sin(a*Math.PI/180);return x>.25?"start":x<-.25?"end":"middle"}
+function makeDial(host,cfg){
+ var d={i:0,ghost:null,off:false,ticks:[],labels:[],angles:cfg.pos.map(function(f){return SWEEP[0]+(SWEEP[1]-SWEEP[0])*f})};
+ var svg=sv("svg",{viewBox:VB.x+" "+VB.y+" "+VB.w+" "+VB.h,"aria-hidden":"true",focusable:"false"},host);
+ d.groupLabels=[];
+ (cfg.groups||[]).forEach(function(g){
+  var a0=d.angles[g.from]-6,a1=d.angles[g.to]+6;
+  sv("path",{d:arcPath(84,a0,a1),class:"g-arc"},svg);
+  var mid=(a0+a1)/2,p=polar(98,mid),t=sv("text",{x:p[0].toFixed(1),y:(p[1]+5).toFixed(1),class:"d-label","text-anchor":anchorFor(mid)},svg);
+  t.textContent=g.label;t.addEventListener("pointerdown",function(){});d.groupLabels.push({el:t,g:g});
+ });
+ d.angles.forEach(function(a,i){
+  var p0=polar(68,a),p1=polar(77,a);
+  d.ticks.push(sv("line",{x1:p0[0].toFixed(2),y1:p0[1].toFixed(2),x2:p1[0].toFixed(2),y2:p1[1].toFixed(2),class:"tick"},svg));
+  if(cfg.labels){var p=polar(96,a),t=sv("text",{x:p[0].toFixed(1),y:(p[1]+5).toFixed(1),class:"d-label","text-anchor":anchorFor(a)},svg);t.textContent=cfg.labels[i];d.labels.push(t)}
+ });
+ sv("circle",{r:61,class:"collar"},svg);
+ var kw=sv("g",{class:"knob-wrap"},svg);sv("circle",{r:53,class:"knob"},kw);
+ d.ptr=sv("g",{class:"ptr"},svg);sv("line",{x1:0,y1:-18,x2:0,y2:-44},d.ptr);
+ function allowed(i){return !cfg.allowed||cfg.allowed(i)}
+ function nearest(ev){
+  var r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width*VB.w+VB.x,y=(ev.clientY-r.top)/r.height*VB.h+VB.y;
+  if(Math.hypot(x,y)<12)return d.i;
+  var a=Math.atan2(x,-y)*180/Math.PI,best=d.i,bd=1e9;
+  d.angles.forEach(function(an,i){if(!allowed(i))return;var dd=Math.abs(an-a);if(dd<bd){bd=dd;best=i}});
+  return best;
+ }
+ var dragging=false;
+ host.addEventListener("pointerdown",function(ev){if(d.off||ev.button>0)return;dragging=true;host.classList.add("dragging");try{host.setPointerCapture(ev.pointerId)}catch(x){}var n=nearest(ev);if(n!==d.i)cfg.onChange(n);host.focus({preventScroll:true,focusVisible:false});ev.preventDefault()});
+ host.addEventListener("pointermove",function(ev){if(!dragging)return;var n=nearest(ev);if(n!==d.i)cfg.onChange(n)});
+ function end(){dragging=false;host.classList.remove("dragging")}
+ host.addEventListener("pointerup",end);host.addEventListener("pointercancel",end);
+ host.addEventListener("keydown",function(ev){
+  if(d.off)return;var k=ev.key,n=null,i;
+  if(k==="ArrowRight"||k==="ArrowUp"){for(i=d.i+1;i<d.angles.length;i++)if(allowed(i)){n=i;break}}
+  else if(k==="ArrowLeft"||k==="ArrowDown"){for(i=d.i-1;i>=0;i--)if(allowed(i)){n=i;break}}
+  else if(k==="Home"){for(i=0;i<d.angles.length;i++)if(allowed(i)){n=i;break}}
+  else if(k==="End"){for(i=d.angles.length-1;i>=0;i--)if(allowed(i)){n=i;break}}
+  else return;
+  ev.preventDefault();if(n!=null&&n!==d.i)cfg.onChange(n);
+ });
+ d.set=function(i,o){
+  o=o||{};d.i=i;d.off=!!o.off;host.classList.toggle("off",d.off);
+  d.ptr.style.transform="rotate("+d.angles[i]+"deg)";
+  d.ticks.forEach(function(t,k){t.classList.toggle("on",k===i&&!d.off);t.classList.toggle("na",!allowed(k));t.classList.toggle("gh",k===d.ghost&&k!==i)});
+  d.labels.forEach(function(t,k){t.classList.toggle("on",k===i&&!d.off);t.classList.toggle("na",!allowed(k))});
+  d.groupLabels.forEach(function(gl){gl.el.classList.toggle("on",i>=gl.g.from&&i<=gl.g.to)});
+  host.setAttribute("aria-valuemin","0");host.setAttribute("aria-valuemax",String(d.angles.length-1));host.setAttribute("aria-valuenow",String(i));
+  host.setAttribute("aria-valuetext",o.text||String(i));host.setAttribute("aria-disabled",d.off?"true":"false");
+ };
+ d.setGhost=function(i){d.ghost=i;d.ticks.forEach(function(t,k){t.classList.toggle("gh",k===i&&k!==d.i)})};
+ d.jump=function(i){host.classList.add("still");d.ptr.style.transform="rotate("+d.angles[i]+"deg)";host.getBoundingClientRect();void d.ptr.getBoundingClientRect();host.classList.remove("still")};
+ return d;
+}
+var DORDER=[];[0,1,2,3].forEach(function(t){MODELS.forEach(function(m){if(m.t===t)DORDER.push(m.id)})});
+var gpos=[],groups=[],gi=-1,lastT=null;
+DORDER.forEach(function(id,i){var t=mById(id).t;if(t!==lastT){gi++;lastT=t;groups.push({from:i,to:i,label:TIER[t]})}else groups[groups.length-1].to=i;gpos.push(i+gi*.9)});
+var gspan=gpos[gpos.length-1];
+var modelDial=makeDial($("#modelDial"),{pos:gpos.map(function(p){return p/gspan}),groups:groups,onChange:function(i){setModel(DORDER[i])}});
+var effortDial=makeDial($("#effortDial"),{pos:[0,.25,.5,.75,1],labels:EFFLABEL,allowed:function(i){return offered(mById(ST.m),i)},onChange:function(i){ST.e=i;preview=null;chooseContext();renderAll()}});
+
+/* ---------- map ---------- */
+var cellEls={},rowEls={},ORDER=[];
+function buildGrid(){
+ var host=$("#gridBody"),lastTier=null;
+ [3,2,1,0].forEach(function(t){MODELS.filter(function(m){return m.t===t}).forEach(function(m){
+  ORDER.push(m.id);
+  var first=lastTier!==t;
+  var row=ce("tr","model-row"+(lastTier!==null&&first?" tier-start":""));row.setAttribute("role","row");row.dataset.model=m.id;lastTier=t;
+  var label=ce("th","rh");label.scope="row";label.setAttribute("role","rowheader");label.title=m.v+". "+TIER[m.t]+" capability group. List price per million tokens: "+lp(m.pin)+" input and "+lp(m.pout)+" output.";
+  var name=ce("span","model-label");name.appendChild(ce("span","model-name",m.name));name.appendChild(ce("span","vendor",m.v));label.appendChild(name);row.appendChild(label);rowEls[m.id]=row;cellEls[m.id]={};
+  function add(e){var td=ce("td"),b=ce("button","cell"+(e===null?" span":""));td.setAttribute("role","gridcell");b.type="button";b.dataset.model=m.id;b.dataset.e=e===null?"span":String(e);b.style.setProperty("--d",((e===null?0:e)*55+ORDER.length*14)+"ms");if(e===null){td.colSpan=5;td.setAttribute("aria-colspan","5")}wireCell(b,m,e);td.appendChild(b);row.appendChild(td);cellEls[m.id][e===null?"span":e]=b}
+  if(!m.eff)add(null);else EFF.forEach(function(_,e){add(e)});
+  host.appendChild(row);
+ })});
+}
+function wireCell(b,m,e){
+ b.addEventListener("pointermove",function(ev){if(ev.pointerType==="touch")return;var value=e===null?ST.e:e;if(offered(m,value)&&(!preview||preview.m.id!==m.id||preview.e!==value)){preview={m:m,e:value};renderLive()}});
+ b.addEventListener("focus",function(){if(offered(m,e===null?ST.e:e)){preview={m:m,e:e===null?ST.e:e};renderLive()}});
+ b.addEventListener("click",function(){if(e!==null&&!offered(m,e))return;ST.m=m.id;if(e!==null)ST.e=e;preview=null;chooseContext();renderAll()});
+}
+function paintGrid(){
+ var c=card(ST.sel);
+ MODELS.forEach(function(m){rowEls[m.id].classList.toggle("selected-row",m.id===ST.m);var els=cellEls[m.id];Object.keys(els).forEach(function(k){var e=k==="span"?ST.e:Number(k),b=els[k],j=fit(c,m,e,ST.fan),p=price(m,e),sel=m.id===ST.m&&(!m.eff||e===ST.e);
+  b.className="cell"+(k==="span"?" span":"")+" st-"+j.s+(sel?" sel":"")+(j.s==="na"?" na":"");
+  b.innerHTML="";
+  b.appendChild(ce("span","pv",j.s==="na"?"—":fmt(p)));
+  if(k==="span")b.appendChild(ce("span","effort-note","The model has no effort setting."));
+  b.disabled=j.s==="na";
+  b.tabIndex=sel?0:-1;
+  b.setAttribute("aria-pressed",sel?"true":"false");
+  b.setAttribute("aria-label",m.name+(m.eff?" at "+EFFLABEL[e].toLowerCase()+" effort":"")+". "+STATUS[j.s]+(j.s==="na"?"":" "+fmt(p).replace("+"," or more")+" per attempt."));
+ })});
+ var sm=mById(ST.m);[].forEach.call($("#headRow").children,function(th,i){th.classList.toggle("on",i>0&&sm.eff&&i-1===ST.e)});
+ $("#matrixCaption").textContent="The matrix shows how each model and effort level fits this task: "+c.title;
+}
+function revealChoice(){
+ var wrap=$("#gridwrap"),m=mById(ST.m);
+ if(wrap.scrollWidth<=wrap.clientWidth+1)return;
+ if(!m.eff){wrap.scrollLeft=0;return}
+ var b=cellEls[m.id][ST.e],r=b.getBoundingClientRect(),w=wrap.getBoundingClientRect(),label=rowEls[m.id].querySelector(".rh").getBoundingClientRect();
+ var edge=w.left+label.width+8;
+ if(r.right>w.right-4)wrap.scrollLeft+=r.right-w.right+4;
+ else if(r.left<edge)wrap.scrollLeft-=edge-r.left;
+}
+
+/* ---------- controls ---------- */
+function buildControls(){
+ var models=$("#modelSelect"),vend={};["Claude","OpenAI","xAI","Cursor"].forEach(function(v){vend[v]=ce("optgroup");vend[v].label=v;models.appendChild(vend[v])});DORDER.slice().reverse().forEach(function(id){var m=mById(id);if(!vend[m.v]){vend[m.v]=ce("optgroup");vend[m.v].label=m.v;models.appendChild(vend[m.v])}var o=ce("option","",m.name);o.value=m.id;vend[m.v].appendChild(o)});
+ var tasks=$("#taskSelect"),list=$("#taskList");CARDS.forEach(function(c){var o=ce("option","",c.title);o.value=c.id;tasks.appendChild(o);var b=ce("button","task",c.title);b.type="button";b.dataset.task=c.id;b.onclick=function(){ST.sel=c.id;preview=null;renderAll()};list.appendChild(b)});
+}
+function matchingTasks(){var m=mById(ST.m);return CARDS.filter(function(c){return fit(c,m,ST.e,ST.fan).s==="good"})}
+function chooseContext(){if(ST.mode!=="explore")return;var matches=matchingTasks();if(matches.length&&!matches.some(function(c){return c.id===ST.sel}))ST.sel=matches[0].id}
+function renderControls(){
+ var m=mById(ST.m);
+ $("#modelSelect").value=m.id;$("#taskSelect").value=ST.sel;
+ $("#modelSub").textContent=m.v+", "+TIER[m.t]+" group";$("#modelSub").title="List price per million tokens: "+lp(m.pin)+" input and "+lp(m.pout)+" output.";
+ modelDial.set(DORDER.indexOf(m.id),{text:m.name+" from "+m.v+", "+TIER[m.t]+" group"});
+ effortDial.set(m.eff?ST.e:2,{off:!m.eff,text:m.eff?EFFLABEL[ST.e]+" effort":"This model has no effort setting"});
+ $("#effortValue").textContent=m.eff?EFFLABEL[ST.e]:"No effort setting";
+ $("#fanOff").setAttribute("aria-checked",ST.fan?"false":"true");$("#fanOn").setAttribute("aria-checked",ST.fan?"true":"false");
+ $("#fanOff").tabIndex=ST.fan?-1:0;$("#fanOn").tabIndex=ST.fan?0:-1;
+ $("#matches").hidden=ST.mode!=="explore";$("#restartBtn").hidden=ST.mode==="explore";$("#taskSelect").parentElement.hidden=ST.mode==="explore";$("#compareTask").hidden=ST.mode!=="explore";$("#compareTask").textContent=card(ST.sel).title;
+ var matches=matchingTasks();CARDS.forEach(function(c){var b=$('[data-task="'+c.id+'"]');b.hidden=!matches.some(function(x){return x.id===c.id});b.setAttribute("aria-pressed",ST.sel===c.id?"true":"false")});
+ $("#emptyMatches").hidden=matches.length>0;$("#matchesLabel").hidden=matches.length===0;
+}
+function setModel(id){ST.m=id;ST.e=clampEffort(mById(id),ST.e);preview=null;chooseContext();renderAll()}
+function selectTask(id,snap){var c=card(id);ST.sel=c.id;if(snap){ST.e=c.rec.e;ST.fan=!!c.rec.fan;var m=MODELS.filter(function(x){return x.t===c.rec.t&&offered(x,c.rec.e)&&!(x.code&&c.grp==="know")})[0];if(m)ST.m=m.id}preview=null;renderAll()}
+function setFan(v){ST.fan=v;preview=null;chooseContext();renderAll()}
+
+/* ---------- readout ---------- */
+function renderVerdict(m,e,isPreview){
+ var c=card(ST.sel),j=fit(c,m,e,ST.fan),p=price(m,e),h=$("#verdict");h.innerHTML="";
+ var main=ce("div","r-main"),cost=ce("div","r-cost");
+ if(isPreview)main.appendChild(ce("p","r-preview","Preview. Select the cell to choose this setting."));
+ var st=ce("p","r-state"),sw=ce("i","sw st-"+(j.s==="na"?"off":j.s));sw.setAttribute("aria-hidden","true");st.appendChild(sw);st.appendChild(document.createTextNode(STATUS[j.s]));main.appendChild(st);
+ var multi=ST.fan&&m.t>=2;
+ main.appendChild(ce("p","r-meta",m.name+(m.eff?" at "+EFFLABEL[e].toLowerCase()+" effort":", which has no effort setting")+(multi?", with multiple agents.":", with one agent.")));
+ main.appendChild(ce("p","r-text",j.n));
+ if(m.warn)main.appendChild(ce("p","r-note warn",m.note));
+ if(ST.fan&&m.t<2)main.appendChild(ce("p","r-note","This model runs as one agent. Multiple agents require a model in the Workhorse or Frontier group."));
+ if(c.note)main.appendChild(ce("p","r-note",c.note));
+ var details=ce("details","detail");details.appendChild(ce("summary","","See how to check the result."));details.appendChild(ce("p","",c.done));main.appendChild(details);
+ var pr=ce("p","r-price");pr.appendChild(ce("span","r-num",j.s==="na"?"—":fmt(p)));pr.appendChild(ce("span","r-unit",p.plus?"per attempt. An attempt may cost more.":"per attempt. The price is an estimate."));cost.appendChild(pr);
+ h.appendChild(main);h.appendChild(cost);
+}
+function renderLive(){
+ var pm=preview?preview.m:mById(ST.m),pe=preview?preview.e:ST.e,isPrev=!!preview&&(preview.m.id!==ST.m||preview.e!==ST.e);
+ renderVerdict(pm,pe,isPrev);
+ modelDial.setGhost(isPrev&&pm.id!==ST.m?DORDER.indexOf(pm.id):null);
+ effortDial.setGhost(isPrev&&pm.eff&&pe!==ST.e?pe:null);
+}
+function clearPreview(){var changed=preview&&(preview.m.id!==ST.m||preview.e!==ST.e);preview=null;if(changed)renderLive()}
+
+/* the one orchestrated moment: after the questions, both dials turn from rest to the recommendation and the map fills in */
+function runIntro(){
+ if(REDUCED.matches)return;
+ var m=mById(ST.m),mi=DORDER.indexOf(m.id),ei=m.eff?ST.e:2;
+ modelDial.jump(0);effortDial.jump(0);
+ var g=$("#grid");g.classList.remove("wave");g.classList.add("pre");void g.offsetWidth;
+ requestAnimationFrame(function(){requestAnimationFrame(function(){
+  modelDial.set(mi,{text:$("#modelDial").getAttribute("aria-valuetext")});
+  setTimeout(function(){effortDial.set(ei,{off:!m.eff,text:$("#effortDial").getAttribute("aria-valuetext")})},160);
+  setTimeout(function(){g.classList.add("wave");g.classList.remove("pre");setTimeout(function(){g.classList.remove("wave")},1400)},380);
+ })});
+}
+function renderAll(){
+ var guided=ST.mode==="guided",ready=ST.ready||!guided;
+ $(".app").classList.toggle("is-quiz",!ready);$("#pageTitle").hidden=!ready;$("#pageTitle").textContent=guided?"Choose your starting point.":"Explore models.";
+ $("#guidedBtn").setAttribute("aria-selected",guided?"true":"false");$("#exploreBtn").setAttribute("aria-selected",guided?"false":"true");$("#guidedBtn").tabIndex=guided?0:-1;$("#exploreBtn").tabIndex=guided?-1:0;
+ $("#guidedPanel").hidden=!guided;$("#explorePanel").hidden=guided;$("#quiz").hidden=ready;$("#result").hidden=!ready;
+ if(ready){var panel=guided?$("#guidedPanel"):$("#explorePanel");panel.appendChild($("#result"));renderControls();paintGrid();renderLive();revealChoice();if(INTRO){INTRO=false;runIntro()}}else renderQuiz();
+ save();setHash();
+}
+
+/* ---------- questions ---------- */
+var QT={token:0,animation:null,busy:false};
+function cancelQuizTransition(){
+ QT.token++;if(QT.animation)QT.animation.cancel();QT.animation=null;QT.busy=false;
+ var host=$("#quiz");host.removeAttribute("aria-busy");host.querySelectorAll("button").forEach(function(b){b.disabled=false});
+}
+function transitionQuiz(action,direction){
+ if(QT.busy)return;
+ var host=$("#quiz");
+ if(REDUCED.matches||typeof host.animate!=="function"){action();return}
+ var token=++QT.token;QT.busy=true;host.setAttribute("aria-busy","true");
+ host.querySelectorAll("button").forEach(function(b){b.disabled=true});
+ function finish(){if(token!==QT.token)return;QT.animation=null;QT.busy=false;host.removeAttribute("aria-busy");host.querySelectorAll("button").forEach(function(b){b.disabled=false})}
+ QT.animation=host.animate([{opacity:1,transform:"translateX(0)"},{opacity:0,transform:"translateX("+(-direction*6)+"px)"}],{duration:170,easing:"cubic-bezier(.4,0,.2,1)",fill:"forwards"});
+ QT.animation.finished.then(function(){
+  if(token!==QT.token)return;
+  QT.animation.cancel();QT.animation=null;action();
+  if(token!==QT.token)return;
+  var target=ST.ready?$("#result"):host;
+  host.querySelectorAll("button").forEach(function(b){b.disabled=true});
+  QT.animation=target.animate([{opacity:0,transform:"translateY("+(ST.ready?10:0)+"px) translateX("+(ST.ready?0:direction*8)+"px)"},{opacity:1,transform:"none"}],{duration:420,easing:"cubic-bezier(.16,1,.3,1)"});
+  return QT.animation.finished;
+ }).then(finish,finish);
+}
+function measureQuiz(){
+ var host=$("#quiz"),width=host.getBoundingClientRect().width;
+ if(host.hidden||!width||!host.querySelector("h1"))return;
+ var probe=host.cloneNode(true);probe.removeAttribute("id");probe.setAttribute("aria-hidden","true");probe.inert=true;
+ probe.querySelectorAll("[id]").forEach(function(e){e.removeAttribute("id")});
+ probe.style.cssText="position:absolute;visibility:hidden;pointer-events:none;width:"+width+"px;min-height:0;margin:0;transform:none";
+ if(!probe.querySelector(".qnav")){var nav=ce("div","qnav");nav.appendChild(ce("button","text-button","Back"));probe.appendChild(nav)}
+ host.parentElement.appendChild(probe);
+ var height=0;
+ try{QS.forEach(function(q){probe.querySelector("h1").textContent=q.q;probe.querySelectorAll(".qopt > span").forEach(function(e,i){e.textContent=q.o[i][1]});height=Math.max(height,probe.getBoundingClientRect().height)})}finally{probe.remove()}
+ host.style.minHeight=Math.ceil(height)+"px";
+}
+function answer(k,v){
+ if(QT.busy)return;QZ.ans[k]=v;ST.answers=Object.assign({},QZ.ans);save();
+ transitionQuiz(function(){if(QZ.i<QS.length-1){QZ.i++;renderQuiz();$("#questionTitle").focus({preventScroll:true})}else finishQuiz()},1);
+}
+function renderQuiz(){
+ var host=$("#quiz"),q=QS[QZ.i];host.innerHTML="";
+ var progress=ce("p","progress"),steps=ce("span","steps");steps.setAttribute("aria-hidden","true");QS.forEach(function(_,i){steps.appendChild(ce("i",i<=QZ.i?"on":""))});progress.appendChild(steps);progress.appendChild(document.createTextNode("Question "+(QZ.i+1)+" of "+QS.length+"."));host.appendChild(progress);
+ var heading=ce("h1","",q.q);heading.id="questionTitle";heading.tabIndex=-1;host.appendChild(heading);
+ var opts=ce("div","qopts");opts.setAttribute("aria-labelledby","questionTitle");
+ q.o.forEach(function(o,n){var b=ce("button","qopt");b.type="button";b.appendChild(ce("span","",o[1]));var kb=ce("kbd","",String(n+1));kb.setAttribute("aria-hidden","true");b.appendChild(kb);b.setAttribute("aria-pressed",QZ.ans[q.k]===o[0]?"true":"false");b.setAttribute("aria-keyshortcuts",String(n+1));b.onclick=function(){answer(q.k,o[0])};opts.appendChild(b)});
+ host.appendChild(opts);
+ if(QZ.i>0){var nav=ce("div","qnav"),back=ce("button","text-button","Back");back.type="button";back.onclick=function(){transitionQuiz(function(){QZ.i--;renderQuiz();$("#questionTitle").focus({preventScroll:true})},-1)};nav.appendChild(back);host.appendChild(nav)}
+ measureQuiz();
+}
+function finishQuiz(){var best=CARDS[0],score=-1;CARDS.forEach(function(c){var n=0;QS.forEach(function(q){if(c.shape[q.k]===QZ.ans[q.k])n++});if(n>score){score=n;best=c}});ST.ready=true;ST.answers=Object.assign({},QZ.ans);INTRO=true;selectTask(best.id,true);$("#taskSelect").focus({preventScroll:true})}
+function restart(){cancelQuizTransition();ST.ready=false;ST.answers={};QZ={i:0,ans:{}};preview=null;ST.mode="guided";$("#guidedPanel").appendChild($("#result"));renderAll();$("#questionTitle").focus({preventScroll:true})}
+function switchMode(mode){cancelQuizTransition();ST.mode=mode;preview=null;chooseContext();renderAll()}
+
+/* ---------- events ---------- */
+$("#guidedBtn").onclick=function(){switchMode("guided")};$("#exploreBtn").onclick=function(){switchMode("explore")};$("#restartBtn").onclick=restart;
+$("#modelSelect").onchange=function(){setModel(this.value)};
+$("#taskSelect").onchange=function(){selectTask(this.value,ST.mode==="guided")};
+$("#fanOff").onclick=function(){setFan(false)};$("#fanOn").onclick=function(){setFan(true)};
+$(".switch").addEventListener("keydown",function(ev){if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].indexOf(ev.key)<0)return;ev.preventDefault();setFan(!ST.fan);$(ST.fan?"#fanOn":"#fanOff").focus()});
+$("#grid").addEventListener("pointerleave",clearPreview);
+$("#grid").addEventListener("focusout",function(ev){if(!$("#grid").contains(ev.relatedTarget))clearPreview()});
+$(".views").addEventListener("keydown",function(ev){if(ev.key==="ArrowLeft"||ev.key==="ArrowRight"){ev.preventDefault();switchMode(ST.mode==="guided"?"explore":"guided");$(ST.mode==="guided"?"#guidedBtn":"#exploreBtn").focus()}});
+$("#gridwrap").addEventListener("keydown",function(ev){if(ev.metaKey||ev.ctrlKey||ev.altKey)return;var k=ev.key,i=ORDER.indexOf(ST.m);if(k==="ArrowLeft"||k==="ArrowRight"){var max=mById(ST.m).eff?maxEffort(mById(ST.m)):ST.e;ST.e=Math.max(0,Math.min(max,ST.e+(k==="ArrowRight"?1:-1)))}else if(k==="ArrowUp"||k==="ArrowDown"){ST.m=ORDER[Math.max(0,Math.min(ORDER.length-1,i+(k==="ArrowDown"?1:-1)))];ST.e=clampEffort(mById(ST.m),ST.e)}else if(k==="f"||k==="F"){ST.fan=!ST.fan}else if(k==="Escape"){preview=null;renderLive();return}else return;ev.preventDefault();preview=null;chooseContext();renderAll();var cells=cellEls[ST.m],selected=cells.span||cells[ST.e];selected.focus({preventScroll:true});selected.scrollIntoView({block:"nearest",inline:"nearest"})});
+document.addEventListener("keydown",function(ev){
+ if($("#quiz").hidden||ev.metaKey||ev.ctrlKey||ev.altKey)return;var t=ev.target.tagName;if(t==="INPUT"||t==="SELECT"||t==="TEXTAREA")return;
+ var n=parseInt(ev.key,10),q=QS[QZ.i];if(!q||!(n>=1&&n<=q.o.length))return;ev.preventDefault();answer(q.k,q.o[n-1][0]);
+});
+window.addEventListener("hashchange",function(){cancelQuizTransition();var id=location.hash.slice(1);if(CARDS.some(function(c){return c.id===id})){ST.ready=true;selectTask(id,ST.mode==="guided")}});
+window.addEventListener("resize",function(){revealChoice();measureQuiz()});
+
+/* ---------- boot ---------- */
+buildControls();buildGrid();
+var initial=location.hash.slice(1);
+if(CARDS.some(function(c){return c.id===initial})){ST.ready=true;selectTask(initial,ST.mode==="guided")}else{chooseContext();renderAll()}
+if(document.fonts)document.fonts.ready.then(measureQuiz);
+})();
+</script>
+
+</html>
