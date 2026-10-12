@@ -395,7 +395,7 @@ Then land the bottom line. The assessment looked at nine methods and found that 
       1  AGENT PAGES     PRO   fast to start · reads well · good at exploring
                          CON   two runs, two answers · cannot show what it missed
 
-      2  EXISTING INDEX  PRO   symbols and callers for free · someone else maintains it
+      2  INDEX TOOLS     PRO   symbols and callers for free · someone else maintains it
                          CON   no framework meaning, no business · one tree at a time
 
       3  OUR OWN INDEX   PRO   exact · repeatable · covers the frameworks we use
