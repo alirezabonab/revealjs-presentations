@@ -1,0 +1,7 @@
+/* This deck intentionally reuses the presentation engine's global visual system.
+
+   It follows decks 07-10: the same monochrome ASCII stages, the engine's
+   self-hosted JetBrains Mono font, and no local colour or font overrides.
+
+   Every stage is 88 columns wide and at most 21 lines tall, so the text renders
+   at the engine's 24px ceiling on a 1400x900 stage. */

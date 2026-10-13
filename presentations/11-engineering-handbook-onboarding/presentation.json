@@ -1,0 +1,16 @@
+{
+  "title": "11 - Engineering Handbook: Tech Lead Onboarding",
+  "entry": "deck.md",
+  "theme": "simple",
+  "styles": ["assets/theme.css"],
+  "reveal": {
+    "transition": "none",
+    "backgroundTransition": "none",
+    "controlsLayout": "edges",
+    "center": true,
+    "width": 1400,
+    "height": 900,
+    "margin": 0.08,
+    "slideNumber": "c/t"
+  }
+}
