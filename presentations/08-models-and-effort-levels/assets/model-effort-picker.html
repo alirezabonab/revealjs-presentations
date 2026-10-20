@@ -5,183 +5,144 @@
 <title>Which model, how much effort?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600&display=swap">
 <style>
-/* Layout: one instrument panel (two dials, a mode switch, a readout) above one map of every model at every effort.
-   Boldness lives in the dials only. Ultramarine means "you are here" and nothing else. */
-:root{color-scheme:light;
- --paper:#F2F3F0;--surface:#FFFFFF;--ink:#1D2125;--muted:#646B71;--line:#D9DCD8;--line-2:#BFC4C1;--soft:#E9EBE8;
- --knob:#23282D;--knob-mark:#F2F3F0;--shadow:rgba(23,28,33,.24);--strip:#F8F9F7;
- --signal:#2E44D6;
- --good-bg:#BEE0CB;--good-fg:#15472F;--over-bg:#E7EEE8;--over-fg:#4C5F52;--under-line:#C99B71;--under-fg:#7B4E29;--off-fg:#8A9096;
+:root{color-scheme:light;--paper:#F6F6F4;--surface:#FFFFFF;--ink:#1D2125;--muted:#646B71;--line:#DDE0DC;--line-2:#C3C8C5;--soft:#EDEFEC;--signal:#2E44D6;
+ --good-bg:#C9E3D2;--good-fg:#17472F;--over-bg:#E8EDE9;--over-fg:#4C5F52;--under-line:#C99B71;--under-fg:#7B4E29;--off-fg:#8A9096;
  --sans:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;
- --paper:#111315;--surface:#181B1E;--ink:#ECEEEB;--muted:#9CA3A8;--line:#2B3034;--line-2:#3D4449;--soft:#1F2326;
- --knob:#DEE1DD;--knob-mark:#16191B;--shadow:rgba(0,0,0,.55);--signal:#94A3FF;--strip:#15181B;
- --good-bg:#2E5C44;--good-fg:#D8EEDF;--over-bg:#222A25;--over-fg:#B4C6B9;--under-line:#8C6A4C;--under-fg:#E0BB95;--off-fg:#737B80}}
-:root[data-theme="dark"]{color-scheme:dark;
- --paper:#111315;--surface:#181B1E;--ink:#ECEEEB;--muted:#9CA3A8;--line:#2B3034;--line-2:#3D4449;--soft:#1F2326;
- --knob:#DEE1DD;--knob-mark:#16191B;--shadow:rgba(0,0,0,.55);--signal:#94A3FF;--strip:#15181B;
- --good-bg:#2E5C44;--good-fg:#D8EEDF;--over-bg:#222A25;--over-fg:#B4C6B9;--under-line:#8C6A4C;--under-fg:#E0BB95;--off-fg:#737B80}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--paper:#121416;--surface:#191C1F;--ink:#ECEEEB;--muted:#9CA3A8;--line:#2B3034;--line-2:#3D4449;--soft:#1F2326;--signal:#94A3FF;
+ --good-bg:#2E5C44;--good-fg:#D8EEDF;--over-bg:#232A26;--over-fg:#B4C6B9;--under-line:#8C6A4C;--under-fg:#E0BB95;--off-fg:#737B80}}
+:root[data-theme="dark"]{color-scheme:dark;--paper:#121416;--surface:#191C1F;--ink:#ECEEEB;--muted:#9CA3A8;--line:#2B3034;--line-2:#3D4449;--soft:#1F2326;--signal:#94A3FF;
+ --good-bg:#2E5C44;--good-fg:#D8EEDF;--over-bg:#232A26;--over-fg:#B4C6B9;--under-line:#8C6A4C;--under-fg:#E0BB95;--off-fg:#737B80}
 *{box-sizing:border-box}[hidden]{display:none!important}
 body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
-button,input,select{font:inherit;color:inherit}button{cursor:pointer;background:none;border:0;padding:0}select{background:none}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer;background:none;border:0;padding:0}
 a{color:var(--ink);text-underline-offset:3px;text-decoration-color:var(--line-2)}a:hover{text-decoration-color:var(--ink)}
-:focus-visible{outline:2px solid var(--signal);outline-offset:4px;border-radius:4px}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:4px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.app{max-width:1120px;min-height:100svh;margin:auto;padding-block:24px 32px;padding-inline:clamp(16px,4vw,40px);display:flex;flex-direction:column}
+.app{max-width:1040px;min-height:100svh;margin:auto;padding-block:22px 32px;padding-inline:clamp(16px,4vw,40px);display:flex;flex-direction:column}
 
-/* header */
-.top{display:flex;justify-content:space-between;align-items:center;gap:24px;min-height:48px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;min-height:44px}
 .brand{margin:0;font-size:13px;color:var(--muted)}
-.views{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--soft)}
-.view{padding:7px 16px;border-radius:999px;color:var(--muted);font-size:14px;white-space:nowrap;transition:color .15s,background .15s}
-.view:hover{color:var(--ink)}
-.view[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 1px 2px var(--shadow)}
-.page-title{font-size:40px;line-height:1.08;letter-spacing:-.035em;font-weight:600;margin:clamp(28px,5vh,52px) 0 clamp(18px,3vh,28px);text-wrap:balance}
-main{flex:1;min-width:0}
-.app.is-quiz main{display:flex;flex-direction:column;justify-content:center}.app.is-quiz #guidedPanel{width:100%}
+.views{display:flex;gap:2px;padding:3px;border-radius:10px;background:var(--soft)}
+.view{padding:6px 14px;border-radius:7px;color:var(--muted);font-size:14px;white-space:nowrap}
+.view:hover{color:var(--ink)}.view[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 0 0 1px var(--line)}
+.page-title{font-size:32px;line-height:1.1;letter-spacing:-.03em;font-weight:600;margin:28px 0 20px;text-wrap:balance}
+main{flex:1;min-width:0}.app.is-quiz main{display:flex;flex-direction:column;justify-content:center}.app.is-quiz #guidedPanel{width:100%}
 
 /* questions */
-.quiz{max-width:640px;margin:56px auto 72px}
-.progress{display:flex;align-items:center;gap:14px;margin:0 0 22px;color:var(--muted);font-size:13px}
-.steps{display:flex;gap:6px}.steps i{width:28px;height:3px;border-radius:2px;background:var(--line)}.steps .on{background:var(--ink)}
-.quiz h1{font-size:36px;line-height:1.12;letter-spacing:-.035em;font-weight:600;margin:0 0 28px;max-width:15em;text-wrap:balance}
+.quiz{max-width:620px;margin:48px auto 64px}
+.progress{display:flex;align-items:center;gap:12px;margin:0 0 20px;color:var(--muted);font-size:13px}
+.steps{display:flex;gap:5px}.steps i{width:26px;height:3px;border-radius:2px;background:var(--line)}.steps .on{background:var(--ink)}
+.quiz h1{font-size:32px;line-height:1.12;letter-spacing:-.03em;font-weight:600;margin:0 0 24px;max-width:16em;text-wrap:balance}
 .qopts{display:flex;flex-direction:column;gap:8px}
-.qopt{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;text-align:left;padding:18px 20px;border-radius:14px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);font-size:16px;line-height:1.4;transition:box-shadow .15s,transform .15s}
-.qopt:hover{box-shadow:inset 0 0 0 1.5px var(--ink);transform:translateX(3px)}
-.qopt[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--signal)}
-.qopt kbd{flex:none;display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:7px;background:var(--soft);color:var(--muted);font:500 13px var(--sans);box-shadow:inset 0 -1px 0 var(--line-2)}
-.qopt:hover kbd,.qopt[aria-pressed="true"] kbd{background:var(--ink);color:var(--surface);box-shadow:none}
-.qnav{display:flex;align-items:center;margin-top:22px;min-height:24px}
+.qopt{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;text-align:left;padding:16px 18px;border-radius:10px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);font-size:16px;line-height:1.4}
+.qopt:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}.qopt[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--signal)}
+.qopt kbd{flex:none;display:grid;place-items:center;min-width:24px;height:24px;padding:0 6px;border-radius:6px;background:var(--soft);color:var(--muted);font:500 13px var(--sans)}
+.qnav{display:flex;align-items:center;margin-top:20px;min-height:24px}
 .text-button{padding:4px 0;color:var(--muted);text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:5px}.text-button:hover{color:var(--ink);text-decoration-color:var(--ink)}
 
 /* task line */
-.context{display:flex;align-items:center;gap:24px;justify-content:space-between;margin-bottom:18px;min-width:0}
-.context label{display:flex;align-items:baseline;gap:14px;min-width:0;flex:1;color:var(--muted)}
+.context{display:flex;align-items:baseline;gap:20px;justify-content:space-between;margin-bottom:16px;min-width:0}
+.context label{display:flex;align-items:baseline;gap:12px;min-width:0;flex:1;color:var(--muted)}
 .context label>span{font-size:13px;white-space:nowrap}
-.context select{max-width:100%;min-width:0;flex:1;color:var(--ink);border:0;padding:6px 26px 6px 0;font-size:19px;font-weight:500;letter-spacing:-.01em;text-overflow:ellipsis}
-.context .text-button{flex:none}.context p{margin:0;font-size:19px;font-weight:500;letter-spacing:-.01em}
+.context select{max-width:100%;min-width:0;flex:1;color:var(--ink);background:none;border:0;padding:4px 24px 4px 0;font-size:18px;font-weight:500;text-overflow:ellipsis}
+.context .text-button{flex:none}.context p{margin:0;font-size:18px;font-weight:500}
 
-/* the instrument */
-.instrument{display:grid;grid-template-columns:minmax(0,1fr);background:var(--surface);overflow:hidden;border-radius:22px;box-shadow:0 0 0 1px var(--line),0 18px 40px -28px var(--shadow)}
-.deck{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;align-items:center;gap:14px 28px;padding:16px 32px 18px;background:var(--strip);border-top:1px solid var(--line)}
-.unit{display:flex;align-items:center;gap:14px;min-width:0}
-.dial{flex:none;width:76px;height:76px;overflow:hidden;border-radius:50%;touch-action:none;cursor:grab;-webkit-tap-highlight-color:transparent}
-.dial.dragging{cursor:grabbing}
-.dial svg{display:block;width:166.7%;height:auto;margin:-21% -33.3% -17.8%}
-.dial:focus-visible{outline:none}
-.dial:focus-visible .collar{stroke:var(--signal);stroke-width:2}
-.collar{fill:none;stroke:transparent;stroke-width:2}
-.knob{fill:var(--surface);stroke:var(--line-2);stroke-width:2}
-.knob-wrap{filter:drop-shadow(0 1px 1.5px var(--shadow))}
-.ptr{transform-box:view-box;transform-origin:0 0;transition:transform .62s cubic-bezier(.28,1.42,.5,1)}
-.ptr line{stroke:var(--ink);stroke-width:7;stroke-linecap:round}
-.dial.dragging .ptr{transition:transform .14s ease-out}
-.dial.still .ptr{transition:none}
-.tick{stroke:var(--line-2);stroke-width:4;stroke-linecap:round;transition:stroke .2s,stroke-width .2s}
-.tick.gh{stroke:var(--signal);opacity:.5;stroke-width:6}
-.tick.on{stroke:var(--signal);opacity:1;stroke-width:8}
-.tick.na{opacity:.3;stroke-dasharray:1 3}
-.g-arc{display:none}
-.d-label{display:none}
-.d-label.on{fill:var(--ink);font-weight:600}
-.d-label.na{opacity:.4}
-.dial.off{cursor:default}
-.dial.off .knob{fill:var(--soft)}.dial.off .ptr{opacity:0}.dial.off .tick,.dial.off .d-label{opacity:.35}
-.read{display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-width:0;max-width:100%}
-.read select,.read .val{font-size:16px;font-weight:600;letter-spacing:-.01em;line-height:1.3;color:var(--ink);border:0;padding:0 22px 0 0;margin-left:-1px;max-width:100%;text-overflow:ellipsis}
-.read .val{padding:0;margin:0}
-.read .sub{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.4}
-.mode{display:flex;justify-content:flex-end;align-items:center;gap:12px}
-.mode .lab{font-size:13px;color:var(--muted)}
-.switch{display:inline-flex;padding:3px;border-radius:999px;background:var(--soft)}
-.switch button{padding:6px 14px;border-radius:999px;font-size:14px;color:var(--muted);transition:background .18s,color .18s}
-.switch button[aria-checked="true"]{background:var(--knob);color:var(--knob-mark);font-weight:500}
+/* controls */
+.controls{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:16px 28px;align-items:end;padding:16px 20px;border-radius:12px;background:var(--surface);box-shadow:0 0 0 1px var(--line)}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field-label{font-size:13px;color:var(--muted)}
+.field select{width:100%;background:none;color:var(--ink);border:0;border-bottom:1px solid var(--line-2);border-radius:0;padding:6px 24px 7px 0;font-size:16px;font-weight:500}
+.field select:disabled{color:var(--muted);border-bottom-style:dashed}
+.switch{display:inline-flex;padding:3px;border-radius:8px;background:var(--soft)}
+.switch button{padding:6px 12px;border-radius:6px;font-size:14px;color:var(--muted)}
+.switch button[aria-checked="true"]{background:var(--surface);color:var(--ink);font-weight:500;box-shadow:0 0 0 1px var(--line)}
 
-/* readout */
-.readout{padding:26px 32px 22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 40px;align-items:start;min-width:0}
-.r-main{display:contents}
-.r-main>*{grid-column:1;min-width:0}
-.r-cost{grid-column:2;grid-row:1/span 8;text-align:right}
-.r-state{display:flex;align-items:center;gap:10px;margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
-.r-state .sw{width:12px;height:12px}
-.r-price{margin:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.r-num{font-size:52px;font-weight:600;letter-spacing:-.045em;line-height:1}
-.r-unit{font-size:13px;color:var(--muted)}
-.r-meta{margin:6px 0 0;font-size:14px;color:var(--muted)}
-.r-text{margin:14px 0 0;font-size:16px;line-height:1.45;text-wrap:pretty;max-width:40em}
-.r-note{margin:10px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
-.r-note.warn{color:var(--under-fg)}
-.r-preview{margin:0 0 10px;font-size:12.5px;color:var(--signal)}
-.detail{padding-top:12px}
-.detail summary{cursor:pointer;color:var(--muted);font-size:13px;width:fit-content}
-.detail summary:hover{color:var(--ink)}
-.detail p{margin:8px 0 0;font-size:14px;color:var(--ink)}
+/* answer */
+.answer{margin:16px 0 0;padding:18px 20px;border-radius:12px;background:var(--surface);box-shadow:0 0 0 1px var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 32px;align-items:start}
+.a-state{display:flex;align-items:center;gap:9px;margin:0;font-size:17px;font-weight:600;line-height:1.3;grid-column:1}
+.a-meta{margin:0;font-size:14px;color:var(--muted);grid-column:1}
+.a-text{margin:10px 0 0;font-size:15.5px;line-height:1.45;max-width:46em;grid-column:1}
+.a-note{margin:8px 0 0;font-size:13.5px;color:var(--muted);line-height:1.5;grid-column:1}.a-note.warn{color:var(--under-fg)}
+.a-price{grid-column:2;grid-row:1/span 6;text-align:right}
+.a-num{display:block;font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.a-unit{display:block;margin-top:5px;font-size:13px;color:var(--muted);max-width:14em}
+.alts{grid-column:1;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.alts p{margin:0 0 4px}.alts p b{color:var(--ink);font-weight:600}
+.alts ul{list-style:none;margin:0;padding:0}
+.alts li{display:flex;flex-wrap:wrap;gap:4px 10px;padding:3px 0}
+.alts li button{color:var(--ink);font-weight:500;text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:4px}.alts li button:hover{text-decoration-color:var(--ink)}
+.alts li span{color:var(--muted)}
+.detail{grid-column:1;margin-top:10px}
+.detail summary{cursor:pointer;color:var(--muted);font-size:13.5px;width:fit-content}.detail summary:hover{color:var(--ink)}
+.detail p{margin:6px 0 0;font-size:14.5px}
 
-/* tasks that fit (explore) */
-.matches{margin:22px 0 0}
-.matches p{margin:0 0 8px;color:var(--muted);font-size:13px}
+/* explore: tasks that fit */
+.matches{margin:18px 0 0}
+.matches p{margin:0 0 6px;color:var(--muted);font-size:13.5px}
 .task-list{display:flex;flex-wrap:wrap;gap:6px}
-.task{padding:6px 12px;border-radius:999px;font-size:14px;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .15s,background .15s}
-.task:hover{box-shadow:inset 0 0 0 1px var(--ink)}
-.task[aria-pressed="true"]{background:var(--ink);color:var(--surface);box-shadow:none}
+.task{padding:5px 11px;border-radius:999px;font-size:14px;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.task:hover{box-shadow:inset 0 0 0 1px var(--ink)}.task[aria-pressed="true"]{background:var(--ink);color:var(--surface);box-shadow:none}
 
-/* the map */
-.map-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:36px 0 6px}
-.map-head h2{margin:0;font-size:18px;font-weight:600;letter-spacing:-.015em}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;padding:0;margin:0;font-size:13px;color:var(--muted)}
-.legend li{display:flex;align-items:center;gap:7px}
-.sw{width:9px;height:9px;border-radius:2px;display:inline-block;flex:none;border:1px solid transparent}.sw.st-under{border-color:var(--under-line)}.sw.st-off{border-color:var(--line-2)}
-.matrix-wrap{overflow-x:auto;max-width:100%;padding:3px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
-.matrix{width:100%;min-width:620px;border-collapse:separate;border-spacing:4px 4px;table-layout:fixed}
-.matrix .model-col{width:228px}.matrix th{font-weight:400}
-.matrix thead th{height:36px;text-align:center;font-size:13px;color:var(--muted);transition:color .2s}
-.matrix thead th.on{color:var(--signal);font-weight:600}
-.matrix thead th:first-child{text-align:left;position:sticky;left:0;background:var(--paper);z-index:2}
-.rh{text-align:left;padding:0 16px 0 0;position:sticky;left:0;background:var(--paper);z-index:2}
-.model-label{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;padding-left:12px}
-.model-label::before{content:"";position:absolute;left:0;top:50%;width:4px;height:4px;margin-top:-2px;border-radius:50%;background:transparent;transition:background .2s,height .2s,margin .2s}
-.selected-row .model-label::before{background:var(--signal);height:16px;margin-top:-8px;border-radius:2px}
-.model-name{white-space:nowrap}.vendor{font-size:12.5px;color:var(--muted)}
+/* tables */
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;margin:32px 0 8px}
+.sec-head h2{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;list-style:none;padding:0;margin:0;font-size:13px;color:var(--muted)}
+.legend li{display:flex;align-items:center;gap:6px}
+.sw{width:9px;height:9px;border-radius:2px;display:inline-block;flex:none;border:1px solid transparent}
+.sw.st-under{border-color:var(--under-line)}.sw.st-off{border-color:var(--line-2)}
+.sw.best{background:var(--good-bg);position:relative}.sw.best::after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--good-fg)}
+.tbl-wrap{overflow-x:auto;max-width:100%;padding:2px;scrollbar-width:thin}
+table{width:100%;border-collapse:separate;border-spacing:4px 4px;table-layout:fixed}
+.matrix{min-width:600px}.matrix .model-col{width:220px}
+th{font-weight:400}
+thead th{height:32px;text-align:center;font-size:13px;color:var(--muted)}
+thead th.on{color:var(--signal);font-weight:600}
+thead th:first-child,.rh{text-align:left;position:sticky;left:0;background:var(--paper);z-index:2}
+.rh{padding:0 14px 0 0}
+.model-label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-left:10px;position:relative}
+.model-label::before{content:"";position:absolute;left:0;top:50%;width:3px;height:0;margin-top:0;border-radius:2px;background:var(--signal);transition:height .15s,margin-top .15s}
+.selected-row .model-label::before{height:16px;margin-top:-8px}
 .selected-row .model-name{font-weight:600}
+.model-name{white-space:nowrap}.vendor{font-size:12.5px;color:var(--muted)}
 .model-row.tier-start th,.model-row.tier-start td{border-top:10px solid var(--paper)}
-.tier-tag{display:block;font-size:11.5px;color:var(--muted);margin:0 0 2px 12px}
-.cell{display:block;width:100%;height:34px;padding:0 2px;border-radius:5px;font:500 13px/1 var(--sans);border:1px solid transparent;transition:box-shadow .12s,background-color .3s,color .3s,border-color .3s}
+.cell{position:relative;display:block;width:100%;height:32px;padding:0 2px;border-radius:5px;font:500 13px/1 var(--sans);border:1px solid transparent}
 .st-good{background:var(--good-bg);color:var(--good-fg)}.st-over{background:var(--over-bg);color:var(--over-fg)}
-.st-under{background:transparent;color:var(--under-fg);border-color:var(--under-line)}.st-off,.st-na{background:transparent;color:var(--off-fg)}
-.cell.st-off{border-color:var(--line)}
+.st-under{background:transparent;color:var(--under-fg);border-color:var(--under-line)}.st-off,.st-na{background:transparent;color:var(--off-fg)}.cell.st-off{border-color:var(--line)}
 .cell:hover:not(:disabled){box-shadow:inset 0 0 0 1.5px var(--ink)}
 .cell.sel,.cell.sel:hover{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--signal)}
-.cell:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
-.span{text-align:left;padding-left:14px}.span .pv{display:inline-block;position:sticky;left:246px}.span .effort-note{color:inherit;margin-left:12px;font-weight:400;opacity:.8}.cell.na{cursor:default}
-.matrix.pre .cell{background:var(--soft)!important;color:transparent!important;border-color:transparent!important;transition:none!important}
-.matrix.wave .cell{transition:background-color .45s var(--d),color .45s var(--d),border-color .45s var(--d),box-shadow .12s}
+.cell.best::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:currentColor}
+.span{text-align:left;padding-left:12px}.span .pv{display:inline-block;position:sticky;left:236px}.span .effort-note{margin-left:10px;font-weight:400;opacity:.8}.cell.na{cursor:default}
+
+/* prices */
+.prices{min-width:560px}.prices .model-col{width:200px}
+.prices th,.prices td{text-align:right;padding:7px 10px;font-size:14px}
+.prices td:not(.name){font-variant-numeric:tabular-nums}
+.prices th:first-child,.prices td:first-child{text-align:left;padding-left:10px}
+.prices thead th{height:auto;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.prices thead th small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.prices tbody tr.vendor-row th{text-align:left;padding:18px 10px 4px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
+.prices tbody tr:first-child th{padding-top:6px}
+.prices td{border-bottom:1px solid var(--line)}
+.prices td.name{font-weight:500}
+.prices td .note{display:block;font-size:12.5px;color:var(--muted);font-weight:400}
+.prices-intro{margin:0 0 14px;color:var(--muted);font-size:14.5px;max-width:60em}
+.prices-foot{margin:14px 0 0;color:var(--muted);font-size:13.5px;max-width:64em;line-height:1.55}
 
 /* footer */
-.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
+.foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
 .rules{font-size:13px;color:var(--muted);margin:0;max-width:80em;line-height:1.6}
 .foot details{margin-top:10px}.foot summary{cursor:pointer;color:var(--muted);font-size:13px;width:fit-content}.foot summary:hover{color:var(--ink)}
-.method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px;font-size:13px;color:var(--muted);margin-top:18px;line-height:1.65}.method p{margin:0}.method b{font-weight:600;color:var(--ink)}
+.method{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px;font-size:13px;color:var(--muted);margin-top:16px;line-height:1.65}.method p{margin:0}.method b{font-weight:600;color:var(--ink)}
 
-@media(max-width:900px){
- .deck{grid-template-columns:repeat(2,minmax(0,1fr));padding:16px 22px 18px}
- .mode{grid-column:1/-1;justify-content:flex-start}
- .readout{padding:22px 22px 18px}
- .method{grid-template-columns:1fr}
-}
-@media(max-width:620px){
- .top{flex-wrap:wrap;gap:12px}
- .quiz{margin:32px auto 40px}.qopt{padding:15px 16px}
+@media(max-width:760px){
+ .controls{grid-template-columns:1fr 1fr}.controls .mode{grid-column:1/-1}
+ .answer{grid-template-columns:1fr}.a-price{grid-column:1;grid-row:auto;text-align:left;margin:10px 0 2px;order:1}.a-num{display:inline}.a-unit{display:inline;margin-left:8px}
+ .a-state{order:0}.answer>*:not(.a-state):not(.a-price){order:2}
  .context{flex-wrap:wrap;gap:6px}.context label{flex-basis:100%;flex-direction:column;align-items:flex-start;gap:0}.context select{width:100%}.context .text-button{margin-left:auto}
- .deck{grid-template-columns:minmax(0,1fr);gap:14px;padding:16px 18px 18px}
- .readout{grid-template-columns:minmax(0,1fr);padding:20px 18px 16px}
- .r-cost{grid-column:1;grid-row:auto;text-align:left;margin:12px 0 2px;order:1}.r-price{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:4px 10px}
- .r-preview{order:-1}.r-state{order:0}.r-main>*:not(.r-state):not(.r-preview){order:2}
- .dial{width:64px;height:64px}
- .mode{flex-wrap:wrap;gap:8px 12px}
- .matrix .model-col{width:178px}.matrix{min-width:540px}.span .pv{left:194px}.span .effort-note{display:none}
- .map-head{margin-top:28px}
+ .matrix .model-col{width:170px}.matrix{min-width:520px}.span .pv{left:186px}.span .effort-note{display:none}
+ .method{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
@@ -191,6 +152,7 @@ main{flex:1;min-width:0}
     <nav class="views" role="tablist" aria-label="Choose a view">
       <button class="view" id="guidedBtn" type="button" role="tab" aria-selected="true" aria-controls="guidedPanel" tabindex="0">Find a model</button>
       <button class="view" id="exploreBtn" type="button" role="tab" aria-selected="false" aria-controls="explorePanel" tabindex="-1">Explore models</button>
+      <button class="view" id="pricesBtn" type="button" role="tab" aria-selected="false" aria-controls="pricesPanel" tabindex="-1">Prices</button>
     </nav>
   </header>
   <h1 class="page-title" id="pageTitle">Choose your starting point.</h1>
@@ -199,57 +161,51 @@ main{flex:1;min-width:0}
       <div class="quiz" id="quiz"></div>
     </section>
     <section id="explorePanel" role="tabpanel" aria-labelledby="exploreBtn" hidden></section>
+    <section id="pricesPanel" role="tabpanel" aria-labelledby="pricesBtn" hidden>
+      <p class="prices-intro">Vendor list prices per million tokens on 2 October 2026, and what 100,000 tokens cost at those rates. Input is what you send. Output is what the model writes, including its reasoning.</p>
+      <div class="tbl-wrap">
+        <table class="prices" aria-label="List prices per million tokens">
+          <colgroup><col class="model-col"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col">Model</th><th scope="col">Input<small>per 1M tokens</small></th><th scope="col">Output<small>per 1M tokens</small></th><th scope="col">100k input<small>at list price</small></th><th scope="col">100k output<small>at list price</small></th></tr></thead>
+          <tbody id="priceBody"></tbody>
+        </table>
+      </div>
+      <p class="prices-foot">These are list prices, before caching, batch or volume discounts. Reasoning tokens count as output. Grok doubles its rate on requests above 200k tokens. Composer 2.5 Fast costs $3 in and $15 out. Opus 5.5 fast mode costs $8 in and $40 out. Sources: <a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic</a>, <a href="https://developers.openai.com/api/docs/pricing">OpenAI</a>, <a href="https://docs.x.ai/docs/models">xAI</a>, <a href="https://cursor.com/docs/models">Cursor</a>.</p>
+    </section>
     <section id="result" aria-label="Model and effort" hidden>
       <div class="context">
         <p id="compareTask" hidden></p>
         <label for="taskSelect"><span id="taskLabel">Your task</span><select id="taskSelect"></select></label>
         <button class="text-button" type="button" id="restartBtn">Change answers</button>
       </div>
-
-      <div class="instrument">
-        <div class="readout" id="verdict" aria-live="polite" aria-atomic="true"></div>
-        <div class="deck">
-          <div class="unit">
-            <div class="dial" id="modelDial" role="slider" tabindex="0" aria-label="Model"></div>
-            <div class="read">
-              <label class="sr-only" for="modelSelect">Model</label>
-              <select id="modelSelect"></select>
-              <p class="sub" id="modelSub"></p>
-            </div>
-          </div>
-          <div class="unit">
-            <div class="dial" id="effortDial" role="slider" tabindex="0" aria-label="Reasoning effort"></div>
-            <div class="read">
-              <p class="val" id="effortValue">Medium</p>
-              <p class="sub">Reasoning effort</p>
-            </div>
-          </div>
-          <div class="mode">
-            <span class="lab" id="modeLabel">Agents</span>
-            <div class="switch" role="radiogroup" aria-labelledby="modeLabel">
-              <button type="button" role="radio" id="fanOff" aria-checked="true">One agent</button>
-              <button type="button" role="radio" id="fanOn" aria-checked="false">Multiple agents</button>
-            </div>
+      <div class="controls">
+        <label class="field" for="modelSelect"><span class="field-label">Model</span><select id="modelSelect"></select></label>
+        <label class="field" for="effortSelect"><span class="field-label">Reasoning effort</span><select id="effortSelect"></select></label>
+        <div class="field mode">
+          <span class="field-label" id="modeLabel">Agents</span>
+          <div class="switch" role="radiogroup" aria-labelledby="modeLabel">
+            <button type="button" role="radio" id="fanOff" aria-checked="true">One</button>
+            <button type="button" role="radio" id="fanOn" aria-checked="false">Multiple</button>
           </div>
         </div>
       </div>
-
+      <div class="answer" id="verdict" aria-live="polite" aria-atomic="true"></div>
       <div class="matches" id="matches" hidden>
         <p id="matchesLabel">These tasks fit the selected setting.</p>
         <div class="task-list" id="taskList" aria-labelledby="matchesLabel"></div>
         <p id="emptyMatches" hidden>No task fits this setting. Change the model, effort, or use of multiple agents.</p>
       </div>
-
-      <div class="map-head">
+      <div class="sec-head">
         <h2>Every model at every effort</h2>
         <ul class="legend" aria-label="Fit key">
-          <li><i class="sw st-good" aria-hidden="true"></i>This setting fits.</li>
-          <li><i class="sw st-over" aria-hidden="true"></i>This setting uses more than the task needs.</li>
-          <li><i class="sw st-under" aria-hidden="true"></i>This setting may need another attempt.</li>
-          <li><i class="sw st-off" aria-hidden="true"></i>This model does not fit.</li>
+          <li><i class="sw st-good" aria-hidden="true"></i>Fits.</li>
+          <li><i class="sw st-over" aria-hidden="true"></i>Fits, costs more than needed.</li>
+          <li><i class="sw st-under" aria-hidden="true"></i>May need another attempt.</li>
+          <li><i class="sw st-off" aria-hidden="true"></i>Does not fit.</li>
+          <li><i class="sw best" aria-hidden="true"></i>Lowest price that fits.</li>
         </ul>
       </div>
-      <div class="matrix-wrap" id="gridwrap" tabindex="-1" aria-label="Scroll the matrix horizontally on a small screen">
+      <div class="tbl-wrap" id="gridwrap" tabindex="-1" aria-label="Scroll the matrix horizontally on a small screen">
         <table class="matrix" id="grid" role="grid" aria-label="Every model at every effort level">
           <caption class="sr-only" id="matrixCaption"></caption>
           <colgroup><col class="model-col"><col span="5"></colgroup>
@@ -431,8 +387,6 @@ function fit(c,m,e,fan){
 function card(id){return CARDS.filter(function(c){return c.id===id})[0]||CARDS[3]}
 function offered(m,e){return !m.eff||m.eff.indexOf(EFF[e])>=0}
 function clampEffort(m,e){if(!m.eff)return e;while(e>0&&!offered(m,e))e--;return e}
-
-
 /* ---------- state ---------- */
 var KEY="model-effort-map-v4";
 var ST={mode:"guided",ready:false,sel:"refactor",m:"opus55",e:3,fan:false,answers:{}};
@@ -443,81 +397,15 @@ try{
  if(MODELS.some(function(m){return m.id===saved.m}))ST.m=saved.m;
  if(Number.isInteger(saved.e)&&saved.e>=0&&saved.e<5)ST.e=saved.e;
  if(typeof saved.fan==="boolean")ST.fan=saved.fan;
- if(saved.mode==="explore"||saved.mode==="guided")ST.mode=saved.mode;
+ if(saved.mode==="explore"||saved.mode==="guided"||saved.mode==="prices")ST.mode=saved.mode;
  if(typeof saved.ready==="boolean")ST.ready=saved.ready;
  if(saved.answers&&typeof saved.answers==="object")QS.forEach(function(q){if(q.o.some(function(o){return o[0]===saved.answers[q.k]}))ST.answers[q.k]=saved.answers[q.k]});
 }catch(x){}
 ST.e=clampEffort(mById(ST.m),ST.e);
 QZ.ans=Object.assign({},ST.answers);
 function save(){try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(x){}}
-function setHash(){try{history.replaceState(null,"",ST.ready||ST.mode==="explore"?"#"+ST.sel:location.pathname+location.search)}catch(x){}}
-function maxEffort(m){return m.eff?Math.max.apply(null,m.eff.map(function(v){return EFF.indexOf(v)})):4}
-
-/* ---------- dials ---------- */
-var NS="http://www.w3.org/2000/svg",SWEEP=[-135,135],VB={x:-150,y:-128,w:300,h:250};
-function sv(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
-function polar(r,deg){var a=(deg-90)*Math.PI/180;return [r*Math.cos(a),r*Math.sin(a)]}
-function arcPath(r,a0,a1){var p0=polar(r,a0),p1=polar(r,a1);return "M"+p0[0].toFixed(2)+" "+p0[1].toFixed(2)+" A"+r+" "+r+" 0 "+((a1-a0)>180?1:0)+" 1 "+p1[0].toFixed(2)+" "+p1[1].toFixed(2)}
-function anchorFor(a){var x=Math.sin(a*Math.PI/180);return x>.25?"start":x<-.25?"end":"middle"}
-function makeDial(host,cfg){
- var d={i:0,ghost:null,off:false,ticks:[],labels:[],angles:cfg.pos.map(function(f){return SWEEP[0]+(SWEEP[1]-SWEEP[0])*f})};
- var svg=sv("svg",{viewBox:VB.x+" "+VB.y+" "+VB.w+" "+VB.h,"aria-hidden":"true",focusable:"false"},host);
- d.groupLabels=[];
- (cfg.groups||[]).forEach(function(g){
-  var a0=d.angles[g.from]-6,a1=d.angles[g.to]+6;
-  sv("path",{d:arcPath(84,a0,a1),class:"g-arc"},svg);
-  var mid=(a0+a1)/2,p=polar(98,mid),t=sv("text",{x:p[0].toFixed(1),y:(p[1]+5).toFixed(1),class:"d-label","text-anchor":anchorFor(mid)},svg);
-  t.textContent=g.label;t.addEventListener("pointerdown",function(){});d.groupLabels.push({el:t,g:g});
- });
- d.angles.forEach(function(a,i){
-  var p0=polar(68,a),p1=polar(77,a);
-  d.ticks.push(sv("line",{x1:p0[0].toFixed(2),y1:p0[1].toFixed(2),x2:p1[0].toFixed(2),y2:p1[1].toFixed(2),class:"tick"},svg));
-  if(cfg.labels){var p=polar(96,a),t=sv("text",{x:p[0].toFixed(1),y:(p[1]+5).toFixed(1),class:"d-label","text-anchor":anchorFor(a)},svg);t.textContent=cfg.labels[i];d.labels.push(t)}
- });
- sv("circle",{r:61,class:"collar"},svg);
- var kw=sv("g",{class:"knob-wrap"},svg);sv("circle",{r:53,class:"knob"},kw);
- d.ptr=sv("g",{class:"ptr"},svg);sv("line",{x1:0,y1:-18,x2:0,y2:-44},d.ptr);
- function allowed(i){return !cfg.allowed||cfg.allowed(i)}
- function nearest(ev){
-  var r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width*VB.w+VB.x,y=(ev.clientY-r.top)/r.height*VB.h+VB.y;
-  if(Math.hypot(x,y)<12)return d.i;
-  var a=Math.atan2(x,-y)*180/Math.PI,best=d.i,bd=1e9;
-  d.angles.forEach(function(an,i){if(!allowed(i))return;var dd=Math.abs(an-a);if(dd<bd){bd=dd;best=i}});
-  return best;
- }
- var dragging=false;
- host.addEventListener("pointerdown",function(ev){if(d.off||ev.button>0)return;dragging=true;host.classList.add("dragging");try{host.setPointerCapture(ev.pointerId)}catch(x){}var n=nearest(ev);if(n!==d.i)cfg.onChange(n);host.focus({preventScroll:true,focusVisible:false});ev.preventDefault()});
- host.addEventListener("pointermove",function(ev){if(!dragging)return;var n=nearest(ev);if(n!==d.i)cfg.onChange(n)});
- function end(){dragging=false;host.classList.remove("dragging")}
- host.addEventListener("pointerup",end);host.addEventListener("pointercancel",end);
- host.addEventListener("keydown",function(ev){
-  if(d.off)return;var k=ev.key,n=null,i;
-  if(k==="ArrowRight"||k==="ArrowUp"){for(i=d.i+1;i<d.angles.length;i++)if(allowed(i)){n=i;break}}
-  else if(k==="ArrowLeft"||k==="ArrowDown"){for(i=d.i-1;i>=0;i--)if(allowed(i)){n=i;break}}
-  else if(k==="Home"){for(i=0;i<d.angles.length;i++)if(allowed(i)){n=i;break}}
-  else if(k==="End"){for(i=d.angles.length-1;i>=0;i--)if(allowed(i)){n=i;break}}
-  else return;
-  ev.preventDefault();if(n!=null&&n!==d.i)cfg.onChange(n);
- });
- d.set=function(i,o){
-  o=o||{};d.i=i;d.off=!!o.off;host.classList.toggle("off",d.off);
-  d.ptr.style.transform="rotate("+d.angles[i]+"deg)";
-  d.ticks.forEach(function(t,k){t.classList.toggle("on",k===i&&!d.off);t.classList.toggle("na",!allowed(k));t.classList.toggle("gh",k===d.ghost&&k!==i)});
-  d.labels.forEach(function(t,k){t.classList.toggle("on",k===i&&!d.off);t.classList.toggle("na",!allowed(k))});
-  d.groupLabels.forEach(function(gl){gl.el.classList.toggle("on",i>=gl.g.from&&i<=gl.g.to)});
-  host.setAttribute("aria-valuemin","0");host.setAttribute("aria-valuemax",String(d.angles.length-1));host.setAttribute("aria-valuenow",String(i));
-  host.setAttribute("aria-valuetext",o.text||String(i));host.setAttribute("aria-disabled",d.off?"true":"false");
- };
- d.setGhost=function(i){d.ghost=i;d.ticks.forEach(function(t,k){t.classList.toggle("gh",k===i&&k!==d.i)})};
- d.jump=function(i){host.classList.add("still");d.ptr.style.transform="rotate("+d.angles[i]+"deg)";host.getBoundingClientRect();void d.ptr.getBoundingClientRect();host.classList.remove("still")};
- return d;
-}
-var DORDER=[];[0,1,2,3].forEach(function(t){MODELS.forEach(function(m){if(m.t===t)DORDER.push(m.id)})});
-var gpos=[],groups=[],gi=-1,lastT=null;
-DORDER.forEach(function(id,i){var t=mById(id).t;if(t!==lastT){gi++;lastT=t;groups.push({from:i,to:i,label:TIER[t]})}else groups[groups.length-1].to=i;gpos.push(i+gi*.9)});
-var gspan=gpos[gpos.length-1];
-var modelDial=makeDial($("#modelDial"),{pos:gpos.map(function(p){return p/gspan}),groups:groups,onChange:function(i){setModel(DORDER[i])}});
-var effortDial=makeDial($("#effortDial"),{pos:[0,.25,.5,.75,1],labels:EFFLABEL,allowed:function(i){return offered(mById(ST.m),i)},onChange:function(i){ST.e=i;preview=null;chooseContext();renderAll()}});
+function setHash(){try{history.replaceState(null,"",ST.mode==="prices"?"#prices":(ST.ready||ST.mode==="explore"?"#"+ST.sel:location.pathname+location.search))}catch(x){}}
+var VENDOR_ORDER=["Claude","OpenAI","xAI","Cursor"];
 
 /* ---------- map ---------- */
 var cellEls={},rowEls={},ORDER=[];
@@ -525,32 +413,36 @@ function buildGrid(){
  var host=$("#gridBody"),lastTier=null;
  [3,2,1,0].forEach(function(t){MODELS.filter(function(m){return m.t===t}).forEach(function(m){
   ORDER.push(m.id);
-  var first=lastTier!==t;
-  var row=ce("tr","model-row"+(lastTier!==null&&first?" tier-start":""));row.setAttribute("role","row");row.dataset.model=m.id;lastTier=t;
+  var row=ce("tr","model-row"+(lastTier!==null&&lastTier!==t?" tier-start":""));row.setAttribute("role","row");row.dataset.model=m.id;lastTier=t;
   var label=ce("th","rh");label.scope="row";label.setAttribute("role","rowheader");label.title=m.v+". "+TIER[m.t]+" capability group. List price per million tokens: "+lp(m.pin)+" input and "+lp(m.pout)+" output.";
   var name=ce("span","model-label");name.appendChild(ce("span","model-name",m.name));name.appendChild(ce("span","vendor",m.v));label.appendChild(name);row.appendChild(label);rowEls[m.id]=row;cellEls[m.id]={};
-  function add(e){var td=ce("td"),b=ce("button","cell"+(e===null?" span":""));td.setAttribute("role","gridcell");b.type="button";b.dataset.model=m.id;b.dataset.e=e===null?"span":String(e);b.style.setProperty("--d",((e===null?0:e)*55+ORDER.length*14)+"ms");if(e===null){td.colSpan=5;td.setAttribute("aria-colspan","5")}wireCell(b,m,e);td.appendChild(b);row.appendChild(td);cellEls[m.id][e===null?"span":e]=b}
+  function add(e){var td=ce("td"),b=ce("button","cell"+(e===null?" span":""));td.setAttribute("role","gridcell");b.type="button";if(e===null){td.colSpan=5;td.setAttribute("aria-colspan","5")}
+   b.addEventListener("click",function(){if(e!==null&&!offered(m,e))return;ST.m=m.id;if(e!==null)ST.e=e;chooseContext();renderAll()});
+   td.appendChild(b);row.appendChild(td);cellEls[m.id][e===null?"span":e]=b}
   if(!m.eff)add(null);else EFF.forEach(function(_,e){add(e)});
   host.appendChild(row);
  })});
 }
-function wireCell(b,m,e){
- b.addEventListener("pointermove",function(ev){if(ev.pointerType==="touch")return;var value=e===null?ST.e:e;if(offered(m,value)&&(!preview||preview.m.id!==m.id||preview.e!==value)){preview={m:m,e:value};renderLive()}});
- b.addEventListener("focus",function(){if(offered(m,e===null?ST.e:e)){preview={m:m,e:e===null?ST.e:e};renderLive()}});
- b.addEventListener("click",function(){if(e!==null&&!offered(m,e))return;ST.m=m.id;if(e!==null)ST.e=e;preview=null;chooseContext();renderAll()});
+function fitOptions(c){
+ var out=[];
+ MODELS.forEach(function(m){(m.eff?EFF.map(function(_,i){return i}):[ST.e]).forEach(function(e){
+  if(!offered(m,e))return;
+  [false,true].some(function(f){if(f&&m.t<2)return false;if(fit(c,m,e,f).s==="good"){out.push({m:m,e:e,fan:f,p:price(m,e)});return true}return false});
+ })});
+ out.sort(function(a,b){return a.p.v-b.p.v||(a.p.plus-b.p.plus)||a.m.t-b.m.t||a.e-b.e});
+ return out;
 }
 function paintGrid(){
  var c=card(ST.sel);
  MODELS.forEach(function(m){rowEls[m.id].classList.toggle("selected-row",m.id===ST.m);var els=cellEls[m.id];Object.keys(els).forEach(function(k){var e=k==="span"?ST.e:Number(k),b=els[k],j=fit(c,m,e,ST.fan),p=price(m,e),sel=m.id===ST.m&&(!m.eff||e===ST.e);
   b.className="cell"+(k==="span"?" span":"")+" st-"+j.s+(sel?" sel":"")+(j.s==="na"?" na":"");
-  b.innerHTML="";
-  b.appendChild(ce("span","pv",j.s==="na"?"—":fmt(p)));
-  if(k==="span")b.appendChild(ce("span","effort-note","The model has no effort setting."));
-  b.disabled=j.s==="na";
-  b.tabIndex=sel?0:-1;
-  b.setAttribute("aria-pressed",sel?"true":"false");
+  b.innerHTML="";b.appendChild(ce("span","pv",j.s==="na"?"—":fmt(p)));
+  if(k==="span")b.appendChild(ce("span","effort-note","No effort setting."));
+  b.disabled=j.s==="na";b.tabIndex=sel?0:-1;b.setAttribute("aria-pressed",sel?"true":"false");
   b.setAttribute("aria-label",m.name+(m.eff?" at "+EFFLABEL[e].toLowerCase()+" effort":"")+". "+STATUS[j.s]+(j.s==="na"?"":" "+fmt(p).replace("+"," or more")+" per attempt."));
  })});
+ var best=fitOptions(c)[0];
+ if(best){var bc=cellEls[best.m.id],bb=bc.span||bc[best.e];if(bb){bb.classList.add("best");bb.setAttribute("aria-label",bb.getAttribute("aria-label")+" Lowest price that fits.")}}
  var sm=mById(ST.m);[].forEach.call($("#headRow").children,function(th,i){th.classList.toggle("on",i>0&&sm.eff&&i-1===ST.e)});
  $("#matrixCaption").textContent="The matrix shows how each model and effort level fits this task: "+c.title;
 }
@@ -560,79 +452,89 @@ function revealChoice(){
  if(!m.eff){wrap.scrollLeft=0;return}
  var b=cellEls[m.id][ST.e],r=b.getBoundingClientRect(),w=wrap.getBoundingClientRect(),label=rowEls[m.id].querySelector(".rh").getBoundingClientRect();
  var edge=w.left+label.width+8;
- if(r.right>w.right-4)wrap.scrollLeft+=r.right-w.right+4;
- else if(r.left<edge)wrap.scrollLeft-=edge-r.left;
+ if(r.right>w.right-4)wrap.scrollLeft+=r.right-w.right+4;else if(r.left<edge)wrap.scrollLeft-=edge-r.left;
+}
+
+/* ---------- prices ---------- */
+function money(v){return "$"+(v<1?v.toFixed(3).replace(/0$/,""):v.toFixed(2))}
+function buildPrices(){
+ var body=$("#priceBody");
+ VENDOR_ORDER.forEach(function(v){
+  var tr=ce("tr","vendor-row"),th=ce("th","",v);th.colSpan=5;th.scope="colgroup";tr.appendChild(th);body.appendChild(tr);
+  MODELS.filter(function(m){return m.v===v}).sort(function(a,b){return b.t-a.t||b.pin-a.pin}).forEach(function(m){
+   var r=ce("tr"),n=ce("td","name",m.name);n.appendChild(ce("span","note",TIER[m.t]+" group"+(m.eff?"":". No effort setting")));r.appendChild(n);
+   [lp(m.pin),lp(m.pout),money(m.pin/10),money(m.pout/10)].forEach(function(x){r.appendChild(ce("td","",x))});
+   body.appendChild(r);
+  });
+ });
 }
 
 /* ---------- controls ---------- */
 function buildControls(){
- var models=$("#modelSelect"),vend={};["Claude","OpenAI","xAI","Cursor"].forEach(function(v){vend[v]=ce("optgroup");vend[v].label=v;models.appendChild(vend[v])});DORDER.slice().reverse().forEach(function(id){var m=mById(id);if(!vend[m.v]){vend[m.v]=ce("optgroup");vend[m.v].label=m.v;models.appendChild(vend[m.v])}var o=ce("option","",m.name);o.value=m.id;vend[m.v].appendChild(o)});
- var tasks=$("#taskSelect"),list=$("#taskList");CARDS.forEach(function(c){var o=ce("option","",c.title);o.value=c.id;tasks.appendChild(o);var b=ce("button","task",c.title);b.type="button";b.dataset.task=c.id;b.onclick=function(){ST.sel=c.id;preview=null;renderAll()};list.appendChild(b)});
+ var models=$("#modelSelect");VENDOR_ORDER.forEach(function(v){var g=ce("optgroup");g.label=v;MODELS.filter(function(m){return m.v===v}).sort(function(a,b){return b.t-a.t}).forEach(function(m){var o=ce("option","",m.name);o.value=m.id;g.appendChild(o)});models.appendChild(g)});
+ var eff=$("#effortSelect");EFFLABEL.forEach(function(l,i){var o=ce("option","",l);o.value=String(i);eff.appendChild(o)});
+ var tasks=$("#taskSelect"),list=$("#taskList");CARDS.forEach(function(c){var o=ce("option","",c.title);o.value=c.id;tasks.appendChild(o);var b=ce("button","task",c.title);b.type="button";b.dataset.task=c.id;b.onclick=function(){ST.sel=c.id;renderAll()};list.appendChild(b)});
 }
 function matchingTasks(){var m=mById(ST.m);return CARDS.filter(function(c){return fit(c,m,ST.e,ST.fan).s==="good"})}
 function chooseContext(){if(ST.mode!=="explore")return;var matches=matchingTasks();if(matches.length&&!matches.some(function(c){return c.id===ST.sel}))ST.sel=matches[0].id}
 function renderControls(){
  var m=mById(ST.m);
  $("#modelSelect").value=m.id;$("#taskSelect").value=ST.sel;
- $("#modelSub").textContent=m.v+", "+TIER[m.t]+" group";$("#modelSub").title="List price per million tokens: "+lp(m.pin)+" input and "+lp(m.pout)+" output.";
- modelDial.set(DORDER.indexOf(m.id),{text:m.name+" from "+m.v+", "+TIER[m.t]+" group"});
- effortDial.set(m.eff?ST.e:2,{off:!m.eff,text:m.eff?EFFLABEL[ST.e]+" effort":"This model has no effort setting"});
- $("#effortValue").textContent=m.eff?EFFLABEL[ST.e]:"No effort setting";
+ var eff=$("#effortSelect");[].forEach.call(eff.options,function(o,i){o.disabled=!offered(m,i)});
+ eff.disabled=!m.eff;eff.value=m.eff?String(ST.e):String(ST.e);
+ if(!m.eff){eff.options[0].textContent="No effort setting";eff.value="0"}else eff.options[0].textContent=EFFLABEL[0];
  $("#fanOff").setAttribute("aria-checked",ST.fan?"false":"true");$("#fanOn").setAttribute("aria-checked",ST.fan?"true":"false");
  $("#fanOff").tabIndex=ST.fan?-1:0;$("#fanOn").tabIndex=ST.fan?0:-1;
- $("#matches").hidden=ST.mode!=="explore";$("#restartBtn").hidden=ST.mode==="explore";$("#taskSelect").parentElement.hidden=ST.mode==="explore";$("#compareTask").hidden=ST.mode!=="explore";$("#compareTask").textContent=card(ST.sel).title;
+ var explore=ST.mode==="explore";
+ $("#matches").hidden=!explore;$("#restartBtn").hidden=explore;$("#taskSelect").parentElement.hidden=explore;$("#compareTask").hidden=!explore;$("#compareTask").textContent=card(ST.sel).title;
  var matches=matchingTasks();CARDS.forEach(function(c){var b=$('[data-task="'+c.id+'"]');b.hidden=!matches.some(function(x){return x.id===c.id});b.setAttribute("aria-pressed",ST.sel===c.id?"true":"false")});
  $("#emptyMatches").hidden=matches.length>0;$("#matchesLabel").hidden=matches.length===0;
 }
-function setModel(id){ST.m=id;ST.e=clampEffort(mById(id),ST.e);preview=null;chooseContext();renderAll()}
-function selectTask(id,snap){var c=card(id);ST.sel=c.id;if(snap){ST.e=c.rec.e;ST.fan=!!c.rec.fan;var m=MODELS.filter(function(x){return x.t===c.rec.t&&offered(x,c.rec.e)&&!(x.code&&c.grp==="know")})[0];if(m)ST.m=m.id}preview=null;renderAll()}
-function setFan(v){ST.fan=v;preview=null;chooseContext();renderAll()}
+function setModel(id){ST.m=id;ST.e=clampEffort(mById(id),ST.e);chooseContext();renderAll()}
+function selectTask(id,snap){var c=card(id);ST.sel=c.id;if(snap){ST.e=c.rec.e;ST.fan=!!c.rec.fan;var m=MODELS.filter(function(x){return x.t===c.rec.t&&offered(x,c.rec.e)&&!(x.code&&c.grp==="know")})[0];if(m)ST.m=m.id}renderAll()}
+function setFan(v){ST.fan=v;chooseContext();renderAll()}
 
-/* ---------- readout ---------- */
-function renderVerdict(m,e,isPreview){
- var c=card(ST.sel),j=fit(c,m,e,ST.fan),p=price(m,e),h=$("#verdict");h.innerHTML="";
- var main=ce("div","r-main"),cost=ce("div","r-cost");
- if(isPreview)main.appendChild(ce("p","r-preview","Preview. Select the cell to choose this setting."));
- var st=ce("p","r-state"),sw=ce("i","sw st-"+(j.s==="na"?"off":j.s));sw.setAttribute("aria-hidden","true");st.appendChild(sw);st.appendChild(document.createTextNode(STATUS[j.s]));main.appendChild(st);
+/* ---------- answer ---------- */
+function renderVerdict(){
+ var m=mById(ST.m),e=ST.e,c=card(ST.sel),j=fit(c,m,e,ST.fan),p=price(m,e),h=$("#verdict");h.innerHTML="";
+ var st=ce("p","a-state"),sw=ce("i","sw st-"+(j.s==="na"?"off":j.s));sw.setAttribute("aria-hidden","true");st.appendChild(sw);st.appendChild(document.createTextNode(STATUS[j.s]));h.appendChild(st);
  var multi=ST.fan&&m.t>=2;
- main.appendChild(ce("p","r-meta",m.name+(m.eff?" at "+EFFLABEL[e].toLowerCase()+" effort":", which has no effort setting")+(multi?", with multiple agents.":", with one agent.")));
- main.appendChild(ce("p","r-text",j.n));
- if(m.warn)main.appendChild(ce("p","r-note warn",m.note));
- if(ST.fan&&m.t<2)main.appendChild(ce("p","r-note","This model runs as one agent. Multiple agents require a model in the Workhorse or Frontier group."));
- if(c.note)main.appendChild(ce("p","r-note",c.note));
- var details=ce("details","detail");details.appendChild(ce("summary","","See how to check the result."));details.appendChild(ce("p","",c.done));main.appendChild(details);
- var pr=ce("p","r-price");pr.appendChild(ce("span","r-num",j.s==="na"?"—":fmt(p)));pr.appendChild(ce("span","r-unit",p.plus?"per attempt. An attempt may cost more.":"per attempt. The price is an estimate."));cost.appendChild(pr);
- h.appendChild(main);h.appendChild(cost);
+ h.appendChild(ce("p","a-meta",m.name+(m.eff?" at "+EFFLABEL[e].toLowerCase()+" effort":", which has no effort setting")+(multi?", with multiple agents.":", with one agent.")));
+ var pr=ce("p","a-price");pr.appendChild(ce("span","a-num",j.s==="na"?"—":fmt(p)));pr.appendChild(ce("span","a-unit",p.plus?"per attempt, at least":"per attempt, estimated"));h.appendChild(pr);
+ h.appendChild(ce("p","a-text",j.n));
+ if(m.warn)h.appendChild(ce("p","a-note warn",m.note));
+ if(ST.fan&&m.t<2)h.appendChild(ce("p","a-note","This model runs as one agent. Multiple agents require a model in the Workhorse or Frontier group."));
+ if(c.note)h.appendChild(ce("p","a-note",c.note));
+ h.appendChild(altBlock(c,m,e,j,p));
+ var d=ce("details","detail");d.appendChild(ce("summary","","How to check the result"));d.appendChild(ce("p","",c.done));h.appendChild(d);
 }
-function renderLive(){
- var pm=preview?preview.m:mById(ST.m),pe=preview?preview.e:ST.e,isPrev=!!preview&&(preview.m.id!==ST.m||preview.e!==ST.e);
- renderVerdict(pm,pe,isPrev);
- modelDial.setGhost(isPrev&&pm.id!==ST.m?DORDER.indexOf(pm.id):null);
- effortDial.setGhost(isPrev&&pm.eff&&pe!==ST.e?pe:null);
-}
-function clearPreview(){var changed=preview&&(preview.m.id!==ST.m||preview.e!==ST.e);preview=null;if(changed)renderLive()}
-
-/* the one orchestrated moment: after the questions, both dials turn from rest to the recommendation and the map fills in */
-function runIntro(){
- if(REDUCED.matches)return;
- var m=mById(ST.m),mi=DORDER.indexOf(m.id),ei=m.eff?ST.e:2;
- modelDial.jump(0);effortDial.jump(0);
- var g=$("#grid");g.classList.remove("wave");g.classList.add("pre");void g.offsetWidth;
- requestAnimationFrame(function(){requestAnimationFrame(function(){
-  modelDial.set(mi,{text:$("#modelDial").getAttribute("aria-valuetext")});
-  setTimeout(function(){effortDial.set(ei,{off:!m.eff,text:$("#effortDial").getAttribute("aria-valuetext")})},160);
-  setTimeout(function(){g.classList.add("wave");g.classList.remove("pre");setTimeout(function(){g.classList.remove("wave")},1400)},380);
- })});
+function altBlock(c,m,e,j,p){
+ var box=ce("div","alts"),opts=fitOptions(c),cur=m.eff?e:ST.e;
+ var others=opts.filter(function(o){return !(o.m.id===m.id&&(!m.eff||o.e===cur)&&o.fan===(ST.fan&&m.t>=2))});
+ var lead=ce("p");
+ if(!opts.length){lead.textContent="No setting fits this task.";box.appendChild(lead);return box}
+ var list;
+ if(j.s==="good"){list=others.filter(function(o){return o.p.v<p.v-.005});if(!list.length){lead.innerHTML="<b>This is the lowest price that fits.</b>";box.appendChild(lead);return box}lead.textContent="Cheaper settings that also fit:"}
+ else{list=others;lead.textContent="Settings that fit:"}
+ box.appendChild(lead);
+ var ul=ce("ul");
+ list.slice(0,2).forEach(function(o){
+  var li=ce("li"),b=ce("button","",o.m.name+(o.m.eff?" at "+EFFLABEL[o.e].toLowerCase()+" effort":"")+(o.fan?", multiple agents":""));b.type="button";
+  b.onclick=function(){ST.m=o.m.id;if(o.m.eff)ST.e=o.e;ST.fan=o.fan;chooseContext();renderAll()};
+  li.appendChild(b);li.appendChild(ce("span","",fmt(o.p)+" per attempt"));ul.appendChild(li);
+ });
+ box.appendChild(ul);return box;
 }
 function renderAll(){
- var guided=ST.mode==="guided",ready=ST.ready||!guided;
- $(".app").classList.toggle("is-quiz",!ready);$("#pageTitle").hidden=!ready;$("#pageTitle").textContent=guided?"Choose your starting point.":"Explore models.";
- $("#guidedBtn").setAttribute("aria-selected",guided?"true":"false");$("#exploreBtn").setAttribute("aria-selected",guided?"false":"true");$("#guidedBtn").tabIndex=guided?0:-1;$("#exploreBtn").tabIndex=guided?-1:0;
- $("#guidedPanel").hidden=!guided;$("#explorePanel").hidden=guided;$("#quiz").hidden=ready;$("#result").hidden=!ready;
- if(ready){var panel=guided?$("#guidedPanel"):$("#explorePanel");panel.appendChild($("#result"));renderControls();paintGrid();renderLive();revealChoice();if(INTRO){INTRO=false;runIntro()}}else renderQuiz();
+ var mode=ST.mode,guided=mode==="guided",prices=mode==="prices",ready=prices?false:(ST.ready||!guided);
+ $(".app").classList.toggle("is-quiz",guided&&!ST.ready);
+ $("#pageTitle").hidden=guided&&!ST.ready;$("#pageTitle").textContent=prices?"What tokens cost.":(guided?"Choose your starting point.":"Explore models.");
+ [["guided","#guidedBtn","#guidedPanel"],["explore","#exploreBtn","#explorePanel"],["prices","#pricesBtn","#pricesPanel"]].forEach(function(x){var on=mode===x[0];$(x[1]).setAttribute("aria-selected",on?"true":"false");$(x[1]).tabIndex=on?0:-1;$(x[2]).hidden=!on});
+ $("#quiz").hidden=!(guided&&!ST.ready);$("#result").hidden=!ready;
+ if(ready){var panel=guided?$("#guidedPanel"):$("#explorePanel");panel.appendChild($("#result"));renderControls();paintGrid();renderVerdict();revealChoice()}
+ else if(guided)renderQuiz();
  save();setHash();
 }
-
 /* ---------- questions ---------- */
 var QT={token:0,animation:null,busy:false};
 function cancelQuizTransition(){
@@ -684,32 +586,31 @@ function renderQuiz(){
  measureQuiz();
 }
 function finishQuiz(){var best=CARDS[0],score=-1;CARDS.forEach(function(c){var n=0;QS.forEach(function(q){if(c.shape[q.k]===QZ.ans[q.k])n++});if(n>score){score=n;best=c}});ST.ready=true;ST.answers=Object.assign({},QZ.ans);INTRO=true;selectTask(best.id,true);$("#taskSelect").focus({preventScroll:true})}
-function restart(){cancelQuizTransition();ST.ready=false;ST.answers={};QZ={i:0,ans:{}};preview=null;ST.mode="guided";$("#guidedPanel").appendChild($("#result"));renderAll();$("#questionTitle").focus({preventScroll:true})}
-function switchMode(mode){cancelQuizTransition();ST.mode=mode;preview=null;chooseContext();renderAll()}
-
+function restart(){cancelQuizTransition();ST.ready=false;ST.answers={};QZ={i:0,ans:{}};ST.mode="guided";$("#guidedPanel").appendChild($("#result"));renderAll();$("#questionTitle").focus({preventScroll:true})}
+function switchMode(mode){cancelQuizTransition();ST.mode=mode;chooseContext();renderAll()}
 /* ---------- events ---------- */
-$("#guidedBtn").onclick=function(){switchMode("guided")};$("#exploreBtn").onclick=function(){switchMode("explore")};$("#restartBtn").onclick=restart;
+$("#guidedBtn").onclick=function(){switchMode("guided")};$("#exploreBtn").onclick=function(){switchMode("explore")};$("#pricesBtn").onclick=function(){switchMode("prices")};$("#restartBtn").onclick=restart;
 $("#modelSelect").onchange=function(){setModel(this.value)};
+$("#effortSelect").onchange=function(){ST.e=Number(this.value);chooseContext();renderAll()};
 $("#taskSelect").onchange=function(){selectTask(this.value,ST.mode==="guided")};
 $("#fanOff").onclick=function(){setFan(false)};$("#fanOn").onclick=function(){setFan(true)};
 $(".switch").addEventListener("keydown",function(ev){if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].indexOf(ev.key)<0)return;ev.preventDefault();setFan(!ST.fan);$(ST.fan?"#fanOn":"#fanOff").focus()});
-$("#grid").addEventListener("pointerleave",clearPreview);
-$("#grid").addEventListener("focusout",function(ev){if(!$("#grid").contains(ev.relatedTarget))clearPreview()});
-$(".views").addEventListener("keydown",function(ev){if(ev.key==="ArrowLeft"||ev.key==="ArrowRight"){ev.preventDefault();switchMode(ST.mode==="guided"?"explore":"guided");$(ST.mode==="guided"?"#guidedBtn":"#exploreBtn").focus()}});
-$("#gridwrap").addEventListener("keydown",function(ev){if(ev.metaKey||ev.ctrlKey||ev.altKey)return;var k=ev.key,i=ORDER.indexOf(ST.m);if(k==="ArrowLeft"||k==="ArrowRight"){var max=mById(ST.m).eff?maxEffort(mById(ST.m)):ST.e;ST.e=Math.max(0,Math.min(max,ST.e+(k==="ArrowRight"?1:-1)))}else if(k==="ArrowUp"||k==="ArrowDown"){ST.m=ORDER[Math.max(0,Math.min(ORDER.length-1,i+(k==="ArrowDown"?1:-1)))];ST.e=clampEffort(mById(ST.m),ST.e)}else if(k==="f"||k==="F"){ST.fan=!ST.fan}else if(k==="Escape"){preview=null;renderLive();return}else return;ev.preventDefault();preview=null;chooseContext();renderAll();var cells=cellEls[ST.m],selected=cells.span||cells[ST.e];selected.focus({preventScroll:true});selected.scrollIntoView({block:"nearest",inline:"nearest"})});
+$(".views").addEventListener("keydown",function(ev){var order=["guided","explore","prices"],i=order.indexOf(ST.mode);if(ev.key==="ArrowLeft"||ev.key==="ArrowRight"){ev.preventDefault();switchMode(order[(i+(ev.key==="ArrowRight"?1:order.length-1))%order.length]);$(["#guidedBtn","#exploreBtn","#pricesBtn"][order.indexOf(ST.mode)]).focus()}});
+$("#gridwrap").addEventListener("keydown",function(ev){if(ev.metaKey||ev.ctrlKey||ev.altKey)return;var k=ev.key,i=ORDER.indexOf(ST.m);if(k==="ArrowLeft"||k==="ArrowRight"){var m=mById(ST.m),max=m.eff?Math.max.apply(null,m.eff.map(function(v){return EFF.indexOf(v)})):ST.e;ST.e=Math.max(0,Math.min(max,ST.e+(k==="ArrowRight"?1:-1)))}else if(k==="ArrowUp"||k==="ArrowDown"){ST.m=ORDER[Math.max(0,Math.min(ORDER.length-1,i+(k==="ArrowDown"?1:-1)))];ST.e=clampEffort(mById(ST.m),ST.e)}else if(k==="f"||k==="F"){ST.fan=!ST.fan}else return;ev.preventDefault();chooseContext();renderAll();var cells=cellEls[ST.m],selected=cells.span||cells[ST.e];selected.focus({preventScroll:true});selected.scrollIntoView({block:"nearest",inline:"nearest"})});
 document.addEventListener("keydown",function(ev){
  if($("#quiz").hidden||ev.metaKey||ev.ctrlKey||ev.altKey)return;var t=ev.target.tagName;if(t==="INPUT"||t==="SELECT"||t==="TEXTAREA")return;
  var n=parseInt(ev.key,10),q=QS[QZ.i];if(!q||!(n>=1&&n<=q.o.length))return;ev.preventDefault();answer(q.k,q.o[n-1][0]);
 });
-window.addEventListener("hashchange",function(){cancelQuizTransition();var id=location.hash.slice(1);if(CARDS.some(function(c){return c.id===id})){ST.ready=true;selectTask(id,ST.mode==="guided")}});
+window.addEventListener("hashchange",function(){cancelQuizTransition();var id=location.hash.slice(1);if(id==="prices"){switchMode("prices");return}if(CARDS.some(function(c){return c.id===id})){if(ST.mode==="prices")ST.mode="guided";ST.ready=true;selectTask(id,ST.mode==="guided")}});
 window.addEventListener("resize",function(){revealChoice();measureQuiz()});
 
 /* ---------- boot ---------- */
-buildControls();buildGrid();
+buildControls();buildGrid();buildPrices();
 var initial=location.hash.slice(1);
-if(CARDS.some(function(c){return c.id===initial})){ST.ready=true;selectTask(initial,ST.mode==="guided")}else{chooseContext();renderAll()}
+if(initial==="prices"){ST.mode="prices";renderAll()}
+else if(CARDS.some(function(c){return c.id===initial})){if(ST.mode==="prices")ST.mode="guided";ST.ready=true;selectTask(initial,ST.mode==="guided")}
+else{if(ST.mode==="prices")ST.mode="guided";chooseContext();renderAll()}
 if(document.fonts)document.fonts.ready.then(measureQuiz);
 })();
 </script>
-
 </html>
