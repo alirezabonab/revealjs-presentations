@@ -364,10 +364,11 @@ Sources:
     OBSERVED BEHAVIOR   Private Loan deletes its request lock after completion,
                         so a later request can repeat the operation.
 
-    DECISION NEEDED     The operation owner decides how long retry protection
-                        lasts, and what happens after it ends.
+    DECISION NEEDED     Not decided yet.  The owner chooses how long a retry
+                        stays safe, and what happens after that.
 
-    HOW TO VERIFY       8 checks, such as a lost response or a crash mid-write.
+    HOW TO VERIFY       8 checks to run, such as a lost response or a crash
+                        mid-write.  Each one passes or fails.
 ```
 
 Notes:
@@ -381,9 +382,9 @@ API-RTY-02: if the response is lost, the write may already have happened. Look u
 
 Observed behavior: in the inspected code, Private Loan deletes its request lock after completion, so a later request can repeat the operation. This is evidence for the rule. It is not an instruction.
 
-Decision needed: the operation owner decides how long retry protection lasts and what happens after it expires.
+Decision needed: the draft does not decide this. The service remembers each request ID for a while, so a retry with the same ID is safe. The owner of the operation chooses how long that window is, within the approved data policy. The owner also chooses what happens to a retry after the window ends, for example reject it or send it to manual recovery.
 
-The subject has eight checks: lost response, changed input, concurrent repeat, crash during processing, request-ID scope, late repeat, permanent failure, and no safe lookup or retry.
+The subject has eight checks: lost response, changed input, concurrent repeat, crash during processing, request-ID scope, late repeat, permanent failure, and no safe lookup or retry. Each check names an action and the expected result, so it passes or fails. A reviewer can run it as a design review, a code inspection, or a test. The next slide shows the first one.
 
 Sources:
 - [Repeated requests and safe retries](https://github.com/Enklare-Development/enklare-ai-brain/blob/b591fe9d072641e4b5ff4a0cd4e5c410f38a0b84/docs/engineering-standards/06-apis-and-external-integrations.md#repeated-requests-and-safe-retries)
